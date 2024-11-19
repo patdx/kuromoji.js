@@ -37,7 +37,7 @@ function TokenizerBuilder(option: { dicPath: string }) {
  * @param {TokenizerBuilder~onLoad} callback Callback function
  */
 TokenizerBuilder.prototype.build = function (callback) {
-	var loader = new DictionaryLoader(this.dic_path)
+	const loader = new DictionaryLoader(this.dic_path)
 	loader.load(function (err, dic) {
 		callback(err, new Tokenizer(dic))
 	})

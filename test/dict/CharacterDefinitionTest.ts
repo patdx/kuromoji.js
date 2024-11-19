@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-import CharacterDefinition from '../../src/dict/CharacterDefinition'
+// import CharacterDefinition from '../../src/dict/CharacterDefinition'
 
 import InvokeDefinitionMap from '../../src/dict/InvokeDefinitionMap'
 import CharacterDefinitionBuilder from '../../src/dict/builder/CharacterDefinitionBuilder'
 import fs from 'fs'
 import { expect } from 'chai'
 
-var DIC_DIR = 'test/resource/minimum-dic/'
+const DIC_DIR = 'test/resource/minimum-dic/'
 
 describe('CharacterDefinition from char.def', function () {
-	var char_def // target object
+	let char_def // target object
 
 	beforeAll(
 		// 'Create CharacterDefinition',
 		function () {
-			var cd_builder = new CharacterDefinitionBuilder()
+			const cd_builder = new CharacterDefinitionBuilder()
 			fs.readFileSync(DIC_DIR + 'char.def', 'utf-8')
 				.split('\n')
 				.map(function (line) {
@@ -121,8 +121,8 @@ describe('CharacterDefinition from char.def', function () {
 		expect(char_def.lookup('一').max_length).to.be.equal(0)
 	})
 	it('Save and load', function () {
-		var buffer = char_def.invoke_definition_map.toBuffer()
-		var invoke_def = InvokeDefinitionMap.load(buffer)
+		const buffer = char_def.invoke_definition_map.toBuffer()
+		const invoke_def = InvokeDefinitionMap.load(buffer)
 		expect(invoke_def.getCharacterClass(0)).to.deep.eql({
 			class_id: 0,
 			class_name: 'DEFAULT',

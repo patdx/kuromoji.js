@@ -33,16 +33,16 @@ function InvokeDefinitionMap() {
  * @returns {InvokeDefinitionMap}
  */
 InvokeDefinitionMap.load = function (invoke_def_buffer: Uint8Array) {
-	var invoke_def = new InvokeDefinitionMap()
-	var character_category_definition = []
+	const invoke_def = new InvokeDefinitionMap()
+	const character_category_definition = []
 
-	var buffer = new ByteBuffer(invoke_def_buffer)
+	const buffer = new ByteBuffer(invoke_def_buffer)
 	while (buffer.position + 1 < buffer.size()) {
-		var class_id = character_category_definition.length
-		var is_always_invoke = buffer.get()
-		var is_grouping = buffer.get()
-		var max_length = buffer.getInt()
-		var class_name = buffer.getString()
+		const class_id = character_category_definition.length
+		const is_always_invoke = buffer.get()
+		const is_grouping = buffer.get()
+		const max_length = buffer.getInt()
+		const class_name = buffer.getString()
 		character_category_definition.push(
 			new CharacterClass(
 				class_id,
@@ -64,13 +64,13 @@ InvokeDefinitionMap.load = function (invoke_def_buffer: Uint8Array) {
  * @param {Array.<CharacterClass>} character_category_definition Array of CharacterClass
  */
 InvokeDefinitionMap.prototype.init = function (
-	character_category_definition: Array<CharacterClass>,
+	character_category_definition: CharacterClass[],
 ) {
 	if (character_category_definition == null) {
 		return
 	}
-	for (var i = 0; i < character_category_definition.length; i++) {
-		var character_class = character_category_definition[i]
+	for (let i = 0; i < character_category_definition.length; i++) {
+		const character_class = character_category_definition[i]
 		this.map[i] = character_class
 		this.lookup_table[character_class.class_name] = i
 	}
@@ -91,7 +91,7 @@ InvokeDefinitionMap.prototype.getCharacterClass = function (class_id: number) {
  * @returns {number} class_id
  */
 InvokeDefinitionMap.prototype.lookup = function (class_name: string) {
-	var class_id = this.lookup_table[class_name]
+	const class_id = this.lookup_table[class_name]
 	if (class_id == null) {
 		return null
 	}
@@ -103,9 +103,9 @@ InvokeDefinitionMap.prototype.lookup = function (class_name: string) {
  * @returns {Uint8Array}
  */
 InvokeDefinitionMap.prototype.toBuffer = function () {
-	var buffer = new ByteBuffer()
-	for (var i = 0; i < this.map.length; i++) {
-		var char_class = this.map[i]
+	const buffer = new ByteBuffer()
+	for (let i = 0; i < this.map.length; i++) {
+		const char_class = this.map[i]
 		buffer.put(char_class.is_always_invoke)
 		buffer.put(char_class.is_grouping)
 		buffer.putInt(char_class.max_length)

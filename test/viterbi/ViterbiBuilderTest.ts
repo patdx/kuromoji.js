@@ -20,7 +20,7 @@ import { expect } from 'chai'
 import DictionaryLoader from '../../src/loader/NodeDictionaryLoader'
 import ViterbiBuilder from '../../src/viterbi/ViterbiBuilder'
 
-var DIC_DIR = 'dict/'
+const DIC_DIR = 'dict/'
 
 describe(
 	'ViterbiBuilder',
@@ -28,11 +28,11 @@ describe(
 		timeout: 5 * 60 * 1000, // 5 min
 	},
 	function () {
-		var viterbi_builder = null // target object
+		let viterbi_builder = null // target object
 
 		beforeAll(async function (done) {
 			await new Promise((resolve) => {
-				var loader = new DictionaryLoader(DIC_DIR)
+				const loader = new DictionaryLoader(DIC_DIR)
 				loader.load(function (err, dic) {
 					viterbi_builder = new ViterbiBuilder(dic)
 					resolve()
@@ -42,9 +42,9 @@ describe(
 
 		it('Unknown word', function () {
 			// lattice to have "ト", "トト", "トトロ"
-			var lattice = viterbi_builder.build('トトロ')
-			for (var i = 1; i < lattice.eos_pos; i++) {
-				var nodes = lattice.nodes_end_at[i]
+			const lattice = viterbi_builder.build('トトロ')
+			for (let i = 1; i < lattice.eos_pos; i++) {
+				const nodes = lattice.nodes_end_at[i]
 				if (nodes == null) {
 					continue
 				}

@@ -20,7 +20,7 @@ import { expect } from 'chai'
 import DictionaryLoader from '../../src/loader/NodeDictionaryLoader'
 import { promisify } from '../../src/util/test-utils'
 
-var DIC_DIR = 'dict/'
+const DIC_DIR = 'dict/'
 
 describe(
 	'DictionaryLoader',
@@ -28,11 +28,11 @@ describe(
 		timeout: 5 * 60 * 1000, // 5 min
 	},
 	function () {
-		var dictionaries = null // target object
+		let dictionaries = null // target object
 
 		beforeAll(
 			promisify(function (done) {
-				var loader = new DictionaryLoader(DIC_DIR)
+				const loader = new DictionaryLoader(DIC_DIR)
 				loader.load(function (err, dic) {
 					dictionaries = dic
 					done()
@@ -64,7 +64,7 @@ describe('DictionaryLoader about loading', function () {
 			timeout: 5 * 60 * 1000, // 5 min
 		},
 		function (done) {
-			var loader = new DictionaryLoader('dict') // not have suffix /
+			const loader = new DictionaryLoader('dict') // not have suffix /
 			loader.load(function (err, dic) {
 				expect(err).to.be.null
 				expect(dic).to.not.be.undefined
@@ -74,7 +74,7 @@ describe('DictionaryLoader about loading', function () {
 	)
 	it("couldn't load dictionary, then call with error", async function () {
 		await new Promise((resolve) => {
-			var loader = new DictionaryLoader('non-exist/dictionaries')
+			const loader = new DictionaryLoader('non-exist/dictionaries')
 			loader.load(function (err, dic) {
 				expect(err).to.be.an.instanceof(Error)
 				resolve()

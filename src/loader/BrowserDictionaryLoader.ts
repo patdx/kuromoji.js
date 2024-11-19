@@ -38,7 +38,7 @@ BrowserDictionaryLoader.prototype.loadArrayBuffer = function (
 	url: string,
 	callback,
 ) {
-	var xhr = new XMLHttpRequest()
+	const xhr = new XMLHttpRequest()
 	xhr.open('GET', url, true)
 	xhr.responseType = 'arraybuffer'
 	xhr.onload = function () {
@@ -46,10 +46,10 @@ BrowserDictionaryLoader.prototype.loadArrayBuffer = function (
 			callback(xhr.statusText, null)
 			return
 		}
-		var arraybuffer = this.response
+		const arraybuffer = this.response
 
-		var gz = new zlib.Zlib.Gunzip(new Uint8Array(arraybuffer))
-		var typed_array = gz.decompress()
+		const gz = new zlib.Zlib.Gunzip(new Uint8Array(arraybuffer))
+		const typed_array = gz.decompress()
 		callback(null, typed_array.buffer)
 	}
 	xhr.onerror = function (err) {

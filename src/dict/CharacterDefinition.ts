@@ -19,7 +19,7 @@ import InvokeDefinitionMap from './InvokeDefinitionMap'
 import CharacterClass from './CharacterClass'
 import SurrogateAwareString from '../util/SurrogateAwareString'
 
-var DEFAULT_CATEGORY = 'DEFAULT'
+const DEFAULT_CATEGORY = 'DEFAULT'
 
 /**
  * CharacterDefinition represents char.def file and
@@ -44,7 +44,7 @@ CharacterDefinition.load = function (
 	compat_cat_map_buffer: Uint32Array,
 	invoke_def_buffer: InvokeDefinitionMap,
 ) {
-	var char_def = new CharacterDefinition()
+	const char_def = new CharacterDefinition()
 	char_def.character_category_map = cat_map_buffer
 	char_def.compatible_category_map = compat_cat_map_buffer
 	char_def.invoke_definition_map = InvokeDefinitionMap.load(invoke_def_buffer)
@@ -55,10 +55,10 @@ CharacterDefinition.parseCharCategory = function (
 	class_id,
 	parsed_category_def,
 ) {
-	var category = parsed_category_def[1]
-	var invoke = parseInt(parsed_category_def[2])
-	var grouping = parseInt(parsed_category_def[3])
-	var max_length = parseInt(parsed_category_def[4])
+	const category = parsed_category_def[1]
+	const invoke = parseInt(parsed_category_def[2])
+	const grouping = parseInt(parsed_category_def[3])
+	const max_length = parseInt(parsed_category_def[4])
 	if (!isFinite(invoke) || (invoke !== 0 && invoke !== 1)) {
 		console.log('char.def parse error. INVOKE is 0 or 1 in:' + invoke)
 		return null
@@ -71,8 +71,8 @@ CharacterDefinition.parseCharCategory = function (
 		console.log('char.def parse error. LENGTH is 1 to n:' + max_length)
 		return null
 	}
-	var is_invoke = invoke === 1
-	var is_grouping = grouping === 1
+	const is_invoke = invoke === 1
+	const is_grouping = grouping === 1
 
 	return new CharacterClass(
 		class_id,
@@ -84,9 +84,9 @@ CharacterDefinition.parseCharCategory = function (
 }
 
 CharacterDefinition.parseCategoryMapping = function (parsed_category_mapping) {
-	var start = parseInt(parsed_category_mapping[1])
-	var default_category = parsed_category_mapping[2]
-	var compatible_category =
+	const start = parseInt(parsed_category_mapping[1])
+	const default_category = parsed_category_mapping[2]
+	const compatible_category =
 		3 < parsed_category_mapping.length ? parsed_category_mapping.slice(3) : []
 	if (!isFinite(start) || start < 0 || start > 0xffff) {
 		console.log('char.def parse error. CODE is invalid:' + start)
@@ -101,10 +101,10 @@ CharacterDefinition.parseCategoryMapping = function (parsed_category_mapping) {
 CharacterDefinition.parseRangeCategoryMapping = function (
 	parsed_category_mapping,
 ) {
-	var start = parseInt(parsed_category_mapping[1])
-	var end = parseInt(parsed_category_mapping[2])
-	var default_category = parsed_category_mapping[3]
-	var compatible_category =
+	const start = parseInt(parsed_category_mapping[1])
+	const end = parseInt(parsed_category_mapping[2])
+	const default_category = parsed_category_mapping[3]
+	const compatible_category =
 		4 < parsed_category_mapping.length ? parsed_category_mapping.slice(4) : []
 	if (!isFinite(start) || start < 0 || start > 0xffff) {
 		console.log('char.def parse error. CODE is invalid:' + start)
@@ -125,37 +125,37 @@ CharacterDefinition.parseRangeCategoryMapping = function (
  * @param {Array} category_mapping Array of category mapping
  */
 CharacterDefinition.prototype.initCategoryMappings = function (
-	category_mapping: Array<any>,
+	category_mapping: any[],
 ) {
 	// Initialize map by DEFAULT class
-	var code_point
+	let code_point
 	if (category_mapping != null) {
-		for (var i = 0; i < category_mapping.length; i++) {
-			var mapping = category_mapping[i]
-			var end = mapping.end || mapping.start
+		for (let i = 0; i < category_mapping.length; i++) {
+			const mapping = category_mapping[i]
+			const end = mapping.end || mapping.start
 			for (code_point = mapping.start; code_point <= end; code_point++) {
 				// Default Category class ID
 				this.character_category_map[code_point] =
 					this.invoke_definition_map.lookup(mapping.default)
 
-				for (var j = 0; j < mapping.compatible.length; j++) {
-					var bitset = this.compatible_category_map[code_point]
-					var compatible_category = mapping.compatible[j]
+				for (let j = 0; j < mapping.compatible.length; j++) {
+					let bitset = this.compatible_category_map[code_point]
+					const compatible_category = mapping.compatible[j]
 					if (compatible_category == null) {
 						continue
 					}
-					var class_id = this.invoke_definition_map.lookup(compatible_category) // Default Category
+					const class_id = this.invoke_definition_map.lookup(compatible_category) // Default Category
 					if (class_id == null) {
 						continue
 					}
-					var class_id_bit = 1 << class_id
+					const class_id_bit = 1 << class_id
 					bitset = bitset | class_id_bit // Set a bit of class ID 例えば、class_idが3のとき、3ビット目に1を立てる
 					this.compatible_category_map[code_point] = bitset
 				}
 			}
 		}
 	}
-	var default_id = this.invoke_definition_map.lookup(DEFAULT_CATEGORY)
+	const default_id = this.invoke_definition_map.lookup(DEFAULT_CATEGORY)
 	if (default_id == null) {
 		return
 	}
@@ -178,15 +178,15 @@ CharacterDefinition.prototype.initCategoryMappings = function (
  * @returns {Array.<CharacterClass>} character classes
  */
 CharacterDefinition.prototype.lookupCompatibleCategory = function (ch: string) {
-	var classes = []
+	const classes = []
 
 	/*
      if (SurrogateAwareString.isSurrogatePair(ch)) {
      // Surrogate pair character codes can not be defined by char.def
      return classes;
      }*/
-	var code = ch.charCodeAt(0)
-	var integer
+	const code = ch.charCodeAt(0)
+	let integer
 	if (code < this.compatible_category_map.length) {
 		integer = this.compatible_category_map[code] // Bitset
 	}
@@ -195,10 +195,10 @@ CharacterDefinition.prototype.lookupCompatibleCategory = function (ch: string) {
 		return classes
 	}
 
-	for (var bit = 0; bit < 32; bit++) {
+	for (let bit = 0; bit < 32; bit++) {
 		// Treat "bit" as a class ID
 		if ((integer << (31 - bit)) >>> 31 === 1) {
-			var character_class = this.invoke_definition_map.getCharacterClass(bit)
+			const character_class = this.invoke_definition_map.getCharacterClass(bit)
 			if (character_class == null) {
 				continue
 			}
@@ -214,9 +214,9 @@ CharacterDefinition.prototype.lookupCompatibleCategory = function (ch: string) {
  * @returns {CharacterClass} character class
  */
 CharacterDefinition.prototype.lookup = function (ch: string) {
-	var class_id
+	let class_id
 
-	var code = ch.charCodeAt(0)
+	const code = ch.charCodeAt(0)
 	if (SurrogateAwareString.isSurrogatePair(ch)) {
 		// Surrogate pair character codes can not be defined by char.def, so set DEFAULT category
 		class_id = this.invoke_definition_map.lookup(DEFAULT_CATEGORY)

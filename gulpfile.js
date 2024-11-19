@@ -1,10 +1,8 @@
 import fs from 'fs'
 import gulp from 'gulp'
-import { deleteSync as del, deleteAsync } from 'del'
+import { deleteAsync } from 'del'
 import eventStream from 'event-stream'
-import jshint from 'gulp-jshint'
 import gzip from 'gulp-gzip'
-import istanbul from 'gulp-istanbul'
 import webserver from 'gulp-webserver'
 import jsdoc from 'gulp-jsdoc3'
 import bower from 'gulp-bower'
@@ -29,7 +27,7 @@ gulp.task(
 	'build',
 	gulp.series('clean', async () => {
 		await esbuild.build({
-			entryPoints: ['src/kuromoji.js'],
+			entryPoints: ['src/kuromoji.ts'],
 			bundle: true,
 			outfile: 'build/kuromoji.js',
 			platform: 'node',
@@ -192,11 +190,8 @@ gulp.task(
 	}),
 )
 
-gulp.task('lint', () => {
-	return gulp
-		.src(['src/**/*.js'])
-		.pipe(jshint())
-		.pipe(jshint.reporter('default'))
+gulp.task('lint', async () => {
+	await $`eslint .`
 })
 
 gulp.task('clean-jsdoc', async () => {

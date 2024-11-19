@@ -30,27 +30,27 @@ function TokenInfoDictionary() {
 // left_id right_id word_cost ...
 // ^ this position is token_info_id
 TokenInfoDictionary.prototype.buildDictionary = function (entries) {
-	var dictionary_entries = {} // using as hashmap, string -> string (word_id -> surface_form) to build dictionary
+	const dictionary_entries = {} // using as hashmap, string -> string (word_id -> surface_form) to build dictionary
 
-	for (var i = 0; i < entries.length; i++) {
-		var entry = entries[i]
+	for (let i = 0; i < entries.length; i++) {
+		const entry = entries[i]
 
 		if (entry.length < 4) {
 			continue
 		}
 
-		var surface_form = entry[0]
-		var left_id = entry[1]
-		var right_id = entry[2]
-		var word_cost = entry[3]
-		var feature = entry.slice(4).join(',') // TODO Optimize
+		const surface_form = entry[0]
+		const left_id = entry[1]
+		const right_id = entry[2]
+		const word_cost = entry[3]
+		const feature = entry.slice(4).join(',') // TODO Optimize
 
 		// Assertion
 		if (!isFinite(left_id) || !isFinite(right_id) || !isFinite(word_cost)) {
 			console.log(entry)
 		}
 
-		var token_info_id = this.put(
+		const token_info_id = this.put(
 			left_id,
 			right_id,
 			word_cost,
@@ -74,8 +74,8 @@ TokenInfoDictionary.prototype.put = function (
 	surface_form,
 	feature,
 ) {
-	var token_info_id = this.dictionary.position
-	var pos_id = this.pos_buffer.position
+	const token_info_id = this.dictionary.position
+	const pos_id = this.pos_buffer.position
 
 	this.dictionary.putShort(left_id)
 	this.dictionary.putShort(right_id)
@@ -87,7 +87,7 @@ TokenInfoDictionary.prototype.put = function (
 }
 
 TokenInfoDictionary.prototype.addMapping = function (source, target) {
-	var mapping = this.target_map[source]
+	let mapping = this.target_map[source]
 	if (mapping == null) {
 		mapping = []
 	}
@@ -97,15 +97,15 @@ TokenInfoDictionary.prototype.addMapping = function (source, target) {
 }
 
 TokenInfoDictionary.prototype.targetMapToBuffer = function () {
-	var buffer = new ByteBuffer()
-	var map_keys_size = Object.keys(this.target_map).length
+	const buffer = new ByteBuffer()
+	const map_keys_size = Object.keys(this.target_map).length
 	buffer.putInt(map_keys_size)
-	for (var key in this.target_map) {
-		var values = this.target_map[key] // Array
-		var map_values_size = values.length
+	for (const key in this.target_map) {
+		const values = this.target_map[key] // Array
+		const map_values_size = values.length
 		buffer.putInt(parseInt(key))
 		buffer.putInt(map_values_size)
-		for (var i = 0; i < values.length; i++) {
+		for (let i = 0; i < values.length; i++) {
 			buffer.putInt(values[i])
 		}
 	}
@@ -126,7 +126,7 @@ TokenInfoDictionary.prototype.loadPosVector = function (array_buffer) {
 
 // from tid_map.dat
 TokenInfoDictionary.prototype.loadTargetMap = function (array_buffer) {
-	var buffer = new ByteBuffer(array_buffer)
+	const buffer = new ByteBuffer(array_buffer)
 	buffer.position = 0
 	this.target_map = {}
 	buffer.readInt() // map_keys_size
@@ -134,10 +134,10 @@ TokenInfoDictionary.prototype.loadTargetMap = function (array_buffer) {
 		if (buffer.buffer.length < buffer.position + 1) {
 			break
 		}
-		var key = buffer.readInt()
-		var map_values_size = buffer.readInt()
-		for (var i = 0; i < map_values_size; i++) {
-			var value = buffer.readInt()
+		const key = buffer.readInt()
+		const map_values_size = buffer.readInt()
+		for (let i = 0; i < map_values_size; i++) {
+			const value = buffer.readInt()
 			this.addMapping(key, value)
 		}
 	}
@@ -152,12 +152,12 @@ TokenInfoDictionary.prototype.loadTargetMap = function (array_buffer) {
 TokenInfoDictionary.prototype.getFeatures = function (
 	token_info_id_str: string,
 ) {
-	var token_info_id = parseInt(token_info_id_str)
+	const token_info_id = parseInt(token_info_id_str)
 	if (isNaN(token_info_id)) {
 		// TODO throw error
 		return ''
 	}
-	var pos_id = this.dictionary.getInt(token_info_id + 6)
+	const pos_id = this.dictionary.getInt(token_info_id + 6)
 	return this.pos_buffer.getString(pos_id)
 }
 

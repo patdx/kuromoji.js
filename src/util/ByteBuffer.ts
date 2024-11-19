@@ -21,21 +21,21 @@
  * @param {String} str UTF-16 string to convert
  * @return {Uint8Array} Byte sequence encoded by UTF-8
  */
-var stringToUtf8Bytes = function (str: string) {
+const stringToUtf8Bytes = function (str: string) {
 	// Max size of 1 character is 4 bytes
-	var bytes = new Uint8Array(str.length * 4)
+	const bytes = new Uint8Array(str.length * 4)
 
-	var i = 0,
+	let i = 0,
 		j = 0
 
 	while (i < str.length) {
 		var unicode_code
 
-		var utf16_code = str.charCodeAt(i++)
+		const utf16_code = str.charCodeAt(i++)
 		if (utf16_code >= 0xd800 && utf16_code <= 0xdbff) {
 			// surrogate pair
-			var upper = utf16_code // high surrogate
-			var lower = str.charCodeAt(i++) // low surrogate
+			const upper = utf16_code // high surrogate
+			const lower = str.charCodeAt(i++) // low surrogate
 
 			if (lower >= 0xdc00 && lower <= 0xdfff) {
 				unicode_code =
@@ -81,10 +81,10 @@ var stringToUtf8Bytes = function (str: string) {
  * @param {Array} bytes UTF-8 byte sequence to convert
  * @return {String} String encoded by UTF-16
  */
-var utf8BytesToString = function (bytes: Array<any>) {
-	var str = ''
-	var code, b1, b2, b3, b4, upper, lower
-	var i = 0
+const utf8BytesToString = function (bytes: any[]) {
+	let str = ''
+	let code, b1, b2, b3, b4, upper, lower
+	let i = 0
 
 	while (i < bytes.length) {
 		b1 = bytes[i++]
@@ -133,7 +133,7 @@ var utf8BytesToString = function (bytes: Array<any>) {
  * @constructor
  */
 function ByteBuffer(arg: number | Uint8Array) {
-	var initial_size
+	let initial_size
 	if (arg == null) {
 		initial_size = 1024 * 1024
 	} else if (typeof arg === 'number') {
@@ -156,7 +156,7 @@ ByteBuffer.prototype.size = function () {
 }
 
 ByteBuffer.prototype.reallocate = function () {
-	var new_array = new Uint8Array(this.buffer.length * 2)
+	const new_array = new Uint8Array(this.buffer.length * 2)
 	new_array.set(this.buffer)
 	this.buffer = new_array
 }
@@ -189,8 +189,8 @@ ByteBuffer.prototype.putShort = function (num) {
 	if (0xffff < num) {
 		throw num + ' is over short value'
 	}
-	var lower = 0x00ff & num
-	var upper = (0xff00 & num) >> 8
+	const lower = 0x00ff & num
+	const upper = (0xff00 & num) >> 8
 	this.put(lower)
 	this.put(upper)
 }
@@ -204,9 +204,9 @@ ByteBuffer.prototype.getShort = function (index) {
 	if (this.buffer.length < index + 2) {
 		return 0
 	}
-	var lower = this.buffer[index]
-	var upper = this.buffer[index + 1]
-	var value = (upper << 8) + lower
+	const lower = this.buffer[index]
+	const upper = this.buffer[index + 1]
+	let value = (upper << 8) + lower
 	if (value & 0x8000) {
 		value = -((value - 1) ^ 0xffff)
 	}
@@ -218,10 +218,10 @@ ByteBuffer.prototype.putInt = function (num) {
 	if (0xffffffff < num) {
 		throw num + ' is over integer value'
 	}
-	var b0 = 0x000000ff & num
-	var b1 = (0x0000ff00 & num) >> 8
-	var b2 = (0x00ff0000 & num) >> 16
-	var b3 = (0xff000000 & num) >> 24
+	const b0 = 0x000000ff & num
+	const b1 = (0x0000ff00 & num) >> 8
+	const b2 = (0x00ff0000 & num) >> 16
+	const b3 = (0xff000000 & num) >> 24
 	this.put(b0)
 	this.put(b1)
 	this.put(b2)
@@ -237,23 +237,23 @@ ByteBuffer.prototype.getInt = function (index) {
 	if (this.buffer.length < index + 4) {
 		return 0
 	}
-	var b0 = this.buffer[index]
-	var b1 = this.buffer[index + 1]
-	var b2 = this.buffer[index + 2]
-	var b3 = this.buffer[index + 3]
+	const b0 = this.buffer[index]
+	const b1 = this.buffer[index + 1]
+	const b2 = this.buffer[index + 2]
+	const b3 = this.buffer[index + 3]
 
 	return (b3 << 24) + (b2 << 16) + (b1 << 8) + b0
 }
 
 ByteBuffer.prototype.readInt = function () {
-	var pos = this.position
+	const pos = this.position
 	this.position += 4
 	return this.getInt(pos)
 }
 
 ByteBuffer.prototype.putString = function (str) {
-	var bytes = stringToUtf8Bytes(str)
-	for (var i = 0; i < bytes.length; i++) {
+	const bytes = stringToUtf8Bytes(str)
+	for (let i = 0; i < bytes.length; i++) {
 		this.put(bytes[i])
 	}
 	// put null character as terminal character
@@ -261,7 +261,7 @@ ByteBuffer.prototype.putString = function (str) {
 }
 
 ByteBuffer.prototype.getString = function (index) {
-	var buf = [],
+	let buf = [],
 		ch
 	if (index == null) {
 		index = this.position

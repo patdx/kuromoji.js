@@ -27,7 +27,7 @@ IpadicFormatter.prototype.formatEntry = function (
 	type,
 	features,
 ) {
-	var token = {}
+	const token = {}
 	token.word_id = word_id
 	token.word_type = type
 	token.word_position = position
@@ -53,7 +53,7 @@ IpadicFormatter.prototype.formatUnknownEntry = function (
 	features,
 	surface_form,
 ) {
-	var token = {}
+	const token = {}
 	token.word_id = word_id
 	token.word_type = type
 	token.word_position = position

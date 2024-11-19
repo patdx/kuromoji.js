@@ -47,7 +47,7 @@ NodeDictionaryLoader.prototype.loadArrayBuffer = function (
 			if (err2) {
 				return callback(err2)
 			}
-			var typed_array = new Uint8Array(decompressed)
+			const typed_array = new Uint8Array(decompressed)
 			callback(null, typed_array.buffer)
 		})
 	})

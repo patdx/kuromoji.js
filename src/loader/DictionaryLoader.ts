@@ -38,9 +38,9 @@ DictionaryLoader.prototype.loadArrayBuffer = function (file, callback) {
  * @param {DictionaryLoader~onLoad} load_callback Callback function called after loaded
  */
 DictionaryLoader.prototype.load = function (load_callback) {
-	var dic = this.dic
-	var dic_path = this.dic_path
-	var loadArrayBuffer = this.loadArrayBuffer
+	const dic = this.dic
+	const dic_path = this.dic_path
+	const loadArrayBuffer = this.loadArrayBuffer
 
 	async.parallel(
 		[
@@ -63,8 +63,8 @@ DictionaryLoader.prototype.load = function (load_callback) {
 						if (err) {
 							return callback(err)
 						}
-						var base_buffer = new Int32Array(buffers[0])
-						var check_buffer = new Int32Array(buffers[1])
+						const base_buffer = new Int32Array(buffers[0])
+						const check_buffer = new Int32Array(buffers[1])
 
 						dic.loadTrie(base_buffer, check_buffer)
 						callback(null)
@@ -90,9 +90,9 @@ DictionaryLoader.prototype.load = function (load_callback) {
 						if (err) {
 							return callback(err)
 						}
-						var token_info_buffer = new Uint8Array(buffers[0])
-						var pos_buffer = new Uint8Array(buffers[1])
-						var target_map_buffer = new Uint8Array(buffers[2])
+						const token_info_buffer = new Uint8Array(buffers[0])
+						const pos_buffer = new Uint8Array(buffers[1])
+						const target_map_buffer = new Uint8Array(buffers[2])
 
 						dic.loadTokenInfoDictionaries(
 							token_info_buffer,
@@ -111,7 +111,7 @@ DictionaryLoader.prototype.load = function (load_callback) {
 						if (err) {
 							return callback(err)
 						}
-						var cc_buffer = new Int16Array(buffer)
+						const cc_buffer = new Int16Array(buffer)
 						dic.loadConnectionCosts(cc_buffer)
 						callback(null)
 					},
@@ -143,12 +143,12 @@ DictionaryLoader.prototype.load = function (load_callback) {
 						if (err) {
 							return callback(err)
 						}
-						var unk_buffer = new Uint8Array(buffers[0])
-						var unk_pos_buffer = new Uint8Array(buffers[1])
-						var unk_map_buffer = new Uint8Array(buffers[2])
-						var cat_map_buffer = new Uint8Array(buffers[3])
-						var compat_cat_map_buffer = new Uint32Array(buffers[4])
-						var invoke_def_buffer = new Uint8Array(buffers[5])
+						const unk_buffer = new Uint8Array(buffers[0])
+						const unk_pos_buffer = new Uint8Array(buffers[1])
+						const unk_map_buffer = new Uint8Array(buffers[2])
+						const cat_map_buffer = new Uint8Array(buffers[3])
+						const compat_cat_map_buffer = new Uint32Array(buffers[4])
+						const invoke_def_buffer = new Uint8Array(buffers[5])
 
 						dic.loadUnknownDictionaries(
 							unk_buffer,

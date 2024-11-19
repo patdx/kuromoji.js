@@ -35,24 +35,24 @@ ViterbiSearcher.prototype.search = function (lattice: ViterbiLattice) {
 }
 
 ViterbiSearcher.prototype.forward = function (lattice) {
-	var i, j, k
+	let i, j, k
 	for (i = 1; i <= lattice.eos_pos; i++) {
-		var nodes = lattice.nodes_end_at[i]
+		const nodes = lattice.nodes_end_at[i]
 		if (nodes == null) {
 			continue
 		}
 		for (j = 0; j < nodes.length; j++) {
-			var node = nodes[j]
-			var cost = Number.MAX_VALUE
+			const node = nodes[j]
+			let cost = Number.MAX_VALUE
 			var shortest_prev_node
 
-			var prev_nodes = lattice.nodes_end_at[node.start_pos - 1]
+			const prev_nodes = lattice.nodes_end_at[node.start_pos - 1]
 			if (prev_nodes == null) {
 				// TODO process unknown words (repair word lattice)
 				continue
 			}
 			for (k = 0; k < prev_nodes.length; k++) {
-				var prev_node = prev_nodes[k]
+				const prev_node = prev_nodes[k]
 
 				var edge_cost
 				if (node.left_id == null || prev_node.right_id == null) {
@@ -66,7 +66,7 @@ ViterbiSearcher.prototype.forward = function (lattice) {
 					)
 				}
 
-				var _cost = prev_node.shortest_cost + edge_cost + node.cost
+				const _cost = prev_node.shortest_cost + edge_cost + node.cost
 				if (_cost < cost) {
 					shortest_prev_node = prev_node
 					cost = _cost
@@ -81,10 +81,10 @@ ViterbiSearcher.prototype.forward = function (lattice) {
 }
 
 ViterbiSearcher.prototype.backward = function (lattice) {
-	var shortest_path = []
-	var eos = lattice.nodes_end_at[lattice.nodes_end_at.length - 1][0]
+	const shortest_path = []
+	const eos = lattice.nodes_end_at[lattice.nodes_end_at.length - 1][0]
 
-	var node_back = eos.prev
+	let node_back = eos.prev
 	if (node_back == null) {
 		return []
 	}

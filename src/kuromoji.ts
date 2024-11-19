@@ -19,7 +19,7 @@ import TokenizerBuilder from './TokenizerBuilder'
 import DictionaryBuilder from './dict/builder/DictionaryBuilder'
 
 // Public methods
-var kuromoji = {
+const kuromoji = {
 	builder: function (option) {
 		return new TokenizerBuilder(option)
 	},
