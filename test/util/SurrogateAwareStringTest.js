@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-var expect = require('chai').expect
-var SurrogateAwareString = require('../../src/util/SurrogateAwareString')
+import { expect } from 'chai'
+
+import SurrogateAwareString from '../../src/util/SurrogateAwareString'
 
 describe('SurrogateAwareString', function () {
 	it('length 1', function () {

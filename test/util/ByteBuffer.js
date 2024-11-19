@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-var expect = require('chai').expect
-var ByteBuffer = require('../../src/util/ByteBuffer')
+import { expect } from 'chai'
+
+import ByteBuffer from '../../src/util/ByteBuffer'
 
 describe('ByteBuffer static methods', function () {
 	var byteBuffer

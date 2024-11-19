@@ -17,7 +17,7 @@
 
 'use strict'
 
-var ViterbiNode = require('./ViterbiNode')
+import ViterbiNode from './ViterbiNode'
 
 /**
  * ViterbiLattice is a lattice in Viterbi algorithm
@@ -59,4 +59,4 @@ ViterbiLattice.prototype.appendEos = function () {
 	]
 }
 
-module.exports = ViterbiLattice
+export default ViterbiLattice

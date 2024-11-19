@@ -17,10 +17,10 @@
 
 'use strict'
 
-var doublearray = require('doublearray')
-var TokenInfoDictionary = require('./TokenInfoDictionary')
-var ConnectionCosts = require('./ConnectionCosts')
-var UnknownDictionary = require('./UnknownDictionary')
+import doublearray from 'doublearray'
+import TokenInfoDictionary from './TokenInfoDictionary'
+import ConnectionCosts from './ConnectionCosts'
+import UnknownDictionary from './UnknownDictionary'
 
 /**
  * Dictionaries container for Tokenizer
@@ -100,4 +100,4 @@ DynamicDictionaries.prototype.loadUnknownDictionaries = function (
 	return this
 }
 
-module.exports = DynamicDictionaries
+export default DynamicDictionaries

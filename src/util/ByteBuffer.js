@@ -283,4 +283,4 @@ ByteBuffer.prototype.getString = function (index) {
 	return utf8BytesToString(buf)
 }
 
-module.exports = ByteBuffer
+export default ByteBuffer

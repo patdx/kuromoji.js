@@ -40,4 +40,4 @@ function CharacterClass(
 	this.max_length = max_length
 }
 
-module.exports = CharacterClass
+export default CharacterClass

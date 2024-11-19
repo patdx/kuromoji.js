@@ -17,9 +17,9 @@
 
 'use strict'
 
-var ViterbiNode = require('./ViterbiNode')
-var ViterbiLattice = require('./ViterbiLattice')
-var SurrogateAwareString = require('../util/SurrogateAwareString')
+import ViterbiNode from './ViterbiNode'
+import ViterbiLattice from './ViterbiLattice'
+import SurrogateAwareString from '../util/SurrogateAwareString'
 
 /**
  * ViterbiBuilder builds word lattice (ViterbiLattice)
@@ -132,4 +132,4 @@ ViterbiBuilder.prototype.build = function (sentence_str) {
 	return lattice
 }
 
-module.exports = ViterbiBuilder
+export default ViterbiBuilder

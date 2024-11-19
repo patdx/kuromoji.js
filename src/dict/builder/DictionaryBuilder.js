@@ -17,12 +17,12 @@
 
 'use strict'
 
-var doublearray = require('doublearray')
-var DynamicDictionaries = require('../DynamicDictionaries')
-var TokenInfoDictionary = require('../TokenInfoDictionary')
-var ConnectionCostsBuilder = require('./ConnectionCostsBuilder')
-var CharacterDefinitionBuilder = require('./CharacterDefinitionBuilder')
-var UnknownDictionary = require('../UnknownDictionary')
+import doublearray from 'doublearray'
+import DynamicDictionaries from '../DynamicDictionaries'
+import TokenInfoDictionary from '../TokenInfoDictionary'
+import ConnectionCostsBuilder from './ConnectionCostsBuilder'
+import CharacterDefinitionBuilder from './CharacterDefinitionBuilder'
+import UnknownDictionary from '../UnknownDictionary'
 
 /**
  * Build dictionaries (token info, connection costs)
@@ -160,4 +160,4 @@ DictionaryBuilder.prototype.buildDoubleArray = function () {
 	return builder.build(words)
 }
 
-module.exports = DictionaryBuilder
+export default DictionaryBuilder

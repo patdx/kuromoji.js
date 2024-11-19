@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-var expect = require('chai').expect
-var DictionaryLoader = require('../../src/loader/NodeDictionaryLoader')
+import { expect } from 'chai'
+
+import DictionaryLoader from '../../src/loader/NodeDictionaryLoader'
 
 var DIC_DIR = 'dict/'
 

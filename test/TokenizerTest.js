@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-var expect = require('chai').expect
-var kuromoji = require('../src/kuromoji.js') // Not to be browserifiy-ed
-var Tokenizer = require('../src/Tokenizer')
+import { expect } from 'chai'
+
+import kuromoji from '../src/kuromoji.js' // Not to be browserifiy-ed
+import Tokenizer from '../src/Tokenizer'
 
 var DIC_DIR = 'dict/'
 

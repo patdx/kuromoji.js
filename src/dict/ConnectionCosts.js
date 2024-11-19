@@ -58,4 +58,4 @@ ConnectionCosts.prototype.loadConnectionCosts = function (
 	this.buffer = connection_costs_buffer
 }
 
-module.exports = ConnectionCosts
+export default ConnectionCosts

@@ -17,7 +17,7 @@
 
 'use strict'
 
-var ConnectionCosts = require('../ConnectionCosts')
+import ConnectionCosts from '../ConnectionCosts'
 
 /**
  * Builder class for constructing ConnectionCosts object
@@ -76,4 +76,4 @@ ConnectionCostsBuilder.prototype.build = function () {
 	return this.connection_cost
 }
 
-module.exports = ConnectionCostsBuilder
+export default ConnectionCostsBuilder

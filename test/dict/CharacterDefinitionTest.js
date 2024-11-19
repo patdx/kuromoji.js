@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-var CharacterDefinition = require('../../src/dict/CharacterDefinition')
-var InvokeDefinitionMap = require('../../src/dict/InvokeDefinitionMap')
-var CharacterDefinitionBuilder = require('../../src/dict/builder/CharacterDefinitionBuilder')
+import CharacterDefinition from '../../src/dict/CharacterDefinition'
 
-var fs = require('fs')
-var expect = require('chai').expect
+import InvokeDefinitionMap from '../../src/dict/InvokeDefinitionMap'
+import CharacterDefinitionBuilder from '../../src/dict/builder/CharacterDefinitionBuilder'
+import fs from 'fs'
+import { expect } from 'chai'
 
 var DIC_DIR = 'test/resource/minimum-dic/'
 

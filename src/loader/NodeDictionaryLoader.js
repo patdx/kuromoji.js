@@ -17,9 +17,9 @@
 
 'use strict'
 
-var fs = require('fs')
-var node_zlib = require('zlib')
-var DictionaryLoader = require('./DictionaryLoader')
+import fs from 'fs'
+import node_zlib from 'zlib'
+import DictionaryLoader from './DictionaryLoader'
 
 /**
  * NodeDictionaryLoader inherits DictionaryLoader
@@ -58,4 +58,4 @@ NodeDictionaryLoader.prototype.loadArrayBuffer = function (file, callback) {
  * @param {Uint8Array} buffer Loaded buffer
  */
 
-module.exports = NodeDictionaryLoader
+export default NodeDictionaryLoader

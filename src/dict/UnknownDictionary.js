@@ -17,9 +17,9 @@
 
 'use strict'
 
-var TokenInfoDictionary = require('./TokenInfoDictionary')
-var CharacterDefinition = require('./CharacterDefinition')
-var ByteBuffer = require('../util/ByteBuffer')
+import TokenInfoDictionary from './TokenInfoDictionary'
+import CharacterDefinition from './CharacterDefinition'
+import ByteBuffer from '../util/ByteBuffer'
 
 /**
  * UnknownDictionary
@@ -68,4 +68,4 @@ UnknownDictionary.prototype.loadUnknownDictionaries = function (
 	)
 }
 
-module.exports = UnknownDictionary
+export default UnknownDictionary

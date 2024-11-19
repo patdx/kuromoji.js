@@ -15,11 +15,12 @@
  * limitations under the License.
  */
 
-var fs = require('fs')
-var expect = require('chai').expect
+import fs from 'fs'
 
-var kuromoji = require('../../../src/kuromoji')
-var Tokenizer = require('../../../src/Tokenizer')
+import { expect } from 'chai'
+
+import kuromoji from '../../../src/kuromoji'
+import Tokenizer from '../../../src/Tokenizer'
 
 var DIC_DIR = 'test/resource/minimum-dic/'
 var connection_costs_file = DIC_DIR + 'matrix.def'

@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-var expect = require('chai').expect
-var DictionaryLoader = require('../../src/loader/NodeDictionaryLoader')
-var ViterbiBuilder = require('../../src/viterbi/ViterbiBuilder')
+import { expect } from 'chai'
+
+import DictionaryLoader from '../../src/loader/NodeDictionaryLoader'
+import ViterbiBuilder from '../../src/viterbi/ViterbiBuilder'
 
 var DIC_DIR = 'dict/'
 

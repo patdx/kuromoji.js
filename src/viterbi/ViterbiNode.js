@@ -55,4 +55,4 @@ function ViterbiNode(
 	this.type = type
 }
 
-module.exports = ViterbiNode
+export default ViterbiNode

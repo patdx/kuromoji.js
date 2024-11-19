@@ -17,8 +17,8 @@
 
 'use strict'
 
-var CharacterDefinition = require('../CharacterDefinition')
-var InvokeDefinitionMap = require('../InvokeDefinitionMap')
+import CharacterDefinition from '../CharacterDefinition'
+import InvokeDefinitionMap from '../InvokeDefinitionMap'
 
 var CATEGORY_DEF_PATTERN = /^(\w+)\s+(\d)\s+(\d)\s+(\d)/
 var CATEGORY_MAPPING_PATTERN =
@@ -74,4 +74,4 @@ CharacterDefinitionBuilder.prototype.build = function () {
 	return this.char_def
 }
 
-module.exports = CharacterDefinitionBuilder
+export default CharacterDefinitionBuilder

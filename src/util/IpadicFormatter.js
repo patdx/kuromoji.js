@@ -74,4 +74,4 @@ IpadicFormatter.prototype.formatUnknownEntry = function (
 	return token
 }
 
-module.exports = IpadicFormatter
+export default IpadicFormatter

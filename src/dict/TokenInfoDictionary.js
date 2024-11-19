@@ -17,7 +17,7 @@
 
 'use strict'
 
-var ByteBuffer = require('../util/ByteBuffer')
+import ByteBuffer from '../util/ByteBuffer'
 
 /**
  * TokenInfoDictionary
@@ -161,4 +161,4 @@ TokenInfoDictionary.prototype.getFeatures = function (token_info_id_str) {
 	return this.pos_buffer.getString(pos_id)
 }
 
-module.exports = TokenInfoDictionary
+export default TokenInfoDictionary

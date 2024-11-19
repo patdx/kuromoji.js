@@ -17,8 +17,8 @@
 
 'use strict'
 
-var Tokenizer = require('./Tokenizer')
-var DictionaryLoader = require('./loader/NodeDictionaryLoader')
+import Tokenizer from './Tokenizer'
+import DictionaryLoader from './loader/NodeDictionaryLoader'
 
 /**
  * TokenizerBuilder create Tokenizer instance.
@@ -52,4 +52,4 @@ TokenizerBuilder.prototype.build = function (callback) {
  * @param {Tokenizer} tokenizer Prepared Tokenizer
  */
 
-module.exports = TokenizerBuilder
+export default TokenizerBuilder

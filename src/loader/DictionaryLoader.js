@@ -17,9 +17,9 @@
 
 'use strict'
 
-var path = require('path')
-var async = require('async')
-var DynamicDictionaries = require('../dict/DynamicDictionaries')
+import path from 'path'
+import async from 'async'
+import DynamicDictionaries from '../dict/DynamicDictionaries'
 
 /**
  * DictionaryLoader base constructor
@@ -179,4 +179,4 @@ DictionaryLoader.prototype.load = function (load_callback) {
  * @param {DynamicDictionaries} dic Loaded dictionary
  */
 
-module.exports = DictionaryLoader
+export default DictionaryLoader

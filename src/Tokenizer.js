@@ -17,9 +17,9 @@
 
 'use strict'
 
-var ViterbiBuilder = require('./viterbi/ViterbiBuilder')
-var ViterbiSearcher = require('./viterbi/ViterbiSearcher')
-var IpadicFormatter = require('./util/IpadicFormatter')
+import ViterbiBuilder from './viterbi/ViterbiBuilder'
+import ViterbiSearcher from './viterbi/ViterbiSearcher'
+import IpadicFormatter from './util/IpadicFormatter'
 
 var PUNCTUATION = /、|。/
 
@@ -142,4 +142,4 @@ Tokenizer.prototype.getLattice = function (text) {
 	return this.viterbi_builder.build(text)
 }
 
-module.exports = Tokenizer
+export default Tokenizer

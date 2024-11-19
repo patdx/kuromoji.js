@@ -17,9 +17,9 @@
 
 'use strict'
 
-var InvokeDefinitionMap = require('./InvokeDefinitionMap')
-var CharacterClass = require('./CharacterClass')
-var SurrogateAwareString = require('../util/SurrogateAwareString')
+import InvokeDefinitionMap from './InvokeDefinitionMap'
+import CharacterClass from './CharacterClass'
+import SurrogateAwareString from '../util/SurrogateAwareString'
 
 var DEFAULT_CATEGORY = 'DEFAULT'
 
@@ -233,4 +233,4 @@ CharacterDefinition.prototype.lookup = function (ch) {
 	return this.invoke_definition_map.getCharacterClass(class_id)
 }
 
-module.exports = CharacterDefinition
+export default CharacterDefinition

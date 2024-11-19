@@ -17,8 +17,8 @@
 
 'use strict'
 
-var TokenizerBuilder = require('./TokenizerBuilder')
-var DictionaryBuilder = require('./dict/builder/DictionaryBuilder')
+import TokenizerBuilder from './TokenizerBuilder'
+import DictionaryBuilder from './dict/builder/DictionaryBuilder'
 
 // Public methods
 var kuromoji = {
@@ -30,4 +30,4 @@ var kuromoji = {
 	},
 }
 
-module.exports = kuromoji
+export default kuromoji

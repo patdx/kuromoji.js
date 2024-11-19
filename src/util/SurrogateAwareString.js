@@ -92,4 +92,4 @@ SurrogateAwareString.isSurrogatePair = function (ch) {
 	}
 }
 
-module.exports = SurrogateAwareString
+export default SurrogateAwareString
