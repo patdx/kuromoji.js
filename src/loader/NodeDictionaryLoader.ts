@@ -19,38 +19,21 @@ import fs from 'fs'
 import node_zlib from 'zlib'
 import DictionaryLoader from './DictionaryLoader'
 
-/**
- * NodeDictionaryLoader inherits DictionaryLoader
- * @param {string} dic_path Dictionary path
- * @constructor
- */
-function NodeDictionaryLoader(dic_path: string) {
-	DictionaryLoader.apply(this, [dic_path])
-}
-
-NodeDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype)
-
-/**
- * Utility function
- * @param {string} file Dictionary file path
- * @param {NodeDictionaryLoader~onLoad} callback Callback function
- */
-NodeDictionaryLoader.prototype.loadArrayBuffer = function (
-	file: string,
-	callback,
-) {
-	fs.readFile(file, function (err, buffer) {
-		if (err) {
-			return callback(err)
-		}
-		node_zlib.gunzip(buffer, function (err2, decompressed) {
-			if (err2) {
-				return callback(err2)
+class NodeDictionaryLoader extends DictionaryLoader {
+	loadArrayBuffer(file: string, callback) {
+		fs.readFile(file, function (err, buffer) {
+			if (err) {
+				return callback(err)
 			}
-			const typed_array = new Uint8Array(decompressed)
-			callback(null, typed_array.buffer)
+			node_zlib.gunzip(buffer, function (err2, decompressed) {
+				if (err2) {
+					return callback(err2)
+				}
+				const typed_array = new Uint8Array(decompressed)
+				callback(null, typed_array.buffer)
+			})
 		})
-	})
+	}
 }
 
 /**

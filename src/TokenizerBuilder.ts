@@ -18,29 +18,23 @@
 import Tokenizer from './Tokenizer'
 import DictionaryLoader from './loader/NodeDictionaryLoader'
 
-/**
- * TokenizerBuilder create Tokenizer instance.
- * @param {Object} option JSON object which have key-value pairs settings
- * @param {string} option.dicPath Dictionary directory path (or URL using in browser)
- * @constructor
- */
-function TokenizerBuilder(option: { dicPath: string }) {
-	if (option.dicPath == null) {
-		this.dic_path = 'dict/'
-	} else {
-		this.dic_path = option.dicPath
-	}
-}
+class TokenizerBuilder {
+	dic_path: string
 
-/**
- * Build Tokenizer instance by asynchronous manner
- * @param {TokenizerBuilder~onLoad} callback Callback function
- */
-TokenizerBuilder.prototype.build = function (callback) {
-	const loader = new DictionaryLoader(this.dic_path)
-	loader.load(function (err, dic) {
-		callback(err, new Tokenizer(dic))
-	})
+	constructor(option: { dicPath: string }) {
+		if (option.dicPath == null) {
+			this.dic_path = 'dict/'
+		} else {
+			this.dic_path = option.dicPath
+		}
+	}
+
+	build(callback) {
+		const loader = new DictionaryLoader(this.dic_path)
+		loader.load(function (err, dic) {
+			callback(err, new Tokenizer(dic))
+		})
+	}
 }
 
 /**

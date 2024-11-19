@@ -127,158 +127,154 @@ const utf8BytesToString = function (bytes: any[]) {
 	return str
 }
 
-/**
- * Utilities to manipulate byte sequence
- * @param {(number|Uint8Array)} arg Initial size of this buffer (number), or buffer to set (Uint8Array)
- * @constructor
- */
-function ByteBuffer(arg: number | Uint8Array) {
-	let initial_size
-	if (arg == null) {
-		initial_size = 1024 * 1024
-	} else if (typeof arg === 'number') {
-		initial_size = arg
-	} else if (arg instanceof Uint8Array) {
-		this.buffer = arg
-		this.position = 0 // Overwrite
-		return
-	} else {
-		// typeof arg -> String
-		throw typeof arg + ' is invalid parameter type for ByteBuffer constructor'
-	}
-	// arg is null or number
-	this.buffer = new Uint8Array(initial_size)
-	this.position = 0
-}
+class ByteBuffer {
+	buffer: Uint8Array
+	position: number
 
-ByteBuffer.prototype.size = function () {
-	return this.buffer.length
-}
-
-ByteBuffer.prototype.reallocate = function () {
-	const new_array = new Uint8Array(this.buffer.length * 2)
-	new_array.set(this.buffer)
-	this.buffer = new_array
-}
-
-ByteBuffer.prototype.shrink = function () {
-	this.buffer = this.buffer.subarray(0, this.position)
-	return this.buffer
-}
-
-ByteBuffer.prototype.put = function (b) {
-	if (this.buffer.length < this.position + 1) {
-		this.reallocate()
-	}
-	this.buffer[this.position++] = b
-}
-
-ByteBuffer.prototype.get = function (index) {
-	if (index == null) {
-		index = this.position
-		this.position += 1
-	}
-	if (this.buffer.length < index + 1) {
-		return 0
-	}
-	return this.buffer[index]
-}
-
-// Write short to buffer by little endian
-ByteBuffer.prototype.putShort = function (num) {
-	if (0xffff < num) {
-		throw num + ' is over short value'
-	}
-	const lower = 0x00ff & num
-	const upper = (0xff00 & num) >> 8
-	this.put(lower)
-	this.put(upper)
-}
-
-// Read short from buffer by little endian
-ByteBuffer.prototype.getShort = function (index) {
-	if (index == null) {
-		index = this.position
-		this.position += 2
-	}
-	if (this.buffer.length < index + 2) {
-		return 0
-	}
-	const lower = this.buffer[index]
-	const upper = this.buffer[index + 1]
-	let value = (upper << 8) + lower
-	if (value & 0x8000) {
-		value = -((value - 1) ^ 0xffff)
-	}
-	return value
-}
-
-// Write integer to buffer by little endian
-ByteBuffer.prototype.putInt = function (num) {
-	if (0xffffffff < num) {
-		throw num + ' is over integer value'
-	}
-	const b0 = 0x000000ff & num
-	const b1 = (0x0000ff00 & num) >> 8
-	const b2 = (0x00ff0000 & num) >> 16
-	const b3 = (0xff000000 & num) >> 24
-	this.put(b0)
-	this.put(b1)
-	this.put(b2)
-	this.put(b3)
-}
-
-// Read integer from buffer by little endian
-ByteBuffer.prototype.getInt = function (index) {
-	if (index == null) {
-		index = this.position
-		this.position += 4
-	}
-	if (this.buffer.length < index + 4) {
-		return 0
-	}
-	const b0 = this.buffer[index]
-	const b1 = this.buffer[index + 1]
-	const b2 = this.buffer[index + 2]
-	const b3 = this.buffer[index + 3]
-
-	return (b3 << 24) + (b2 << 16) + (b1 << 8) + b0
-}
-
-ByteBuffer.prototype.readInt = function () {
-	const pos = this.position
-	this.position += 4
-	return this.getInt(pos)
-}
-
-ByteBuffer.prototype.putString = function (str) {
-	const bytes = stringToUtf8Bytes(str)
-	for (let i = 0; i < bytes.length; i++) {
-		this.put(bytes[i])
-	}
-	// put null character as terminal character
-	this.put(0)
-}
-
-ByteBuffer.prototype.getString = function (index) {
-	let buf = [],
-		ch
-	if (index == null) {
-		index = this.position
-	}
-	while (true) {
-		if (this.buffer.length < index + 1) {
-			break
-		}
-		ch = this.get(index++)
-		if (ch === 0) {
-			break
+	constructor(arg?: number | Uint8Array | null) {
+		let initial_size
+		if (arg == null) {
+			initial_size = 1024 * 1024
+		} else if (typeof arg === 'number') {
+			initial_size = arg
+		} else if (arg instanceof Uint8Array) {
+			this.buffer = arg
+			this.position = 0 // Overwrite
+			return
 		} else {
-			buf.push(ch)
+			// typeof arg -> String
+			throw typeof arg + ' is invalid parameter type for ByteBuffer constructor'
 		}
+		// arg is null or number
+		this.buffer = new Uint8Array(initial_size)
+		this.position = 0
 	}
-	this.position = index
-	return utf8BytesToString(buf)
+
+	size() {
+		return this.buffer.length
+	}
+
+	reallocate() {
+		const new_array = new Uint8Array(this.buffer.length * 2)
+		new_array.set(this.buffer)
+		this.buffer = new_array
+	}
+
+	shrink() {
+		this.buffer = this.buffer.subarray(0, this.position)
+		return this.buffer
+	}
+
+	put(b) {
+		if (this.buffer.length < this.position + 1) {
+			this.reallocate()
+		}
+		this.buffer[this.position++] = b
+	}
+
+	get(index) {
+		if (index == null) {
+			index = this.position
+			this.position += 1
+		}
+		if (this.buffer.length < index + 1) {
+			return 0
+		}
+		return this.buffer[index]
+	}
+
+	putShort(num) {
+		if (0xffff < num) {
+			throw num + ' is over short value'
+		}
+		const lower = 0x00ff & num
+		const upper = (0xff00 & num) >> 8
+		this.put(lower)
+		this.put(upper)
+	}
+
+	getShort(index) {
+		if (index == null) {
+			index = this.position
+			this.position += 2
+		}
+		if (this.buffer.length < index + 2) {
+			return 0
+		}
+		const lower = this.buffer[index]
+		const upper = this.buffer[index + 1]
+		let value = (upper << 8) + lower
+		if (value & 0x8000) {
+			value = -((value - 1) ^ 0xffff)
+		}
+		return value
+	}
+
+	putInt(num) {
+		if (0xffffffff < num) {
+			throw num + ' is over integer value'
+		}
+		const b0 = 0x000000ff & num
+		const b1 = (0x0000ff00 & num) >> 8
+		const b2 = (0x00ff0000 & num) >> 16
+		const b3 = (0xff000000 & num) >> 24
+		this.put(b0)
+		this.put(b1)
+		this.put(b2)
+		this.put(b3)
+	}
+
+	getInt(index) {
+		if (index == null) {
+			index = this.position
+			this.position += 4
+		}
+		if (this.buffer.length < index + 4) {
+			return 0
+		}
+		const b0 = this.buffer[index]
+		const b1 = this.buffer[index + 1]
+		const b2 = this.buffer[index + 2]
+		const b3 = this.buffer[index + 3]
+
+		return (b3 << 24) + (b2 << 16) + (b1 << 8) + b0
+	}
+
+	readInt() {
+		const pos = this.position
+		this.position += 4
+		return this.getInt(pos)
+	}
+
+	putString(str) {
+		const bytes = stringToUtf8Bytes(str)
+		for (let i = 0; i < bytes.length; i++) {
+			this.put(bytes[i])
+		}
+		// put null character as terminal character
+		this.put(0)
+	}
+
+	getString(index) {
+		let buf = [],
+			ch
+		if (index == null) {
+			index = this.position
+		}
+		while (true) {
+			if (this.buffer.length < index + 1) {
+				break
+			}
+			ch = this.get(index++)
+			if (ch === 0) {
+				break
+			} else {
+				buf.push(ch)
+			}
+		}
+		this.position = index
+		return utf8BytesToString(buf)
+	}
 }
 
 export default ByteBuffer

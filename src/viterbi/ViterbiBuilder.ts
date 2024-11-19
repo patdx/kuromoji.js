@@ -18,116 +18,119 @@
 import ViterbiNode from './ViterbiNode'
 import ViterbiLattice from './ViterbiLattice'
 import SurrogateAwareString from '../util/SurrogateAwareString'
+import DynamicDictionaries from '../dict/DynamicDictionaries'
+import type TokenInfoDictionary from '../dict/TokenInfoDictionary'
+import type UnknownDictionary from '../dict/UnknownDictionary'
 
-/**
- * ViterbiBuilder builds word lattice (ViterbiLattice)
- * @param {DynamicDictionaries} dic dictionary
- * @constructor
- */
-function ViterbiBuilder(dic: DynamicDictionaries) {
-	this.trie = dic.trie
-	this.token_info_dictionary = dic.token_info_dictionary
-	this.unknown_dictionary = dic.unknown_dictionary
-}
+class ViterbiBuilder {
+	trie: any
+	token_info_dictionary: TokenInfoDictionary
+	unknown_dictionary: UnknownDictionary
 
-/**
- * Build word lattice
- * @param {string} sentence_str Input text
- * @returns {ViterbiLattice} Word lattice
- */
-ViterbiBuilder.prototype.build = function (sentence_str: string) {
-	const lattice = new ViterbiLattice()
-	const sentence = new SurrogateAwareString(sentence_str)
+	constructor(dic: DynamicDictionaries) {
+		this.trie = dic.trie
+		this.token_info_dictionary = dic.token_info_dictionary
+		this.unknown_dictionary = dic.unknown_dictionary
+	}
 
-	let key, trie_id, left_id, right_id, word_cost
-	for (let pos = 0; pos < sentence.length; pos++) {
-		const tail = sentence.slice(pos)
-		const vocabulary = this.trie.commonPrefixSearch(tail)
-		for (let n = 0; n < vocabulary.length; n++) {
-			// Words in dictionary do not have surrogate pair (only UCS2 set)
-			trie_id = vocabulary[n].v
-			key = vocabulary[n].k
+	build(sentence_str: string) {
+		const lattice = new ViterbiLattice()
+		const sentence = new SurrogateAwareString(sentence_str)
 
-			const token_info_ids = this.token_info_dictionary.target_map[trie_id]
-			for (let i = 0; i < token_info_ids.length; i++) {
-				const token_info_id = parseInt(token_info_ids[i])
+		let key, trie_id, left_id, right_id, word_cost
+		for (let pos = 0; pos < sentence.length; pos++) {
+			const tail = sentence.slice(pos)
+			const vocabulary = this.trie.commonPrefixSearch(tail)
+			for (let n = 0; n < vocabulary.length; n++) {
+				// Words in dictionary do not have surrogate pair (only UCS2 set)
+				trie_id = vocabulary[n].v
+				key = vocabulary[n].k
 
-				left_id = this.token_info_dictionary.dictionary.getShort(token_info_id)
-				right_id = this.token_info_dictionary.dictionary.getShort(
-					token_info_id + 2,
-				)
-				word_cost = this.token_info_dictionary.dictionary.getShort(
-					token_info_id + 4,
-				)
+				const token_info_ids = this.token_info_dictionary.target_map[trie_id]
+				for (let i = 0; i < token_info_ids.length; i++) {
+					const token_info_id = parseInt(token_info_ids[i])
 
-				// node_name, cost, start_index, length, type, left_id, right_id, surface_form
-				lattice.append(
-					new ViterbiNode(
-						token_info_id,
-						word_cost,
-						pos + 1,
-						key.length,
-						'KNOWN',
-						left_id,
-						right_id,
-						key,
-					),
-				)
-			}
-		}
+					left_id =
+						this.token_info_dictionary.dictionary.getShort(token_info_id)
+					right_id = this.token_info_dictionary.dictionary.getShort(
+						token_info_id + 2,
+					)
+					word_cost = this.token_info_dictionary.dictionary.getShort(
+						token_info_id + 4,
+					)
 
-		// Unknown word processing
-		const surrogate_aware_tail = new SurrogateAwareString(tail)
-		const head_char = new SurrogateAwareString(surrogate_aware_tail.charAt(0))
-		const head_char_class = this.unknown_dictionary.lookup(head_char.toString())
-		if (
-			vocabulary == null ||
-			vocabulary.length === 0 ||
-			head_char_class.is_always_invoke === 1
-		) {
-			// Process unknown word
-			key = head_char
-			if (
-				head_char_class.is_grouping === 1 &&
-				1 < surrogate_aware_tail.length
-			) {
-				for (let k = 1; k < surrogate_aware_tail.length; k++) {
-					const next_char = surrogate_aware_tail.charAt(k)
-					const next_char_class = this.unknown_dictionary.lookup(next_char)
-					if (head_char_class.class_name !== next_char_class.class_name) {
-						break
-					}
-					key += next_char
+					// node_name, cost, start_index, length, type, left_id, right_id, surface_form
+					lattice.append(
+						new ViterbiNode(
+							token_info_id,
+							word_cost,
+							pos + 1,
+							key.length,
+							'KNOWN',
+							left_id,
+							right_id,
+							key,
+						),
+					)
 				}
 			}
 
-			const unk_ids = this.unknown_dictionary.target_map[head_char_class.class_id]
-			for (let j = 0; j < unk_ids.length; j++) {
-				const unk_id = parseInt(unk_ids[j])
+			// Unknown word processing
+			const surrogate_aware_tail = new SurrogateAwareString(tail)
+			const head_char = new SurrogateAwareString(surrogate_aware_tail.charAt(0))
+			const head_char_class = this.unknown_dictionary.lookup(
+				head_char.toString(),
+			)
+			if (
+				vocabulary == null ||
+				vocabulary.length === 0 ||
+				head_char_class.is_always_invoke === 1
+			) {
+				// Process unknown word
+				key = head_char
+				if (
+					head_char_class.is_grouping === 1 &&
+					1 < surrogate_aware_tail.length
+				) {
+					for (let k = 1; k < surrogate_aware_tail.length; k++) {
+						const next_char = surrogate_aware_tail.charAt(k)
+						const next_char_class = this.unknown_dictionary.lookup(next_char)
+						if (head_char_class.class_name !== next_char_class.class_name) {
+							break
+						}
+						key += next_char
+					}
+				}
 
-				left_id = this.unknown_dictionary.dictionary.getShort(unk_id)
-				right_id = this.unknown_dictionary.dictionary.getShort(unk_id + 2)
-				word_cost = this.unknown_dictionary.dictionary.getShort(unk_id + 4)
+				const unk_ids =
+					this.unknown_dictionary.target_map[head_char_class.class_id]
+				for (let j = 0; j < unk_ids.length; j++) {
+					const unk_id = parseInt(unk_ids[j])
 
-				// node_name, cost, start_index, length, type, left_id, right_id, surface_form
-				lattice.append(
-					new ViterbiNode(
-						unk_id,
-						word_cost,
-						pos + 1,
-						key.length,
-						'UNKNOWN',
-						left_id,
-						right_id,
-						key.toString(),
-					),
-				)
+					left_id = this.unknown_dictionary.dictionary.getShort(unk_id)
+					right_id = this.unknown_dictionary.dictionary.getShort(unk_id + 2)
+					word_cost = this.unknown_dictionary.dictionary.getShort(unk_id + 4)
+
+					// node_name, cost, start_index, length, type, left_id, right_id, surface_form
+					lattice.append(
+						new ViterbiNode(
+							unk_id,
+							word_cost,
+							pos + 1,
+							key.length,
+							'UNKNOWN',
+							left_id,
+							right_id,
+							key.toString(),
+						),
+					)
+				}
 			}
 		}
-	}
-	lattice.appendEos()
+		lattice.appendEos()
 
-	return lattice
+		return lattice
+	}
 }
 
 export default ViterbiBuilder

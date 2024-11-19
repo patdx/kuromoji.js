@@ -17,61 +17,59 @@
 
 import ConnectionCosts from '../ConnectionCosts'
 
-/**
- * Builder class for constructing ConnectionCosts object
- * @constructor
- */
-function ConnectionCostsBuilder() {
-	this.lines = 0
-	this.connection_cost = null
-}
+class ConnectionCostsBuilder {
+	constructor() {
+		this.lines = 0
+		this.connection_cost = null
+	}
 
-ConnectionCostsBuilder.prototype.putLine = function (line) {
-	if (this.lines === 0) {
-		const dimensions = line.split(' ')
-		const forward_dimension = dimensions[0]
-		const backward_dimension = dimensions[1]
+	putLine(line) {
+		if (this.lines === 0) {
+			const dimensions = line.split(' ')
+			const forward_dimension = dimensions[0]
+			const backward_dimension = dimensions[1]
 
-		if (forward_dimension < 0 || backward_dimension < 0) {
+			if (forward_dimension < 0 || backward_dimension < 0) {
+				throw 'Parse error of matrix.def'
+			}
+
+			this.connection_cost = new ConnectionCosts(
+				forward_dimension,
+				backward_dimension,
+			)
+			this.lines++
+			return this
+		}
+
+		const costs = line.split(' ')
+
+		if (costs.length !== 3) {
+			return this
+		}
+
+		const forward_id = parseInt(costs[0])
+		const backward_id = parseInt(costs[1])
+		const cost = parseInt(costs[2])
+
+		if (
+			forward_id < 0 ||
+			backward_id < 0 ||
+			!isFinite(forward_id) ||
+			!isFinite(backward_id) ||
+			this.connection_cost.forward_dimension <= forward_id ||
+			this.connection_cost.backward_dimension <= backward_id
+		) {
 			throw 'Parse error of matrix.def'
 		}
 
-		this.connection_cost = new ConnectionCosts(
-			forward_dimension,
-			backward_dimension,
-		)
+		this.connection_cost.put(forward_id, backward_id, cost)
 		this.lines++
 		return this
 	}
 
-	const costs = line.split(' ')
-
-	if (costs.length !== 3) {
-		return this
+	build() {
+		return this.connection_cost
 	}
-
-	const forward_id = parseInt(costs[0])
-	const backward_id = parseInt(costs[1])
-	const cost = parseInt(costs[2])
-
-	if (
-		forward_id < 0 ||
-		backward_id < 0 ||
-		!isFinite(forward_id) ||
-		!isFinite(backward_id) ||
-		this.connection_cost.forward_dimension <= forward_id ||
-		this.connection_cost.backward_dimension <= backward_id
-	) {
-		throw 'Parse error of matrix.def'
-	}
-
-	this.connection_cost.put(forward_id, backward_id, cost)
-	this.lines++
-	return this
-}
-
-ConnectionCostsBuilder.prototype.build = function () {
-	return this.connection_cost
 }
 
 export default ConnectionCostsBuilder
