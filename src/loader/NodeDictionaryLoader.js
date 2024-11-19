@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-"use strict";
+'use strict'
 
-var fs = require("fs");
-var node_zlib = require("zlib");
-var DictionaryLoader = require("./DictionaryLoader");
+var fs = require('fs')
+var node_zlib = require('zlib')
+var DictionaryLoader = require('./DictionaryLoader')
 
 /**
  * NodeDictionaryLoader inherits DictionaryLoader
@@ -27,10 +27,10 @@ var DictionaryLoader = require("./DictionaryLoader");
  * @constructor
  */
 function NodeDictionaryLoader(dic_path) {
-    DictionaryLoader.apply(this, [ dic_path ]);
+	DictionaryLoader.apply(this, [dic_path])
 }
 
-NodeDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);
+NodeDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype)
 
 /**
  * Utility function
@@ -38,19 +38,19 @@ NodeDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);
  * @param {NodeDictionaryLoader~onLoad} callback Callback function
  */
 NodeDictionaryLoader.prototype.loadArrayBuffer = function (file, callback) {
-    fs.readFile(file, function (err, buffer) {
-        if(err) {
-            return callback(err);
-        }
-        node_zlib.gunzip(buffer, function (err2, decompressed) {
-            if(err2) {
-                return callback(err2);
-            }
-            var typed_array = new Uint8Array(decompressed);
-            callback(null, typed_array.buffer);
-        });
-    });
-};
+	fs.readFile(file, function (err, buffer) {
+		if (err) {
+			return callback(err)
+		}
+		node_zlib.gunzip(buffer, function (err2, decompressed) {
+			if (err2) {
+				return callback(err2)
+			}
+			var typed_array = new Uint8Array(decompressed)
+			callback(null, typed_array.buffer)
+		})
+	})
+}
 
 /**
  * @callback NodeDictionaryLoader~onLoad
@@ -58,4 +58,4 @@ NodeDictionaryLoader.prototype.loadArrayBuffer = function (file, callback) {
  * @param {Uint8Array} buffer Loaded buffer
  */
 
-module.exports = NodeDictionaryLoader;
+module.exports = NodeDictionaryLoader

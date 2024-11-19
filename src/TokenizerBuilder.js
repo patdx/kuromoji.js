@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-"use strict";
+'use strict'
 
-var Tokenizer = require("./Tokenizer");
-var DictionaryLoader = require("./loader/NodeDictionaryLoader");
+var Tokenizer = require('./Tokenizer')
+var DictionaryLoader = require('./loader/NodeDictionaryLoader')
 
 /**
  * TokenizerBuilder create Tokenizer instance.
@@ -27,11 +27,11 @@ var DictionaryLoader = require("./loader/NodeDictionaryLoader");
  * @constructor
  */
 function TokenizerBuilder(option) {
-    if (option.dicPath == null) {
-        this.dic_path = "dict/";
-    } else {
-        this.dic_path = option.dicPath;
-    }
+	if (option.dicPath == null) {
+		this.dic_path = 'dict/'
+	} else {
+		this.dic_path = option.dicPath
+	}
 }
 
 /**
@@ -39,11 +39,11 @@ function TokenizerBuilder(option) {
  * @param {TokenizerBuilder~onLoad} callback Callback function
  */
 TokenizerBuilder.prototype.build = function (callback) {
-    var loader = new DictionaryLoader(this.dic_path);
-    loader.load(function (err, dic) {
-        callback(err, new Tokenizer(dic));
-    });
-};
+	var loader = new DictionaryLoader(this.dic_path)
+	loader.load(function (err, dic) {
+		callback(err, new Tokenizer(dic))
+	})
+}
 
 /**
  * Callback used by build
@@ -52,4 +52,4 @@ TokenizerBuilder.prototype.build = function (callback) {
  * @param {Tokenizer} tokenizer Prepared Tokenizer
  */
 
-module.exports = TokenizerBuilder;
+module.exports = TokenizerBuilder

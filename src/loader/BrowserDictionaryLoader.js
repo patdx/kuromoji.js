@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-"use strict";
+'use strict'
 
-var zlib = require("zlibjs/bin/gunzip.min.js");
-var DictionaryLoader = require("./DictionaryLoader");
+var zlib = require('zlibjs/bin/gunzip.min.js')
+var DictionaryLoader = require('./DictionaryLoader')
 
 /**
  * BrowserDictionaryLoader inherits DictionaryLoader, using jQuery XHR for download
@@ -26,10 +26,10 @@ var DictionaryLoader = require("./DictionaryLoader");
  * @constructor
  */
 function BrowserDictionaryLoader(dic_path) {
-    DictionaryLoader.apply(this, [dic_path]);
+	DictionaryLoader.apply(this, [dic_path])
 }
 
-BrowserDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);
+BrowserDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype)
 
 /**
  * Utility function to load gzipped dictionary
@@ -37,25 +37,25 @@ BrowserDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype);
  * @param {BrowserDictionaryLoader~onLoad} callback Callback function
  */
 BrowserDictionaryLoader.prototype.loadArrayBuffer = function (url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.responseType = "arraybuffer";
-    xhr.onload = function () {
-        if (this.status > 0 && this.status !== 200) {
-            callback(xhr.statusText, null);
-            return;
-        }
-        var arraybuffer = this.response;
+	var xhr = new XMLHttpRequest()
+	xhr.open('GET', url, true)
+	xhr.responseType = 'arraybuffer'
+	xhr.onload = function () {
+		if (this.status > 0 && this.status !== 200) {
+			callback(xhr.statusText, null)
+			return
+		}
+		var arraybuffer = this.response
 
-        var gz = new zlib.Zlib.Gunzip(new Uint8Array(arraybuffer));
-        var typed_array = gz.decompress();
-        callback(null, typed_array.buffer);
-    };
-    xhr.onerror = function (err) {
-        callback(err, null);
-    };
-    xhr.send();
-};
+		var gz = new zlib.Zlib.Gunzip(new Uint8Array(arraybuffer))
+		var typed_array = gz.decompress()
+		callback(null, typed_array.buffer)
+	}
+	xhr.onerror = function (err) {
+		callback(err, null)
+	}
+	xhr.send()
+}
 
 /**
  * Callback
@@ -64,4 +64,4 @@ BrowserDictionaryLoader.prototype.loadArrayBuffer = function (url, callback) {
  * @param {Uint8Array} buffer Loaded buffer
  */
 
-module.exports = BrowserDictionaryLoader;
+module.exports = BrowserDictionaryLoader

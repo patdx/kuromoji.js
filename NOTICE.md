@@ -1,9 +1,8 @@
-Library dependencies
-====================
+# Library dependencies
 
 This software includes a binary and/or source version of data from
 
-* mecab-ipadic-2.7.0-20070801
+- mecab-ipadic-2.7.0-20070801
 
 which can be obtained from
 
@@ -13,17 +12,12 @@ or
 
 http://jaist.dl.sourceforge.net/project/mecab/mecab-ipadic/2.7.0-20070801/mecab-ipadic-2.7.0-20070801.tar.gz
 
+# Copyright and license
 
-
-Copyright and license
-=====================
-
-
-mecab-ipadic-2.7.0-20070801
----------------------------
+## mecab-ipadic-2.7.0-20070801
 
 Copyright 2000, 2001, 2002, 2003 Nara Institute of Science
-and Technology.  All Rights Reserved.
+and Technology. All Rights Reserved.
 
 Use, reproduction, and distribution of this software is permitted.
 Any copy of this software, whether in its original form or modified,
@@ -40,7 +34,7 @@ action of contract, negligence or other tortuous action, arising out
 of or in connection with the use or performance of this software.
 
 A large portion of the dictionary entries
-originate from ICOT Free Software.  The following conditions for ICOT
+originate from ICOT Free Software. The following conditions for ICOT
 Free Software applies to the current dictionary as well.
 
 Each User may also freely distribute the Program, whether in its
@@ -56,9 +50,9 @@ NO WARRANTY
 
 The program was produced on an experimental basis in the course of the
 research and development conducted during the project and is provided
-to users as so produced on an experimental basis.  Accordingly, the
+to users as so produced on an experimental basis. Accordingly, the
 program is provided without any warranty whatsoever, whether express,
-implied, statutory or otherwise.  The term "warranty" used herein
+implied, statutory or otherwise. The term "warranty" used herein
 includes, but is not limited to, any warranty of the quality,
 performance, merchantability and fitness for a particular purpose of
 the program and the nonexistence of any infringement or violation of
@@ -79,8 +73,8 @@ with the use or inability to use the program or any product, material
 or result produced or otherwise obtained by using the program,
 regardless of whether they have been advised of, or otherwise had
 knowledge of, the possibility of such damages at any time during the
-project or thereafter.  Each user will be deemed to have agreed to the
-foregoing by his or her commencement of use of the program.  The term
+project or thereafter. Each user will be deemed to have agreed to the
+foregoing by his or her commencement of use of the program. The term
 "use" as used herein includes, but is not limited to, the use,
 modification, copying and distribution of the program and the
 production of secondary products from the program.

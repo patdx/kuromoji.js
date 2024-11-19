@@ -1,0 +1,10 @@
+{
+	"include": ["./src/**/*.js", "./test/**/*"],
+	"compilerOptions": {
+		"allowJs": true,
+		"strict": true,
+		"noEmit": true,
+		"moduleResolution": "bundler",
+		"target": "ESNext"
+	}
+}
