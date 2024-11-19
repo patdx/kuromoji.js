@@ -1,9 +1,7 @@
 {
   "name": "kuromoji",
   "version": "0.1.2",
-  "authors": [
-    "Takuya Asano <takuya.a@gmail.com>"
-  ],
+  "authors": ["Takuya Asano <takuya.a@gmail.com>"],
   "description": "JavaScript implementation of Japanese morphological analyzer",
   "main": [
     "build/kuromoji.js",
@@ -29,7 +27,7 @@
     "nlp"
   ],
   "license": "Apache-2.0",
-  "homepage": "https://github.com/takuyaa/kuromoji.js",
+  "homepage": "https://github.com/patdx/kuromoji.js",
   "ignore": [
     "**/.*",
     "bower_components",

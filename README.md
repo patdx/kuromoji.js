@@ -1,11 +1,10 @@
-kuromoji.js
-===========
+# kuromoji.js
 
-[![Build Status](https://travis-ci.org/takuyaa/kuromoji.js.svg?branch=master)](https://travis-ci.org/takuyaa/kuromoji.js)
-[![Coverage Status](https://coveralls.io/repos/github/takuyaa/kuromoji.js/badge.svg?branch=master)](https://coveralls.io/github/takuyaa/kuromoji.js?branch=master)
+[![Build Status](https://travis-ci.org/patdx/kuromoji.js.svg?branch=master)](https://travis-ci.org/patdx/kuromoji.js)
+[![Coverage Status](https://coveralls.io/repos/github/patdx/kuromoji.js/badge.svg?branch=master)](https://coveralls.io/github/patdx/kuromoji.js?branch=master)
 [![npm version](https://badge.fury.io/js/kuromoji.svg)](https://badge.fury.io/js/kuromoji)
-[![dependencies](https://david-dm.org/takuyaa/kuromoji.js.svg)](https://david-dm.org/takuyaa/kuromoji.js)
-[![Code Climate](https://codeclimate.com/github/takuyaa/kuromoji.js/badges/gpa.svg)](https://codeclimate.com/github/takuyaa/kuromoji.js)
+[![dependencies](https://david-dm.org/patdx/kuromoji.js.svg)](https://david-dm.org/patdx/kuromoji.js)
+[![Code Climate](https://codeclimate.com/github/patdx/kuromoji.js/badges/gpa.svg)](https://codeclimate.com/github/patdx/kuromoji.js)
 [![Downloads](https://img.shields.io/npm/dm/kuromoji.svg)](https://www.npmjs.com/package/kuromoji)
 
 JavaScript implementation of Japanese morphological analyzer.
@@ -13,9 +12,7 @@ This is a pure JavaScript porting of [Kuromoji](https://www.atilika.com/ja/kurom
 
 You can see how kuromoji.js works in [demo site](https://takuyaa.github.io/kuromoji.js/demo/tokenize.html).
 
-
-Directory
----------
+## Directory
 
 Directory tree is as follows:
 
@@ -27,13 +24,10 @@ Directory tree is as follows:
     src/          -- JavaScript source
     test/         -- Unit test
 
-
-Usage
------
+## Usage
 
 You can tokenize sentences with only 5 lines of code.
 If you need working examples, you can see the files under the demo or example directory.
-
 
 ### Node.js
 
@@ -53,11 +47,9 @@ You can prepare tokenizer like this:
         console.log(path);
     });
 
-
-
 ### Browser
 
-You only need the build/kuromoji.js and dict/*.dat.gz files
+You only need the build/kuromoji.js and dict/\*.dat.gz files
 
 Install with Bower package manager:
 
@@ -77,9 +69,7 @@ In your JavaScript:
         console.log(path);
     });
 
-
-API
----
+## API
 
 The function tokenize() returns an JSON array like this:
 

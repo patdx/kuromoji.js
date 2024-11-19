@@ -7,7 +7,7 @@
     "./src/loader/NodeDictionaryLoader.js": "./src/loader/BrowserDictionaryLoader.js"
   },
   "bugs": {
-    "url": "https://github.com/takuyaa/kuromoji.js/issues"
+    "url": "https://github.com/patdx/kuromoji.js/issues"
   },
   "dependencies": {
     "async": "^2.0.1",
@@ -39,7 +39,7 @@
     "run-sequence": "^2.2.1",
     "vinyl-source-stream": "^2.0.0"
   },
-  "homepage": "https://github.com/takuyaa/kuromoji.js",
+  "homepage": "https://github.com/patdx/kuromoji.js",
   "keywords": [
     "japanese",
     "morphological analyzer",
@@ -52,7 +52,7 @@
   "main": "./src/kuromoji.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/takuyaa/kuromoji.js.git"
+    "url": "https://github.com/patdx/kuromoji.js.git"
   },
   "scripts": {
     "build": "gulp build",
@@ -68,5 +68,11 @@
     "version": "gulp version",
     "watch": "gulp watch",
     "webserver": "gulp webserver"
-  }
+  },
+  "pnpm": {
+    "overrides": {
+      "graceful-fs": "^4.2.11"
+    }
+  },
+  "packageManager": "pnpm@9.13.0+sha512.beb9e2a803db336c10c9af682b58ad7181ca0fbd0d4119f2b33d5f2582e96d6c0d93c85b23869295b765170fbdaa92890c0da6ada457415039769edf3c959efe"
 }
