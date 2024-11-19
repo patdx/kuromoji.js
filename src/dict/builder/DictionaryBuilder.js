@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 import doublearray from 'doublearray'
 import DynamicDictionaries from '../DynamicDictionaries'
 import TokenInfoDictionary from '../TokenInfoDictionary'

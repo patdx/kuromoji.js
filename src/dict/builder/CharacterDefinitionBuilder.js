@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 import CharacterDefinition from '../CharacterDefinition'
 import InvokeDefinitionMap from '../InvokeDefinitionMap'
 

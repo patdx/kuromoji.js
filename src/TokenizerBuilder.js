@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 import Tokenizer from './Tokenizer'
 import DictionaryLoader from './loader/NodeDictionaryLoader'
 

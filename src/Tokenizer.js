@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 import ViterbiBuilder from './viterbi/ViterbiBuilder'
 import ViterbiSearcher from './viterbi/ViterbiSearcher'
 import IpadicFormatter from './util/IpadicFormatter'

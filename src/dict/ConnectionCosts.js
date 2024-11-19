@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 /**
  * Connection costs matrix from cc.dat file.
  * 2 dimension matrix [forward_id][backward_id] -> cost

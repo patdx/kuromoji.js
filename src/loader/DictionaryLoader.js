@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 import path from 'path'
 import async from 'async'
 import DynamicDictionaries from '../dict/DynamicDictionaries'

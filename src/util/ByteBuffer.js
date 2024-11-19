@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 /**
  * Convert String (UTF-16) to UTF-8 ArrayBuffer
  *

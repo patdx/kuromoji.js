@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 import doublearray from 'doublearray'
 import TokenInfoDictionary from './TokenInfoDictionary'
 import ConnectionCosts from './ConnectionCosts'

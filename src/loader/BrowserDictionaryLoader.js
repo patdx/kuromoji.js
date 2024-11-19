@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 import zlib from 'zlibjs/bin/gunzip.min.js'
 import DictionaryLoader from './DictionaryLoader'
 

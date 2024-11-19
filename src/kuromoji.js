@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 import TokenizerBuilder from './TokenizerBuilder'
 import DictionaryBuilder from './dict/builder/DictionaryBuilder'
 

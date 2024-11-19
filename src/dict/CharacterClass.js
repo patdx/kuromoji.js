@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 /**
  * CharacterClass
  * @param {number} class_id

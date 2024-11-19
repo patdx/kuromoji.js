@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 import fs from 'fs'
 import node_zlib from 'zlib'
 import DictionaryLoader from './DictionaryLoader'

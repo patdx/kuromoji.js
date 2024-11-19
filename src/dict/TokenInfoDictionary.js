@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 import ByteBuffer from '../util/ByteBuffer'
 
 /**

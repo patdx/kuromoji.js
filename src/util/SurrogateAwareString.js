@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 /**
  * String wrapper for UTF-16 surrogate pair (4 bytes)
  * @param {string} str String to wrap

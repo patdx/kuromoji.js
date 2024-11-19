@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 import TokenInfoDictionary from './TokenInfoDictionary'
 import CharacterDefinition from './CharacterDefinition'
 import ByteBuffer from '../util/ByteBuffer'

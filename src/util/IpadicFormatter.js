@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-'use strict'
-
 /**
  * Mappings between IPADIC dictionary features and tokenized results
  * @constructor
