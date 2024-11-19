@@ -12,8 +12,7 @@
 	},
 	"dependencies": {
 		"async": "^3.2.6",
-		"doublearray": "0.0.2",
-		"zlibjs": "^0.3.1"
+		"doublearray": "0.0.2"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.15.0",
@@ -22,7 +21,6 @@
 		"@types/gulp": "^4.0.17",
 		"@vitest/coverage-v8": "^2.1.5",
 		"chai": "^5.1.2",
-		"coveralls": "^3.0.0",
 		"del": "^8.0.0",
 		"esbuild": "^0.24.0",
 		"eslint": "^9.15.0",
@@ -39,7 +37,6 @@
 		"gulp-webserver": "^0.9.1",
 		"mecab-ipadic-seed": "0.0.2",
 		"minimist": "^1.2.0",
-		"mocha-lcov-reporter": "^1.2.0",
 		"prettier": "^3.3.3",
 		"ts-migrate": "^0.1.35",
 		"typescript": "5.6.3",

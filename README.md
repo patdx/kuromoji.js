@@ -1,11 +1,20 @@
-# kuromoji.js
+# @patdx/kuromoji.js
 
-[![Build Status](https://travis-ci.org/patdx/kuromoji.js.svg?branch=master)](https://travis-ci.org/patdx/kuromoji.js)
-[![Coverage Status](https://coveralls.io/repos/github/patdx/kuromoji.js/badge.svg?branch=master)](https://coveralls.io/github/patdx/kuromoji.js?branch=master)
-[![npm version](https://badge.fury.io/js/kuromoji.svg)](https://badge.fury.io/js/kuromoji)
-[![dependencies](https://david-dm.org/patdx/kuromoji.js.svg)](https://david-dm.org/patdx/kuromoji.js)
-[![Code Climate](https://codeclimate.com/github/patdx/kuromoji.js/badges/gpa.svg)](https://codeclimate.com/github/patdx/kuromoji.js)
-[![Downloads](https://img.shields.io/npm/dm/kuromoji.svg)](https://www.npmjs.com/package/kuromoji)
+This is a fork of https://github.com/takuyaa/kuromoji.js
+
+Other forks worth looking at:
+
+- https://github.com/MijinkoSD/kuromoji.ts
+- https://github.com/sglkc/kuromoji.js/
+- https://github.com/aiktb/kuromoji.js
+
+Note on using DecompressionStream:
+
+- https://zenn.dev/inaniwaudon/scraps/dffdc876ccaf6d
+
+My goal is to provide a nice web version of kuromoji.js.
+
+---
 
 JavaScript implementation of Japanese morphological analyzer.
 This is a pure JavaScript porting of [Kuromoji](https://www.atilika.com/ja/kuromoji/).

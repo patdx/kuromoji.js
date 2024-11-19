@@ -3673,6 +3673,8 @@ var import_doublearray2 = __toESM(require_doublearray());
 
 // src/dict/builder/ConnectionCostsBuilder.ts
 var ConnectionCostsBuilder = class {
+  lines;
+  connection_cost;
   constructor() {
     this.lines = 0;
     this.connection_cost = null;

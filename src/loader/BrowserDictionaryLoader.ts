@@ -15,28 +15,18 @@
  * limitations under the License.
  */
 
-import zlib from 'zlibjs/bin/gunzip.min.js'
 import DictionaryLoader from './DictionaryLoader'
 
 export default class BrowserDictionaryLoader extends DictionaryLoader {
 	loadArrayBuffer(url: string, callback) {
-		const xhr = new XMLHttpRequest()
-		xhr.open('GET', url, true)
-		xhr.responseType = 'arraybuffer'
-		xhr.onload = function () {
-			if (this.status > 0 && this.status !== 200) {
-				callback(xhr.statusText, null)
+		fetch(url).then(async (res) => {
+			if (!res.ok) {
+				const err = new Error(res.statusText)
+				callback(err, null)
 				return
 			}
-			const arraybuffer = this.response
-
-			const gz = new zlib.Zlib.Gunzip(new Uint8Array(arraybuffer))
-			const typed_array = gz.decompress()
-			callback(null, typed_array.buffer)
-		}
-		xhr.onerror = function (err) {
-			callback(err, null)
-		}
-		xhr.send()
+			const arraybuffer = await res.arrayBuffer()
+			callback(null, arraybuffer)
+		})
 	}
 }

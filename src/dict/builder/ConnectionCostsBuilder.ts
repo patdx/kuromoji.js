@@ -18,6 +18,9 @@
 import ConnectionCosts from '../ConnectionCosts'
 
 class ConnectionCostsBuilder {
+	lines: number
+	connection_cost: ConnectionCosts | null
+
 	constructor() {
 		this.lines = 0
 		this.connection_cost = null

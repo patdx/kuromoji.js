@@ -24,15 +24,15 @@ type DoubleArray = any // @types/doublearray not loading correctly
 
 class DynamicDictionaries {
 	trie: DoubleArray
-	token_info_dictionary: TokenInfoDictionary
-	connection_costs: ConnectionCosts
+	token_info_dictionary?: TokenInfoDictionary
+	connection_costs?: ConnectionCosts
 	unknown_dictionary: UnknownDictionary
 
 	constructor(
-		trie: DoubleArray,
-		token_info_dictionary: TokenInfoDictionary,
-		connection_costs: ConnectionCosts,
-		unknown_dictionary: UnknownDictionary,
+		trie?: DoubleArray,
+		token_info_dictionary?: TokenInfoDictionary,
+		connection_costs?: ConnectionCosts,
+		unknown_dictionary?: UnknownDictionary,
 	) {
 		if (trie != null) {
 			this.trie = trie
