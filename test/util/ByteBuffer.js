@@ -22,9 +22,12 @@ import ByteBuffer from '../../src/util/ByteBuffer'
 describe('ByteBuffer static methods', function () {
 	var byteBuffer
 
-	beforeEach('Build', function () {
-		byteBuffer = new ByteBuffer(50)
-	})
+	beforeEach(
+		// 'Build',
+		function () {
+			byteBuffer = new ByteBuffer(50)
+		},
+	)
 
 	it('putShort() and getShort()', function () {
 		var v = -413

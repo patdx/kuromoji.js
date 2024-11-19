@@ -27,16 +27,18 @@ var DIC_DIR = 'test/resource/minimum-dic/'
 describe('CharacterDefinition from char.def', function () {
 	var char_def // target object
 
-	before('Create CharacterDefinition', function (done) {
-		var cd_builder = new CharacterDefinitionBuilder()
-		fs.readFileSync(DIC_DIR + 'char.def', 'utf-8')
-			.split('\n')
-			.map(function (line) {
-				cd_builder.putLine(line)
-			})
-		char_def = cd_builder.build()
-		done()
-	})
+	beforeAll(
+		// 'Create CharacterDefinition',
+		function () {
+			var cd_builder = new CharacterDefinitionBuilder()
+			fs.readFileSync(DIC_DIR + 'char.def', 'utf-8')
+				.split('\n')
+				.map(function (line) {
+					cd_builder.putLine(line)
+				})
+			char_def = cd_builder.build()
+		},
+	)
 
 	it('lookup by space, return SPACE class', function () {
 		expect(char_def.lookup(' ').class_name).to.equal('SPACE')

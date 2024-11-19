@@ -5,6 +5,7 @@
 		"strict": true,
 		"noEmit": true,
 		"moduleResolution": "bundler",
-		"target": "ESNext"
+		"target": "ESNext",
+		"types": ["vitest/globals"]
 	}
 }

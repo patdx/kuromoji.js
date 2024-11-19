@@ -3,10 +3,7 @@ import gulp from 'gulp'
 import { deleteSync as del, deleteAsync } from 'del'
 import eventStream from 'event-stream'
 import jshint from 'gulp-jshint'
-import browserify from 'browserify'
-import source from 'vinyl-source-stream'
 import gzip from 'gulp-gzip'
-import mocha from 'gulp-mocha'
 import istanbul from 'gulp-istanbul'
 import webserver from 'gulp-webserver'
 import jsdoc from 'gulp-jsdoc3'
@@ -15,6 +12,10 @@ import ghPages from 'gulp-gh-pages-will'
 import bump from 'gulp-bump'
 import minimist from 'minimist'
 import git from 'gulp-git'
+import * as esbuild from 'esbuild'
+import { $ } from 'zx'
+
+$.verbose = true
 
 const { merge } = eventStream
 
@@ -26,14 +27,14 @@ gulp.task('clean', async () => {
 
 gulp.task(
 	'build',
-	gulp.series('clean', () => {
-		return browserify({
-			entries: ['src/kuromoji.js'],
-			standalone: 'kuromoji', // window.kuromoji
+	gulp.series('clean', async () => {
+		await esbuild.build({
+			entryPoints: ['src/kuromoji.js'],
+			bundle: true,
+			outfile: 'build/kuromoji.js',
+			platform: 'node',
+			target: 'esnext',
 		})
-			.bundle()
-			.pipe(source('kuromoji.js'))
-			.pipe(gulp.dest('build/'))
 	}),
 )
 
@@ -179,26 +180,15 @@ gulp.task(
 
 gulp.task(
 	'test',
-	gulp.series('build', () => {
-		return gulp
-			.src('test/**/*.js', { read: false })
-			.pipe(mocha({ reporter: 'list' }))
+	gulp.series('build', async () => {
+		await $`vitest run`
 	}),
 )
 
 gulp.task(
 	'coverage',
-	gulp.series('test', () => {
-		return gulp
-			.src(['src/**/*.js'])
-			.pipe(istanbul())
-			.pipe(istanbul.hookRequire())
-			.on('finish', () => {
-				gulp
-					.src(['test/**/*.js'])
-					.pipe(mocha({ reporter: 'mocha-lcov-reporter' }))
-					.pipe(istanbul.writeReports())
-			})
+	gulp.series('build', async () => {
+		await $`vitest run --coverage`
 	}),
 )
 

@@ -17,10 +17,11 @@
 	},
 	"devDependencies": {
 		"@types/gulp": "^4.0.17",
-		"browserify": "^17.0.1",
+		"@vitest/coverage-v8": "^2.1.5",
 		"chai": "^5.1.2",
 		"coveralls": "^3.0.0",
 		"del": "^8.0.0",
+		"esbuild": "^0.24.0",
 		"event-stream": "^4.0.1",
 		"gulp": "^5.0.0",
 		"gulp-bower": "0.0.15",
@@ -29,17 +30,16 @@
 		"gulp-gh-pages-will": "^0.5.5",
 		"gulp-git": "^2.5.2",
 		"gulp-gzip": "^1.2.0",
-		"gulp-istanbul": "^1.0.0",
 		"gulp-jsdoc3": "^3.0.0",
 		"gulp-jshint": "^2.1.0",
-		"gulp-mocha": "^10.0.1",
 		"gulp-webserver": "^0.9.1",
 		"jshint": "^2.9.5",
 		"mecab-ipadic-seed": "0.0.2",
 		"minimist": "^1.2.0",
 		"mocha-lcov-reporter": "^1.2.0",
 		"prettier": "^3.3.3",
-		"vinyl-source-stream": "^2.0.0"
+		"vitest": "^2.1.5",
+		"zx": "^8.2.2"
 	},
 	"homepage": "https://github.com/patdx/kuromoji.js",
 	"keywords": [
