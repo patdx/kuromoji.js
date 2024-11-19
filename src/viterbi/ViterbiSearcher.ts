@@ -20,7 +20,7 @@
  * @param {ConnectionCosts} connection_costs Connection costs matrix
  * @constructor
  */
-function ViterbiSearcher(connection_costs) {
+function ViterbiSearcher(connection_costs: ConnectionCosts) {
 	this.connection_costs = connection_costs
 }
 
@@ -29,7 +29,7 @@ function ViterbiSearcher(connection_costs) {
  * @param {ViterbiLattice} lattice Viterbi lattice to search
  * @returns {Array} Shortest path
  */
-ViterbiSearcher.prototype.search = function (lattice) {
+ViterbiSearcher.prototype.search = function (lattice: ViterbiLattice) {
 	lattice = this.forward(lattice)
 	return this.backward(lattice)
 }

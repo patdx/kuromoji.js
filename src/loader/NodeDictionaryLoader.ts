@@ -24,7 +24,7 @@ import DictionaryLoader from './DictionaryLoader'
  * @param {string} dic_path Dictionary path
  * @constructor
  */
-function NodeDictionaryLoader(dic_path) {
+function NodeDictionaryLoader(dic_path: string) {
 	DictionaryLoader.apply(this, [dic_path])
 }
 
@@ -35,7 +35,10 @@ NodeDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype)
  * @param {string} file Dictionary file path
  * @param {NodeDictionaryLoader~onLoad} callback Callback function
  */
-NodeDictionaryLoader.prototype.loadArrayBuffer = function (file, callback) {
+NodeDictionaryLoader.prototype.loadArrayBuffer = function (
+	file: string,
+	callback,
+) {
 	fs.readFile(file, function (err, buffer) {
 		if (err) {
 			return callback(err)

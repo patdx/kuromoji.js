@@ -22,7 +22,10 @@
  * @param {number} forward_dimension
  * @param {number} backward_dimension
  */
-function ConnectionCosts(forward_dimension, backward_dimension) {
+function ConnectionCosts(
+	forward_dimension: number,
+	backward_dimension: number,
+) {
 	this.forward_dimension = forward_dimension
 	this.backward_dimension = backward_dimension
 

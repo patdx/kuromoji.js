@@ -53,7 +53,7 @@ DictionaryBuilder.prototype.addTokenInfoDictionary = function (line) {
  * Put one line of "matrix.def" file for building ConnectionCosts object
  * @param {string} line is a line of "matrix.def"
  */
-DictionaryBuilder.prototype.putCostMatrixLine = function (line) {
+DictionaryBuilder.prototype.putCostMatrixLine = function (line: string) {
 	this.cc_builder.putLine(line)
 	return this
 }
@@ -67,7 +67,7 @@ DictionaryBuilder.prototype.putCharDefLine = function (line) {
  * Put one line of "unk.def" file for building UnknownDictionary object
  * @param {string} line is a line of "unk.def"
  */
-DictionaryBuilder.prototype.putUnkDefLine = function (line) {
+DictionaryBuilder.prototype.putUnkDefLine = function (line: string) {
 	this.unk_entries.push(line.split(','))
 	return this
 }

@@ -26,7 +26,7 @@ var PUNCTUATION = /、|。/
  * @param {DynamicDictionaries} dic Dictionaries used by this tokenizer
  * @constructor
  */
-function Tokenizer(dic) {
+function Tokenizer(dic: DynamicDictionaries) {
 	this.token_info_dictionary = dic.token_info_dictionary
 	this.unknown_dictionary = dic.unknown_dictionary
 	this.viterbi_builder = new ViterbiBuilder(dic)
@@ -39,7 +39,7 @@ function Tokenizer(dic) {
  * @param {string} input Input text
  * @returns {Array.<string>} Sentences end with punctuation
  */
-Tokenizer.splitByPunctuation = function (input) {
+Tokenizer.splitByPunctuation = function (input: string) {
 	var sentences = []
 	var tail = input
 	while (true) {
@@ -62,7 +62,7 @@ Tokenizer.splitByPunctuation = function (input) {
  * @param {string} text Input text to analyze
  * @returns {Array} Tokens
  */
-Tokenizer.prototype.tokenize = function (text) {
+Tokenizer.prototype.tokenize = function (text: string) {
 	var sentences = Tokenizer.splitByPunctuation(text)
 	var tokens = []
 	for (var i = 0; i < sentences.length; i++) {
@@ -136,7 +136,7 @@ Tokenizer.prototype.tokenizeForSentence = function (sentence, tokens) {
  * @param {string} text Input text to analyze
  * @returns {ViterbiLattice} Word lattice
  */
-Tokenizer.prototype.getLattice = function (text) {
+Tokenizer.prototype.getLattice = function (text: string) {
 	return this.viterbi_builder.build(text)
 }
 

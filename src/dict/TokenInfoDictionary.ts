@@ -149,7 +149,9 @@ TokenInfoDictionary.prototype.loadTargetMap = function (array_buffer) {
  * @param {string} token_info_id_str Word ID to look up
  * @returns {string} Features string concatenated by ","
  */
-TokenInfoDictionary.prototype.getFeatures = function (token_info_id_str) {
+TokenInfoDictionary.prototype.getFeatures = function (
+	token_info_id_str: string,
+) {
 	var token_info_id = parseInt(token_info_id_str)
 	if (isNaN(token_info_id)) {
 		// TODO throw error

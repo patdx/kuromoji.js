@@ -32,7 +32,7 @@ function InvokeDefinitionMap() {
  * @param {Uint8Array} invoke_def_buffer
  * @returns {InvokeDefinitionMap}
  */
-InvokeDefinitionMap.load = function (invoke_def_buffer) {
+InvokeDefinitionMap.load = function (invoke_def_buffer: Uint8Array) {
 	var invoke_def = new InvokeDefinitionMap()
 	var character_category_definition = []
 
@@ -63,7 +63,9 @@ InvokeDefinitionMap.load = function (invoke_def_buffer) {
  * Initializing method
  * @param {Array.<CharacterClass>} character_category_definition Array of CharacterClass
  */
-InvokeDefinitionMap.prototype.init = function (character_category_definition) {
+InvokeDefinitionMap.prototype.init = function (
+	character_category_definition: Array<CharacterClass>,
+) {
 	if (character_category_definition == null) {
 		return
 	}
@@ -79,7 +81,7 @@ InvokeDefinitionMap.prototype.init = function (character_category_definition) {
  * @param {number} class_id
  * @returns {CharacterClass}
  */
-InvokeDefinitionMap.prototype.getCharacterClass = function (class_id) {
+InvokeDefinitionMap.prototype.getCharacterClass = function (class_id: number) {
 	return this.map[class_id]
 }
 
@@ -88,7 +90,7 @@ InvokeDefinitionMap.prototype.getCharacterClass = function (class_id) {
  * @param {string} class_name character
  * @returns {number} class_id
  */
-InvokeDefinitionMap.prototype.lookup = function (class_name) {
+InvokeDefinitionMap.prototype.lookup = function (class_name: string) {
 	var class_id = this.lookup_table[class_name]
 	if (class_id == null) {
 		return null

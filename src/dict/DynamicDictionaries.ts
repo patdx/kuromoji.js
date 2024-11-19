@@ -29,10 +29,10 @@ import UnknownDictionary from './UnknownDictionary'
  * @constructor
  */
 function DynamicDictionaries(
-	trie,
-	token_info_dictionary,
-	connection_costs,
-	unknown_dictionary,
+	trie: DoubleArray,
+	token_info_dictionary: TokenInfoDictionary,
+	connection_costs: ConnectionCosts,
+	unknown_dictionary: UnknownDictionary,
 ) {
 	if (trie != null) {
 		this.trie = trie

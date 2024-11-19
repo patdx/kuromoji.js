@@ -23,7 +23,7 @@ import DictionaryLoader from './DictionaryLoader'
  * @param {string} dic_path Dictionary path
  * @constructor
  */
-function BrowserDictionaryLoader(dic_path) {
+function BrowserDictionaryLoader(dic_path: string) {
 	DictionaryLoader.apply(this, [dic_path])
 }
 
@@ -34,7 +34,10 @@ BrowserDictionaryLoader.prototype = Object.create(DictionaryLoader.prototype)
  * @param {string} url Dictionary URL
  * @param {BrowserDictionaryLoader~onLoad} callback Callback function
  */
-BrowserDictionaryLoader.prototype.loadArrayBuffer = function (url, callback) {
+BrowserDictionaryLoader.prototype.loadArrayBuffer = function (
+	url: string,
+	callback,
+) {
 	var xhr = new XMLHttpRequest()
 	xhr.open('GET', url, true)
 	xhr.responseType = 'arraybuffer'

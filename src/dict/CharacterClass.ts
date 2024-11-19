@@ -25,11 +25,11 @@
  * @constructor
  */
 function CharacterClass(
-	class_id,
-	class_name,
-	is_always_invoke,
-	is_grouping,
-	max_length,
+	class_id: number,
+	class_name: string,
+	is_always_invoke: boolean,
+	is_grouping: boolean,
+	max_length: number,
 ) {
 	this.class_id = class_id
 	this.class_name = class_name

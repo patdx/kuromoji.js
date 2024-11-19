@@ -24,7 +24,7 @@ import DictionaryLoader from './loader/NodeDictionaryLoader'
  * @param {string} option.dicPath Dictionary directory path (or URL using in browser)
  * @constructor
  */
-function TokenizerBuilder(option) {
+function TokenizerBuilder(option: { dicPath: string }) {
 	if (option.dicPath == null) {
 		this.dic_path = 'dict/'
 	} else {

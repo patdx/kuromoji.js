@@ -28,14 +28,14 @@
  * @constructor
  */
 function ViterbiNode(
-	node_name,
-	node_cost,
-	start_pos,
-	length,
-	type,
-	left_id,
-	right_id,
-	surface_form,
+	node_name: number,
+	node_cost: number,
+	start_pos: number,
+	length: number,
+	type: string,
+	left_id: number,
+	right_id: number,
+	surface_form: string,
 ) {
 	this.name = node_name
 	this.cost = node_cost

@@ -24,7 +24,7 @@ import SurrogateAwareString from '../util/SurrogateAwareString'
  * @param {DynamicDictionaries} dic dictionary
  * @constructor
  */
-function ViterbiBuilder(dic) {
+function ViterbiBuilder(dic: DynamicDictionaries) {
 	this.trie = dic.trie
 	this.token_info_dictionary = dic.token_info_dictionary
 	this.unknown_dictionary = dic.unknown_dictionary
@@ -35,7 +35,7 @@ function ViterbiBuilder(dic) {
  * @param {string} sentence_str Input text
  * @returns {ViterbiLattice} Word lattice
  */
-ViterbiBuilder.prototype.build = function (sentence_str) {
+ViterbiBuilder.prototype.build = function (sentence_str: string) {
 	var lattice = new ViterbiLattice()
 	var sentence = new SurrogateAwareString(sentence_str)
 

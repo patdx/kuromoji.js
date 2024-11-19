@@ -20,7 +20,7 @@
  * @param {string} str String to wrap
  * @constructor
  */
-function SurrogateAwareString(str) {
+function SurrogateAwareString(str: string) {
 	this.str = str
 	this.index_mapping = []
 

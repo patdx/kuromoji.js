@@ -24,7 +24,7 @@ import DynamicDictionaries from '../dict/DynamicDictionaries'
  * @param {string} dic_path Dictionary path
  * @constructor
  */
-function DictionaryLoader(dic_path) {
+function DictionaryLoader(dic_path: string) {
 	this.dic = new DynamicDictionaries()
 	this.dic_path = dic_path
 }

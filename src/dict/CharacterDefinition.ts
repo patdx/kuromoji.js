@@ -40,9 +40,9 @@ function CharacterDefinition() {
  * @returns {CharacterDefinition}
  */
 CharacterDefinition.load = function (
-	cat_map_buffer,
-	compat_cat_map_buffer,
-	invoke_def_buffer,
+	cat_map_buffer: Uint8Array,
+	compat_cat_map_buffer: Uint32Array,
+	invoke_def_buffer: InvokeDefinitionMap,
 ) {
 	var char_def = new CharacterDefinition()
 	char_def.character_category_map = cat_map_buffer
@@ -125,7 +125,7 @@ CharacterDefinition.parseRangeCategoryMapping = function (
  * @param {Array} category_mapping Array of category mapping
  */
 CharacterDefinition.prototype.initCategoryMappings = function (
-	category_mapping,
+	category_mapping: Array<any>,
 ) {
 	// Initialize map by DEFAULT class
 	var code_point
@@ -177,7 +177,7 @@ CharacterDefinition.prototype.initCategoryMappings = function (
  * @param {string} ch UCS2 character (just 1st character is effective)
  * @returns {Array.<CharacterClass>} character classes
  */
-CharacterDefinition.prototype.lookupCompatibleCategory = function (ch) {
+CharacterDefinition.prototype.lookupCompatibleCategory = function (ch: string) {
 	var classes = []
 
 	/*
@@ -213,7 +213,7 @@ CharacterDefinition.prototype.lookupCompatibleCategory = function (ch) {
  * @param {string} ch UCS2 character (just 1st character is effective)
  * @returns {CharacterClass} character class
  */
-CharacterDefinition.prototype.lookup = function (ch) {
+CharacterDefinition.prototype.lookup = function (ch: string) {
 	var class_id
 
 	var code = ch.charCodeAt(0)

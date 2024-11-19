@@ -21,7 +21,7 @@
  * @param {String} str UTF-16 string to convert
  * @return {Uint8Array} Byte sequence encoded by UTF-8
  */
-var stringToUtf8Bytes = function (str) {
+var stringToUtf8Bytes = function (str: string) {
 	// Max size of 1 character is 4 bytes
 	var bytes = new Uint8Array(str.length * 4)
 
@@ -81,7 +81,7 @@ var stringToUtf8Bytes = function (str) {
  * @param {Array} bytes UTF-8 byte sequence to convert
  * @return {String} String encoded by UTF-16
  */
-var utf8BytesToString = function (bytes) {
+var utf8BytesToString = function (bytes: Array<any>) {
 	var str = ''
 	var code, b1, b2, b3, b4, upper, lower
 	var i = 0
@@ -132,7 +132,7 @@ var utf8BytesToString = function (bytes) {
  * @param {(number|Uint8Array)} arg Initial size of this buffer (number), or buffer to set (Uint8Array)
  * @constructor
  */
-function ByteBuffer(arg) {
+function ByteBuffer(arg: number | Uint8Array) {
 	var initial_size
 	if (arg == null) {
 		initial_size = 1024 * 1024

@@ -31,7 +31,7 @@ function ViterbiLattice() {
  * Append node to ViterbiLattice
  * @param {ViterbiNode} node
  */
-ViterbiLattice.prototype.append = function (node) {
+ViterbiLattice.prototype.append = function (node: ViterbiNode) {
 	var last_pos = node.start_pos + node.length - 1
 	if (this.eos_pos < last_pos) {
 		this.eos_pos = last_pos
