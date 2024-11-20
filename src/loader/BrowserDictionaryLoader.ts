@@ -15,9 +15,11 @@
  * limitations under the License.
  */
 
-import DictionaryLoader from './DictionaryLoader'
+import type { LoaderConfig, LoaderConfigOptions } from './types'
 
-export default class BrowserDictionaryLoader extends DictionaryLoader {
+export default class BrowserDictionaryLoader implements LoaderConfig {
+	constructor(public options: LoaderConfigOptions) {}
+
 	async loadArrayBuffer(url: string): Promise<ArrayBufferLike> {
 		const res = await fetch(url)
 		if (!res.ok) {

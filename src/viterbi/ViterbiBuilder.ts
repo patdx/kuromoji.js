@@ -18,7 +18,7 @@
 import ViterbiNode from './ViterbiNode'
 import ViterbiLattice from './ViterbiLattice'
 import SurrogateAwareString from '../util/SurrogateAwareString'
-import DynamicDictionaries from '../dict/DynamicDictionaries'
+import type DynamicDictionaries from '../dict/DynamicDictionaries'
 import type TokenInfoDictionary from '../dict/TokenInfoDictionary'
 import type UnknownDictionary from '../dict/UnknownDictionary'
 

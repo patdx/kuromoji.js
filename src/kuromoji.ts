@@ -15,17 +15,19 @@
  * limitations under the License.
  */
 
-import TokenizerBuilder from './TokenizerBuilder'
+import TokenizerBuilder, {
+	type TokenizerBuilderOptions,
+} from './TokenizerBuilder'
 import DictionaryBuilder from './dict/builder/DictionaryBuilder'
 
-// Public methods
-const kuromoji = {
-	builder: function (option) {
-		return new TokenizerBuilder(option)
-	},
-	dictionaryBuilder: function () {
-		return new DictionaryBuilder()
-	},
+export { TokenizerBuilder, DictionaryBuilder }
+
+/** @deprecated use new TokenizerBuilder instead */
+export function builder(options: TokenizerBuilderOptions) {
+	return new TokenizerBuilder(options)
 }
 
-export default kuromoji
+/** @deprecated use new DictionaryBuilder instead */
+export function dictionaryBuilder() {
+	return new DictionaryBuilder()
+}

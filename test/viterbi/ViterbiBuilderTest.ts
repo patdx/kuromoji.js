@@ -18,8 +18,9 @@
 
 import { expect } from 'chai'
 
-import DictionaryLoader from '../../src/loader/NodeDictionaryLoader'
+import NodeDictionaryLoader from '../../src/loader/NodeDictionaryLoader'
 import ViterbiBuilder from '../../src/viterbi/ViterbiBuilder'
+import { loadDictionary } from '../../src/loader/DictionaryLoader'
 
 const DIC_DIR = 'dict/'
 
@@ -32,8 +33,10 @@ describe(
 		let viterbi_builder: ViterbiBuilder | null = null // target object
 
 		beforeAll(async function () {
-			const loader = new DictionaryLoader(DIC_DIR)
-			const dic = await loader.load()
+			const loader = new NodeDictionaryLoader({
+				dic_path: DIC_DIR,
+			})
+			const dic = await loadDictionary(loader)
 			viterbi_builder = new ViterbiBuilder(dic)
 		})
 

@@ -1,4 +1,3 @@
-"use strict";
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -7,10 +6,6 @@ var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -28,11 +23,10 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // node_modules/.pnpm/doublearray@0.0.2/node_modules/doublearray/doublearray.js
 var require_doublearray = __commonJS({
-  "node_modules/.pnpm/doublearray@0.0.2/node_modules/doublearray/doublearray.js"(exports2, module2) {
+  "node_modules/.pnpm/doublearray@0.0.2/node_modules/doublearray/doublearray.js"(exports, module) {
     (function() {
       "use strict";
       var TERM_CHAR = "\0", TERM_CODE = 0, ROOT_ID = 0, NOT_FOUND = -1, BASE_SIGNED = true, CHECK_SIGNED = true, BASE_BYTES = 4, CHECK_BYTES = 4, MEMORY_EXPAND_RATIO = 2;
@@ -519,21 +513,14 @@ var require_doublearray = __commonJS({
           return new DoubleArray(bc);
         }
       };
-      if ("undefined" === typeof module2) {
+      if ("undefined" === typeof module) {
         window.doublearray = doublearray3;
       } else {
-        module2.exports = doublearray3;
+        module.exports = doublearray3;
       }
     })();
   }
 });
-
-// src/kuromoji.ts
-var kuromoji_exports = {};
-__export(kuromoji_exports, {
-  default: () => kuromoji_default
-});
-module.exports = __toCommonJS(kuromoji_exports);
 
 // src/viterbi/ViterbiNode.ts
 var ViterbiNode = class {
@@ -663,6 +650,298 @@ var SurrogateAwareString = class _SurrogateAwareString {
   }
 };
 var SurrogateAwareString_default = SurrogateAwareString;
+
+// src/viterbi/ViterbiBuilder.ts
+var ViterbiBuilder = class {
+  trie;
+  token_info_dictionary;
+  unknown_dictionary;
+  constructor(dic) {
+    this.trie = dic.trie;
+    this.token_info_dictionary = dic.token_info_dictionary;
+    this.unknown_dictionary = dic.unknown_dictionary;
+  }
+  build(sentence_str) {
+    const lattice = new ViterbiLattice_default();
+    const sentence = new SurrogateAwareString_default(sentence_str);
+    let key, trie_id, left_id, right_id, word_cost;
+    for (let pos = 0; pos < sentence.length; pos++) {
+      const tail = sentence.slice(pos);
+      const vocabulary = this.trie.commonPrefixSearch(tail);
+      for (let n = 0; n < vocabulary.length; n++) {
+        trie_id = vocabulary[n].v;
+        key = vocabulary[n].k;
+        const token_info_ids = this.token_info_dictionary.target_map[trie_id];
+        for (let i = 0; i < token_info_ids.length; i++) {
+          const token_info_id = parseInt(token_info_ids[i]);
+          left_id = this.token_info_dictionary.dictionary.getShort(token_info_id);
+          right_id = this.token_info_dictionary.dictionary.getShort(
+            token_info_id + 2
+          );
+          word_cost = this.token_info_dictionary.dictionary.getShort(
+            token_info_id + 4
+          );
+          lattice.append(
+            new ViterbiNode_default(
+              token_info_id,
+              word_cost,
+              pos + 1,
+              key.length,
+              "KNOWN",
+              left_id,
+              right_id,
+              key
+            )
+          );
+        }
+      }
+      const surrogate_aware_tail = new SurrogateAwareString_default(tail);
+      const head_char = new SurrogateAwareString_default(surrogate_aware_tail.charAt(0));
+      const head_char_class = this.unknown_dictionary.lookup(
+        head_char.toString()
+      );
+      if (vocabulary == null || vocabulary.length === 0 || head_char_class.is_always_invoke === 1) {
+        key = head_char;
+        if (head_char_class.is_grouping === 1 && 1 < surrogate_aware_tail.length) {
+          for (let k = 1; k < surrogate_aware_tail.length; k++) {
+            const next_char = surrogate_aware_tail.charAt(k);
+            const next_char_class = this.unknown_dictionary.lookup(next_char);
+            if (head_char_class.class_name !== next_char_class.class_name) {
+              break;
+            }
+            key += next_char;
+          }
+        }
+        const unk_ids = this.unknown_dictionary.target_map[head_char_class.class_id];
+        for (let j = 0; j < unk_ids.length; j++) {
+          const unk_id = parseInt(unk_ids[j]);
+          left_id = this.unknown_dictionary.dictionary.getShort(unk_id);
+          right_id = this.unknown_dictionary.dictionary.getShort(unk_id + 2);
+          word_cost = this.unknown_dictionary.dictionary.getShort(unk_id + 4);
+          lattice.append(
+            new ViterbiNode_default(
+              unk_id,
+              word_cost,
+              pos + 1,
+              key.length,
+              "UNKNOWN",
+              left_id,
+              right_id,
+              key.toString()
+            )
+          );
+        }
+      }
+    }
+    lattice.appendEos();
+    return lattice;
+  }
+};
+var ViterbiBuilder_default = ViterbiBuilder;
+
+// src/viterbi/ViterbiSearcher.ts
+var ViterbiSearcher = class {
+  connection_costs;
+  constructor(connection_costs) {
+    this.connection_costs = connection_costs;
+  }
+  search(lattice) {
+    lattice = this.forward(lattice);
+    return this.backward(lattice);
+  }
+  forward(lattice) {
+    let i, j, k;
+    for (i = 1; i <= lattice.eos_pos; i++) {
+      const nodes = lattice.nodes_end_at[i];
+      if (nodes == null) {
+        continue;
+      }
+      for (j = 0; j < nodes.length; j++) {
+        const node = nodes[j];
+        let cost = Number.MAX_VALUE;
+        let shortest_prev_node = null;
+        const prev_nodes = lattice.nodes_end_at[node.start_pos - 1];
+        if (prev_nodes == null) {
+          continue;
+        }
+        for (k = 0; k < prev_nodes.length; k++) {
+          const prev_node = prev_nodes[k];
+          let edge_cost;
+          if (node.left_id == null || prev_node.right_id == null) {
+            console.log("Left or right is null");
+            edge_cost = 0;
+          } else {
+            edge_cost = this.connection_costs.get(
+              prev_node.right_id,
+              node.left_id
+            );
+          }
+          const _cost = prev_node.shortest_cost + edge_cost + node.cost;
+          if (_cost < cost) {
+            shortest_prev_node = prev_node;
+            cost = _cost;
+          }
+        }
+        node.prev = shortest_prev_node;
+        node.shortest_cost = cost;
+      }
+    }
+    return lattice;
+  }
+  backward(lattice) {
+    const shortest_path = [];
+    const eos = lattice.nodes_end_at[lattice.nodes_end_at.length - 1][0];
+    let node_back = eos.prev;
+    if (node_back == null) {
+      return [];
+    }
+    while (node_back.type !== "BOS") {
+      shortest_path.push(node_back);
+      if (node_back.prev == null) {
+        return [];
+      }
+      node_back = node_back.prev;
+    }
+    return shortest_path.reverse();
+  }
+};
+var ViterbiSearcher_default = ViterbiSearcher;
+
+// src/util/IpadicFormatter.ts
+var IpadicFormatter = class {
+  formatEntry(word_id, position, type, features) {
+    const token = {};
+    token.word_id = word_id;
+    token.word_type = type;
+    token.word_position = position;
+    token.surface_form = features[0];
+    token.pos = features[1];
+    token.pos_detail_1 = features[2];
+    token.pos_detail_2 = features[3];
+    token.pos_detail_3 = features[4];
+    token.conjugated_type = features[5];
+    token.conjugated_form = features[6];
+    token.basic_form = features[7];
+    token.reading = features[8];
+    token.pronunciation = features[9];
+    return token;
+  }
+  formatUnknownEntry(word_id, position, type, features, surface_form) {
+    const token = {};
+    token.word_id = word_id;
+    token.word_type = type;
+    token.word_position = position;
+    token.surface_form = surface_form;
+    token.pos = features[1];
+    token.pos_detail_1 = features[2];
+    token.pos_detail_2 = features[3];
+    token.pos_detail_3 = features[4];
+    token.conjugated_type = features[5];
+    token.conjugated_form = features[6];
+    token.basic_form = features[7];
+    return token;
+  }
+};
+var IpadicFormatter_default = IpadicFormatter;
+
+// src/Tokenizer.ts
+var PUNCTUATION = /、|。/;
+var Tokenizer = class _Tokenizer {
+  token_info_dictionary;
+  unknown_dictionary;
+  viterbi_builder;
+  viterbi_searcher;
+  formatter;
+  constructor(dic) {
+    this.token_info_dictionary = dic.token_info_dictionary;
+    this.unknown_dictionary = dic.unknown_dictionary;
+    this.viterbi_builder = new ViterbiBuilder_default(dic);
+    this.viterbi_searcher = new ViterbiSearcher_default(dic.connection_costs);
+    this.formatter = new IpadicFormatter_default();
+  }
+  tokenize(text) {
+    const sentences = _Tokenizer.splitByPunctuation(text);
+    const tokens = [];
+    for (let i = 0; i < sentences.length; i++) {
+      const sentence = sentences[i];
+      this.tokenizeForSentence(sentence, tokens);
+    }
+    return tokens;
+  }
+  tokenizeForSentence(sentence, tokens) {
+    if (tokens == null) {
+      tokens = [];
+    }
+    const lattice = this.getLattice(sentence);
+    const best_path = this.viterbi_searcher.search(lattice);
+    let last_pos = 0;
+    if (tokens.length > 0) {
+      last_pos = tokens[tokens.length - 1].word_position;
+    }
+    for (let j = 0; j < best_path.length; j++) {
+      const node = best_path[j];
+      var token, features, features_line;
+      if (node.type === "KNOWN") {
+        features_line = this.token_info_dictionary.getFeatures(node.name);
+        if (features_line == null) {
+          features = [];
+        } else {
+          features = features_line.split(",");
+        }
+        token = this.formatter.formatEntry(
+          node.name,
+          last_pos + node.start_pos,
+          node.type,
+          features
+        );
+      } else if (node.type === "UNKNOWN") {
+        features_line = this.unknown_dictionary.getFeatures(node.name);
+        if (features_line == null) {
+          features = [];
+        } else {
+          features = features_line.split(",");
+        }
+        token = this.formatter.formatUnknownEntry(
+          node.name,
+          last_pos + node.start_pos,
+          node.type,
+          features,
+          node.surface_form
+        );
+      } else {
+        token = this.formatter.formatEntry(
+          node.name,
+          last_pos + node.start_pos,
+          node.type,
+          []
+        );
+      }
+      tokens.push(token);
+    }
+    return tokens;
+  }
+  getLattice(text) {
+    return this.viterbi_builder.build(text);
+  }
+  static splitByPunctuation(input) {
+    const sentences = [];
+    let tail = input;
+    while (true) {
+      if (tail === "") {
+        break;
+      }
+      const index = tail.search(PUNCTUATION);
+      if (index < 0) {
+        sentences.push(tail);
+        break;
+      }
+      sentences.push(tail.substring(0, index + 1));
+      tail = tail.substring(index + 1);
+    }
+    return sentences;
+  }
+};
+var Tokenizer_default = Tokenizer;
 
 // src/dict/DynamicDictionaries.ts
 var import_doublearray = __toESM(require_doublearray());
@@ -1331,411 +1610,75 @@ var DynamicDictionaries = class {
 };
 var DynamicDictionaries_default = DynamicDictionaries;
 
-// src/viterbi/ViterbiBuilder.ts
-var ViterbiBuilder = class {
-  trie;
-  token_info_dictionary;
-  unknown_dictionary;
-  constructor(dic) {
-    this.trie = dic.trie;
-    this.token_info_dictionary = dic.token_info_dictionary;
-    this.unknown_dictionary = dic.unknown_dictionary;
-  }
-  build(sentence_str) {
-    const lattice = new ViterbiLattice_default();
-    const sentence = new SurrogateAwareString_default(sentence_str);
-    let key, trie_id, left_id, right_id, word_cost;
-    for (let pos = 0; pos < sentence.length; pos++) {
-      const tail = sentence.slice(pos);
-      const vocabulary = this.trie.commonPrefixSearch(tail);
-      for (let n = 0; n < vocabulary.length; n++) {
-        trie_id = vocabulary[n].v;
-        key = vocabulary[n].k;
-        const token_info_ids = this.token_info_dictionary.target_map[trie_id];
-        for (let i = 0; i < token_info_ids.length; i++) {
-          const token_info_id = parseInt(token_info_ids[i]);
-          left_id = this.token_info_dictionary.dictionary.getShort(token_info_id);
-          right_id = this.token_info_dictionary.dictionary.getShort(
-            token_info_id + 2
-          );
-          word_cost = this.token_info_dictionary.dictionary.getShort(
-            token_info_id + 4
-          );
-          lattice.append(
-            new ViterbiNode_default(
-              token_info_id,
-              word_cost,
-              pos + 1,
-              key.length,
-              "KNOWN",
-              left_id,
-              right_id,
-              key
-            )
-          );
-        }
-      }
-      const surrogate_aware_tail = new SurrogateAwareString_default(tail);
-      const head_char = new SurrogateAwareString_default(surrogate_aware_tail.charAt(0));
-      const head_char_class = this.unknown_dictionary.lookup(
-        head_char.toString()
-      );
-      if (vocabulary == null || vocabulary.length === 0 || head_char_class.is_always_invoke === 1) {
-        key = head_char;
-        if (head_char_class.is_grouping === 1 && 1 < surrogate_aware_tail.length) {
-          for (let k = 1; k < surrogate_aware_tail.length; k++) {
-            const next_char = surrogate_aware_tail.charAt(k);
-            const next_char_class = this.unknown_dictionary.lookup(next_char);
-            if (head_char_class.class_name !== next_char_class.class_name) {
-              break;
-            }
-            key += next_char;
-          }
-        }
-        const unk_ids = this.unknown_dictionary.target_map[head_char_class.class_id];
-        for (let j = 0; j < unk_ids.length; j++) {
-          const unk_id = parseInt(unk_ids[j]);
-          left_id = this.unknown_dictionary.dictionary.getShort(unk_id);
-          right_id = this.unknown_dictionary.dictionary.getShort(unk_id + 2);
-          word_cost = this.unknown_dictionary.dictionary.getShort(unk_id + 4);
-          lattice.append(
-            new ViterbiNode_default(
-              unk_id,
-              word_cost,
-              pos + 1,
-              key.length,
-              "UNKNOWN",
-              left_id,
-              right_id,
-              key.toString()
-            )
-          );
-        }
-      }
-    }
-    lattice.appendEos();
-    return lattice;
-  }
-};
-var ViterbiBuilder_default = ViterbiBuilder;
-
-// src/viterbi/ViterbiSearcher.ts
-var ViterbiSearcher = class {
-  connection_costs;
-  constructor(connection_costs) {
-    this.connection_costs = connection_costs;
-  }
-  search(lattice) {
-    lattice = this.forward(lattice);
-    return this.backward(lattice);
-  }
-  forward(lattice) {
-    let i, j, k;
-    for (i = 1; i <= lattice.eos_pos; i++) {
-      const nodes = lattice.nodes_end_at[i];
-      if (nodes == null) {
-        continue;
-      }
-      for (j = 0; j < nodes.length; j++) {
-        const node = nodes[j];
-        let cost = Number.MAX_VALUE;
-        let shortest_prev_node = null;
-        const prev_nodes = lattice.nodes_end_at[node.start_pos - 1];
-        if (prev_nodes == null) {
-          continue;
-        }
-        for (k = 0; k < prev_nodes.length; k++) {
-          const prev_node = prev_nodes[k];
-          let edge_cost;
-          if (node.left_id == null || prev_node.right_id == null) {
-            console.log("Left or right is null");
-            edge_cost = 0;
-          } else {
-            edge_cost = this.connection_costs.get(
-              prev_node.right_id,
-              node.left_id
-            );
-          }
-          const _cost = prev_node.shortest_cost + edge_cost + node.cost;
-          if (_cost < cost) {
-            shortest_prev_node = prev_node;
-            cost = _cost;
-          }
-        }
-        node.prev = shortest_prev_node;
-        node.shortest_cost = cost;
-      }
-    }
-    return lattice;
-  }
-  backward(lattice) {
-    const shortest_path = [];
-    const eos = lattice.nodes_end_at[lattice.nodes_end_at.length - 1][0];
-    let node_back = eos.prev;
-    if (node_back == null) {
-      return [];
-    }
-    while (node_back.type !== "BOS") {
-      shortest_path.push(node_back);
-      if (node_back.prev == null) {
-        return [];
-      }
-      node_back = node_back.prev;
-    }
-    return shortest_path.reverse();
-  }
-};
-var ViterbiSearcher_default = ViterbiSearcher;
-
-// src/util/IpadicFormatter.ts
-var IpadicFormatter = class {
-  formatEntry(word_id, position, type, features) {
-    const token = {};
-    token.word_id = word_id;
-    token.word_type = type;
-    token.word_position = position;
-    token.surface_form = features[0];
-    token.pos = features[1];
-    token.pos_detail_1 = features[2];
-    token.pos_detail_2 = features[3];
-    token.pos_detail_3 = features[4];
-    token.conjugated_type = features[5];
-    token.conjugated_form = features[6];
-    token.basic_form = features[7];
-    token.reading = features[8];
-    token.pronunciation = features[9];
-    return token;
-  }
-  formatUnknownEntry(word_id, position, type, features, surface_form) {
-    const token = {};
-    token.word_id = word_id;
-    token.word_type = type;
-    token.word_position = position;
-    token.surface_form = surface_form;
-    token.pos = features[1];
-    token.pos_detail_1 = features[2];
-    token.pos_detail_2 = features[3];
-    token.pos_detail_3 = features[4];
-    token.conjugated_type = features[5];
-    token.conjugated_form = features[6];
-    token.basic_form = features[7];
-    return token;
-  }
-};
-var IpadicFormatter_default = IpadicFormatter;
-
-// src/Tokenizer.ts
-var PUNCTUATION = /、|。/;
-var Tokenizer = class _Tokenizer {
-  token_info_dictionary;
-  unknown_dictionary;
-  viterbi_builder;
-  viterbi_searcher;
-  formatter;
-  constructor(dic) {
-    this.token_info_dictionary = dic.token_info_dictionary;
-    this.unknown_dictionary = dic.unknown_dictionary;
-    this.viterbi_builder = new ViterbiBuilder_default(dic);
-    this.viterbi_searcher = new ViterbiSearcher_default(dic.connection_costs);
-    this.formatter = new IpadicFormatter_default();
-  }
-  tokenize(text) {
-    const sentences = _Tokenizer.splitByPunctuation(text);
-    const tokens = [];
-    for (let i = 0; i < sentences.length; i++) {
-      const sentence = sentences[i];
-      this.tokenizeForSentence(sentence, tokens);
-    }
-    return tokens;
-  }
-  tokenizeForSentence(sentence, tokens) {
-    if (tokens == null) {
-      tokens = [];
-    }
-    const lattice = this.getLattice(sentence);
-    const best_path = this.viterbi_searcher.search(lattice);
-    let last_pos = 0;
-    if (tokens.length > 0) {
-      last_pos = tokens[tokens.length - 1].word_position;
-    }
-    for (let j = 0; j < best_path.length; j++) {
-      const node = best_path[j];
-      var token, features, features_line;
-      if (node.type === "KNOWN") {
-        features_line = this.token_info_dictionary.getFeatures(node.name);
-        if (features_line == null) {
-          features = [];
-        } else {
-          features = features_line.split(",");
-        }
-        token = this.formatter.formatEntry(
-          node.name,
-          last_pos + node.start_pos,
-          node.type,
-          features
-        );
-      } else if (node.type === "UNKNOWN") {
-        features_line = this.unknown_dictionary.getFeatures(node.name);
-        if (features_line == null) {
-          features = [];
-        } else {
-          features = features_line.split(",");
-        }
-        token = this.formatter.formatUnknownEntry(
-          node.name,
-          last_pos + node.start_pos,
-          node.type,
-          features,
-          node.surface_form
-        );
-      } else {
-        token = this.formatter.formatEntry(
-          node.name,
-          last_pos + node.start_pos,
-          node.type,
-          []
-        );
-      }
-      tokens.push(token);
-    }
-    return tokens;
-  }
-  getLattice(text) {
-    return this.viterbi_builder.build(text);
-  }
-  static splitByPunctuation(input) {
-    const sentences = [];
-    let tail = input;
-    while (true) {
-      if (tail === "") {
-        break;
-      }
-      const index = tail.search(PUNCTUATION);
-      if (index < 0) {
-        sentences.push(tail);
-        break;
-      }
-      sentences.push(tail.substring(0, index + 1));
-      tail = tail.substring(index + 1);
-    }
-    return sentences;
-  }
-};
-var Tokenizer_default = Tokenizer;
-
-// src/loader/NodeDictionaryLoader.ts
-var import_promises = __toESM(require("fs/promises"));
-var import_zlib = __toESM(require("zlib"));
-var import_node_util = __toESM(require("node:util"));
-
 // src/loader/DictionaryLoader.ts
-var import_path = __toESM(require("path"));
-var DictionaryLoader = class {
-  dic;
-  dic_path;
-  constructor(dic_path) {
-    this.dic = new DynamicDictionaries_default();
-    this.dic_path = dic_path;
+async function loadDictionary(config) {
+  const dic = new DynamicDictionaries_default();
+  async function loadTrie() {
+    const filenames = ["base.dat.gz", "check.dat.gz"];
+    const buffers = await Promise.all(
+      filenames.map((filename) => config.loadArrayBuffer(filename))
+    );
+    const base_buffer = new Int32Array(buffers[0]);
+    const check_buffer = new Int32Array(buffers[1]);
+    dic.loadTrie(base_buffer, check_buffer);
   }
-  loadArrayBuffer(file) {
-    throw new Error("DictionaryLoader#loadArrayBuffer should be overwrite");
+  async function loadInfo() {
+    const filenames = ["tid.dat.gz", "tid_pos.dat.gz", "tid_map.dat.gz"];
+    const buffers = await Promise.all(
+      filenames.map((filename) => config.loadArrayBuffer(filename))
+    );
+    const token_info_buffer = new Uint8Array(buffers[0]);
+    const pos_buffer = new Uint8Array(buffers[1]);
+    const target_map_buffer = new Uint8Array(buffers[2]);
+    dic.loadTokenInfoDictionaries(
+      token_info_buffer,
+      pos_buffer,
+      target_map_buffer
+    );
   }
-  async load() {
-    const dic = this.dic;
-    const dic_path = this.dic_path;
-    const loadArrayBuffer = this.loadArrayBuffer;
-    async function loadTrie() {
-      const filenames = ["base.dat.gz", "check.dat.gz"];
-      const buffers = await Promise.all(
-        filenames.map(
-          (filename) => loadArrayBuffer(import_path.default.join(dic_path, filename))
-        )
-      );
-      const base_buffer = new Int32Array(buffers[0]);
-      const check_buffer = new Int32Array(buffers[1]);
-      dic.loadTrie(base_buffer, check_buffer);
-    }
-    async function loadInfo() {
-      const filenames = ["tid.dat.gz", "tid_pos.dat.gz", "tid_map.dat.gz"];
-      const buffers = await Promise.all(
-        filenames.map(
-          (filename) => loadArrayBuffer(import_path.default.join(dic_path, filename))
-        )
-      );
-      const token_info_buffer = new Uint8Array(buffers[0]);
-      const pos_buffer = new Uint8Array(buffers[1]);
-      const target_map_buffer = new Uint8Array(buffers[2]);
-      dic.loadTokenInfoDictionaries(
-        token_info_buffer,
-        pos_buffer,
-        target_map_buffer
-      );
-    }
-    async function loadCost() {
-      const buffer = await loadArrayBuffer(import_path.default.join(dic_path, "cc.dat.gz"));
-      const cc_buffer = new Int16Array(buffer);
-      dic.loadConnectionCosts(cc_buffer);
-    }
-    async function loadUnknown() {
-      const filenames = [
-        "unk.dat.gz",
-        "unk_pos.dat.gz",
-        "unk_map.dat.gz",
-        "unk_char.dat.gz",
-        "unk_compat.dat.gz",
-        "unk_invoke.dat.gz"
-      ];
-      const buffers = await Promise.all(
-        filenames.map(
-          (filename) => loadArrayBuffer(import_path.default.join(dic_path, filename))
-        )
-      );
-      const unk_buffer = new Uint8Array(buffers[0]);
-      const unk_pos_buffer = new Uint8Array(buffers[1]);
-      const unk_map_buffer = new Uint8Array(buffers[2]);
-      const cat_map_buffer = new Uint8Array(buffers[3]);
-      const compat_cat_map_buffer = new Uint32Array(buffers[4]);
-      const invoke_def_buffer = new Uint8Array(buffers[5]);
-      dic.loadUnknownDictionaries(
-        unk_buffer,
-        unk_pos_buffer,
-        unk_map_buffer,
-        cat_map_buffer,
-        compat_cat_map_buffer,
-        invoke_def_buffer
-      );
-    }
-    await Promise.all([loadTrie(), loadInfo(), loadCost(), loadUnknown()]);
-    return dic;
+  async function loadCost() {
+    const buffer = await config.loadArrayBuffer("cc.dat.gz");
+    const cc_buffer = new Int16Array(buffer);
+    dic.loadConnectionCosts(cc_buffer);
   }
-};
-var DictionaryLoader_default = DictionaryLoader;
-
-// src/loader/NodeDictionaryLoader.ts
-var gunzip = import_node_util.default.promisify(import_zlib.default.gunzip);
-var NodeDictionaryLoader = class extends DictionaryLoader_default {
-  async loadArrayBuffer(file) {
-    const buffer = await import_promises.default.readFile(file);
-    const decompressed = await gunzip(buffer);
-    const typed_array = new Uint8Array(decompressed);
-    return typed_array.buffer;
+  async function loadUnknown() {
+    const filenames = [
+      "unk.dat.gz",
+      "unk_pos.dat.gz",
+      "unk_map.dat.gz",
+      "unk_char.dat.gz",
+      "unk_compat.dat.gz",
+      "unk_invoke.dat.gz"
+    ];
+    const buffers = await Promise.all(
+      filenames.map((filename) => config.loadArrayBuffer(filename))
+    );
+    const unk_buffer = new Uint8Array(buffers[0]);
+    const unk_pos_buffer = new Uint8Array(buffers[1]);
+    const unk_map_buffer = new Uint8Array(buffers[2]);
+    const cat_map_buffer = new Uint8Array(buffers[3]);
+    const compat_cat_map_buffer = new Uint32Array(buffers[4]);
+    const invoke_def_buffer = new Uint8Array(buffers[5]);
+    dic.loadUnknownDictionaries(
+      unk_buffer,
+      unk_pos_buffer,
+      unk_map_buffer,
+      cat_map_buffer,
+      compat_cat_map_buffer,
+      invoke_def_buffer
+    );
   }
-};
-var NodeDictionaryLoader_default = NodeDictionaryLoader;
+  await Promise.all([loadTrie(), loadInfo(), loadCost(), loadUnknown()]);
+  return dic;
+}
 
 // src/TokenizerBuilder.ts
 var TokenizerBuilder = class {
-  dic_path;
-  constructor(option) {
-    if (option.dicPath == null) {
-      this.dic_path = "dict/";
-    } else {
-      this.dic_path = option.dicPath;
-    }
+  constructor(options) {
+    this.options = options;
   }
   async build() {
-    const loader = new NodeDictionaryLoader_default(this.dic_path);
-    const dic = await loader.load();
+    const dic = await loadDictionary(this.options.loader);
     return new Tokenizer_default(dic);
   }
 };
@@ -1913,19 +1856,22 @@ var DictionaryBuilder = class {
       const surface_form = entry[0];
       return { k: surface_form, v: trie_id++ };
     });
-    const builder = import_doublearray2.default.builder(1024 * 1024);
-    return builder.build(words);
+    const builder2 = import_doublearray2.default.builder(1024 * 1024);
+    return builder2.build(words);
   }
 };
 var DictionaryBuilder_default = DictionaryBuilder;
 
 // src/kuromoji.ts
-var kuromoji = {
-  builder: function(option) {
-    return new TokenizerBuilder_default(option);
-  },
-  dictionaryBuilder: function() {
-    return new DictionaryBuilder_default();
-  }
+function builder(options) {
+  return new TokenizerBuilder_default(options);
+}
+function dictionaryBuilder() {
+  return new DictionaryBuilder_default();
+}
+export {
+  DictionaryBuilder_default as DictionaryBuilder,
+  TokenizerBuilder_default as TokenizerBuilder,
+  builder,
+  dictionaryBuilder
 };
-var kuromoji_default = kuromoji;

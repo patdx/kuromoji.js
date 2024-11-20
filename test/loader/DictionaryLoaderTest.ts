@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -19,7 +18,8 @@
 import { expect } from 'chai'
 
 import type DynamicDictionaries from '../../src/dict/DynamicDictionaries'
-import DictionaryLoader from '../../src/loader/NodeDictionaryLoader'
+import NodeDictionaryLoader from '../../src/loader/NodeDictionaryLoader'
+import { loadDictionary } from '../../src/loader/DictionaryLoader'
 
 const DIC_DIR = 'dict/'
 
@@ -32,8 +32,10 @@ describe(
 		let dictionaries: DynamicDictionaries // target object
 
 		beforeAll(async () => {
-			const loader = new DictionaryLoader(DIC_DIR)
-			dictionaries = await loader.load()
+			const loader = new NodeDictionaryLoader({
+				dic_path: DIC_DIR,
+			})
+			dictionaries = await loadDictionary(loader)
 		})
 
 		it('Unknown dictionaries are loaded properly', function () {
@@ -60,14 +62,18 @@ describe('DictionaryLoader about loading', function () {
 			timeout: 5 * 60 * 1000, // 5 min
 		},
 		async function () {
-			const loader = new DictionaryLoader('dict') // not have suffix /
-			const dic = await loader.load()
+			const loader = new NodeDictionaryLoader({
+				dic_path: 'dict',
+			}) // not have suffix /
+			const dic = await loadDictionary(loader) // loader.load()
 			expect(dic).to.not.be.undefined
 		},
 	)
 	it("couldn't load dictionary, then call with error", async function () {
-		const loader = new DictionaryLoader('non-exist/dictionaries')
-		const result = await loader.load().catch((err) => err)
+		const loader = new NodeDictionaryLoader({
+			dic_path: 'non-exist/dictionaries',
+		})
+		const result = await loadDictionary(loader).catch((err) => err)
 		expect(result).to.be.an.instanceof(Error)
 	})
 })

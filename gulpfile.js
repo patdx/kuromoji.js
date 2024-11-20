@@ -27,11 +27,16 @@ gulp.task(
 	'build',
 	gulp.series('clean', async () => {
 		await esbuild.build({
-			entryPoints: ['src/kuromoji.ts'],
+			entryPoints: [
+				'src/kuromoji.ts',
+				'src/loader/BrowserDictionaryLoader.ts',
+				'src/loader/NodeDictionaryLoader.ts',
+			],
 			bundle: true,
-			outfile: 'build/kuromoji.js',
+			outdir: 'build',
 			platform: 'node',
 			target: 'esnext',
+			format: 'esm',
 		})
 	}),
 )

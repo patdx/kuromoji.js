@@ -20,7 +20,7 @@ import fs from 'fs'
 
 import { expect } from 'chai'
 
-import kuromoji from '../../../src/kuromoji'
+import * as kuromoji from '../../../src/kuromoji'
 import Tokenizer from '../../../src/Tokenizer'
 import type DynamicDictionaries from '../../../src/dict/DynamicDictionaries'
 

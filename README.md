@@ -39,45 +39,47 @@ Directory tree is as follows:
 You can tokenize sentences with only 5 lines of code.
 If you need working examples, you can see the files under the demo or example directory.
 
-### Node.js
+### Usage for Node.js and Browser
 
-Install with npm package manager:
+Install the package:
 
-    npm install kuromoji
+```sh
+npm install @patdx/kuromoji
+```
 
-Load this library as follows:
+```sh
+pnpm install @patdx/kuromoji
+```
 
-    var kuromoji = require("kuromoji");
+```sh
+yarn add @patdx/kuromoji
+```
 
-You can prepare tokenizer like this:
+You can load the library and tokenizer like this:
 
-    kuromoji.builder({ dicPath: "path/to/dictionary/dir/" }).build(function (err, tokenizer) {
-        // tokenizer is ready
-        var path = tokenizer.tokenize("すもももももももものうち");
-        console.log(path);
-    });
+```ts
+import * as kuromoji from '@patdx/kuromoji'
+import NodeDictionaryLoader from '@patdx/kuromoji/node'
+import BrowserDictionaryLoader from '@patdx/kuromoji/browser'
 
-### Browser
+// For Node.js:
+const tokenizer = await kuromoji
+	.builder({
+		loader: new NodeDictionaryLoader({ dicPath: 'path/to/dictionary/dir/' }),
+	})
+	.build()
 
-You only need the build/kuromoji.js and dict/\*.dat.gz files
+// For Browser:
+const tokenizer = await kuromoji
+	.builder({
+		loader: new BrowserDictionaryLoader({ dicPath: 'path/to/dictionary/dir/' }),
+	})
+	.build()
 
-Install with Bower package manager:
-
-    bower install kuromoji
-
-Or you can use the kuromoji.js file and dictionary files from the GitHub repository.
-
-In your HTML:
-
-    <script src="url/to/kuromoji.js"></script>
-
-In your JavaScript:
-
-    kuromoji.builder({ dicPath: "/url/to/dictionary/dir/" }).build(function (err, tokenizer) {
-        // tokenizer is ready
-        var path = tokenizer.tokenize("すもももももももものうち");
-        console.log(path);
-    });
+// tokenizer is ready
+var path = tokenizer.tokenize('すもももももももものうち')
+console.log(path)
+```
 
 ## API
 
@@ -102,3 +104,7 @@ The function tokenize() returns an JSON array like this:
 (This is defined in src/util/IpadicFormatter.js)
 
 See also [JSDoc page](https://takuyaa.github.io/kuromoji.js/jsdoc/) in details.
+
+```
+
+```

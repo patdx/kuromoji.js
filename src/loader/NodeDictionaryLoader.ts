@@ -18,13 +18,16 @@
 import fs from 'fs/promises'
 import zlib from 'zlib'
 import util from 'node:util'
-import DictionaryLoader from './DictionaryLoader'
+import type { LoaderConfig, LoaderConfigOptions } from './types'
+import path from 'node:path'
 
 const gunzip = util.promisify(zlib.gunzip)
 
-class NodeDictionaryLoader extends DictionaryLoader {
+class NodeDictionaryLoader implements LoaderConfig {
+	constructor(public options: LoaderConfigOptions) {}
+
 	async loadArrayBuffer(file: string): Promise<ArrayBufferLike> {
-		const buffer = await fs.readFile(file)
+		const buffer = await fs.readFile(path.join(this.options.dic_path, file))
 		const decompressed = await gunzip(buffer)
 		const typed_array = new Uint8Array(decompressed)
 		return typed_array.buffer

@@ -16,22 +16,18 @@
  */
 
 import Tokenizer from './Tokenizer'
-import DictionaryLoader from './loader/NodeDictionaryLoader'
+import { loadDictionary } from './loader/DictionaryLoader'
+import type { LoaderConfig } from './loader/types'
+
+export interface TokenizerBuilderOptions {
+	loader: LoaderConfig
+}
 
 class TokenizerBuilder {
-	dic_path: string
-
-	constructor(option: { dicPath: string }) {
-		if (option.dicPath == null) {
-			this.dic_path = 'dict/'
-		} else {
-			this.dic_path = option.dicPath
-		}
-	}
+	constructor(public options: TokenizerBuilderOptions) {}
 
 	async build(): Promise<Tokenizer> {
-		const loader = new DictionaryLoader(this.dic_path)
-		const dic = await loader.load()
+		const dic = await loadDictionary(this.options.loader)
 		return new Tokenizer(dic)
 	}
 }

@@ -15,6 +15,11 @@ export default tseslint.config(
 	},
 	eslint.configs.recommended,
 	tseslint.configs.strict,
+	{
+		rules: {
+			'@typescript-eslint/consistent-type-imports': 'error',
+		},
+	},
 	//	tseslint.configs.stylistic,
 	/* 	tseslint.configs.recommendedTypeChecked,
 	{

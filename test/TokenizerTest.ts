@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -18,8 +17,9 @@
 
 import { expect } from 'chai'
 
-import kuromoji from '../src/kuromoji.js' // Not to be browserifiy-ed
+import * as kuromoji from '../src/kuromoji' // Not to be browserifiy-ed
 import Tokenizer from '../src/Tokenizer'
+import NodeDictionaryLoader from '../src/loader/NodeDictionaryLoader'
 
 const DIC_DIR = 'dict/'
 
@@ -58,7 +58,11 @@ describe(
 		let tokenizer: Tokenizer // target object
 
 		beforeAll(async function () {
-			tokenizer = await kuromoji.builder({ dicPath: DIC_DIR }).build()
+			tokenizer = await new kuromoji.TokenizerBuilder({
+				loader: new NodeDictionaryLoader({
+					dic_path: DIC_DIR,
+				}),
+			}).build()
 			expect(tokenizer).to.be.a('object')
 		})
 

@@ -18,6 +18,7 @@
 import ViterbiBuilder from './viterbi/ViterbiBuilder'
 import ViterbiSearcher from './viterbi/ViterbiSearcher'
 import IpadicFormatter from './util/IpadicFormatter'
+import type DynamicDictionaries from './dict/DynamicDictionaries'
 
 const PUNCTUATION = /、|。/
 
