@@ -11,14 +11,13 @@
 		"url": "https://github.com/patdx/kuromoji.js/issues"
 	},
 	"dependencies": {
-		"async": "^3.2.6",
 		"doublearray": "0.0.2"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.15.0",
-		"@types/async": "^3.2.24",
 		"@types/doublearray": "^0.0.32",
 		"@types/gulp": "^4.0.17",
+		"@types/node": "^22.9.1",
 		"@vitest/coverage-v8": "^2.1.5",
 		"chai": "^5.1.2",
 		"del": "^8.0.0",

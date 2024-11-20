@@ -18,9 +18,8 @@
 
 import { expect } from 'chai'
 
-import DictionaryLoader from '../../src/loader/NodeDictionaryLoader'
-import { promisify } from '../../src/util/test-utils'
 import type DynamicDictionaries from '../../src/dict/DynamicDictionaries'
+import DictionaryLoader from '../../src/loader/NodeDictionaryLoader'
 
 const DIC_DIR = 'dict/'
 
@@ -32,15 +31,10 @@ describe(
 	function () {
 		let dictionaries: DynamicDictionaries // target object
 
-		beforeAll(
-			promisify(function (done) {
-				const loader = new DictionaryLoader(DIC_DIR)
-				loader.load(function (err, dic) {
-					dictionaries = dic!
-					done()
-				})
-			}),
-		)
+		beforeAll(async () => {
+			const loader = new DictionaryLoader(DIC_DIR)
+			dictionaries = await loader.load()
+		})
 
 		it('Unknown dictionaries are loaded properly', function () {
 			expect(dictionaries.unknown_dictionary.lookup(' ')).to.deep.eql({
@@ -67,22 +61,13 @@ describe('DictionaryLoader about loading', function () {
 		},
 		async function () {
 			const loader = new DictionaryLoader('dict') // not have suffix /
-			await new Promise<void>((resolve) => {
-				loader.load(function (err, dic) {
-					expect(err).to.be.null
-					expect(dic).to.not.be.undefined
-					resolve()
-				})
-			})
+			const dic = await loader.load()
+			expect(dic).to.not.be.undefined
 		},
 	)
 	it("couldn't load dictionary, then call with error", async function () {
-		await new Promise<void>((resolve) => {
-			const loader = new DictionaryLoader('non-exist/dictionaries')
-			loader.load(function (err, dic) {
-				expect(err).to.be.an.instanceof(Error)
-				resolve()
-			})
-		})
+		const loader = new DictionaryLoader('non-exist/dictionaries')
+		const result = await loader.load().catch((err) => err)
+		expect(result).to.be.an.instanceof(Error)
 	})
 })

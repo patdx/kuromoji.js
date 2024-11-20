@@ -22,7 +22,6 @@ import { expect } from 'chai'
 
 import kuromoji from '../../../src/kuromoji'
 import Tokenizer from '../../../src/Tokenizer'
-import { promisify } from '../../../src/util/test-utils'
 import type DynamicDictionaries from '../../../src/dict/DynamicDictionaries'
 
 const DIC_DIR = 'test/resource/minimum-dic/'
@@ -41,7 +40,7 @@ describe(
 
 		beforeAll(
 			// 'Build',
-			promisify(function (done) {
+			function () {
 				// Build token info dictionary
 				const builder = kuromoji.dictionaryBuilder()
 				const tokenInfo = fs.readFileSync(tid_dic_file, 'utf-8')
@@ -69,9 +68,7 @@ describe(
 				})
 
 				kuromoji_dic = builder.build()
-
-				done()
-			}),
+			},
 		)
 
 		it('Dictionary not to be null', function () {

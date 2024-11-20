@@ -18,18 +18,11 @@
 import DictionaryLoader from './DictionaryLoader'
 
 export default class BrowserDictionaryLoader extends DictionaryLoader {
-	loadArrayBuffer(
-		url: string,
-		callback: (err: Error | null, buffer: ArrayBufferLike | null) => void,
-	) {
-		fetch(url).then(async (res) => {
-			if (!res.ok) {
-				const err = new Error(res.statusText)
-				callback(err, null)
-				return
-			}
-			const arraybuffer = await res.arrayBuffer()
-			callback(null, arraybuffer)
-		})
+	async loadArrayBuffer(url: string): Promise<ArrayBufferLike> {
+		const res = await fetch(url)
+		if (!res.ok) {
+			throw new Error(`Failed to fetch ${url}, status: ${res.status}`)
+		}
+		return res.arrayBuffer()
 	}
 }

@@ -32,16 +32,9 @@ describe(
 		let viterbi_builder: ViterbiBuilder | null = null // target object
 
 		beforeAll(async function () {
-			await new Promise<void>((resolve, reject) => {
-				const loader = new DictionaryLoader(DIC_DIR)
-				loader.load(function (err, dic) {
-					if (err || !dic) {
-						return reject(err ?? new Error('Failed to load dictionary'))
-					}
-					viterbi_builder = new ViterbiBuilder(dic)
-					resolve()
-				})
-			})
+			const loader = new DictionaryLoader(DIC_DIR)
+			const dic = await loader.load()
+			viterbi_builder = new ViterbiBuilder(dic)
 		})
 
 		it('Unknown word', function () {

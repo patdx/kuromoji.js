@@ -15,27 +15,19 @@
  * limitations under the License.
  */
 
-import fs from 'fs'
-import node_zlib from 'zlib'
+import fs from 'fs/promises'
+import zlib from 'zlib'
+import util from 'node:util'
 import DictionaryLoader from './DictionaryLoader'
 
+const gunzip = util.promisify(zlib.gunzip)
+
 class NodeDictionaryLoader extends DictionaryLoader {
-	loadArrayBuffer(
-		file: string,
-		callback: (err: Error | null, buffer: ArrayBufferLike | null) => void,
-	) {
-		fs.readFile(file, function (err, buffer) {
-			if (err) {
-				return callback(err, null)
-			}
-			node_zlib.gunzip(buffer, function (err2, decompressed) {
-				if (err2) {
-					return callback(err2, null)
-				}
-				const typed_array = new Uint8Array(decompressed)
-				callback(null, typed_array.buffer)
-			})
-		})
+	async loadArrayBuffer(file: string): Promise<ArrayBufferLike> {
+		const buffer = await fs.readFile(file)
+		const decompressed = await gunzip(buffer)
+		const typed_array = new Uint8Array(decompressed)
+		return typed_array.buffer
 	}
 }
 

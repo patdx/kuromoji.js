@@ -29,11 +29,10 @@ class TokenizerBuilder {
 		}
 	}
 
-	build(callback: (err: Error | null, tokenizer: Tokenizer | null) => void) {
+	async build(): Promise<Tokenizer> {
 		const loader = new DictionaryLoader(this.dic_path)
-		loader.load(function (err, dic) {
-			callback(err, new Tokenizer(dic))
-		})
+		const dic = await loader.load()
+		return new Tokenizer(dic)
 	}
 }
 

@@ -58,15 +58,8 @@ describe(
 		let tokenizer: Tokenizer // target object
 
 		beforeAll(async function () {
-			await new Promise<void>((resolve) => {
-				kuromoji
-					.builder({ dicPath: DIC_DIR })
-					.build(function (error, _tokenizer) {
-						tokenizer = _tokenizer!
-						expect(tokenizer).to.be.a('object')
-						resolve()
-					})
-			})
+			tokenizer = await kuromoji.builder({ dicPath: DIC_DIR }).build()
+			expect(tokenizer).to.be.a('object')
 		})
 
 		it('Sentence すもももももももものうち is tokenized properly', function () {
