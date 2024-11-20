@@ -15,17 +15,16 @@
  * limitations under the License.
  */
 
-import doublearray from 'doublearray'
+import type { DoubleArray } from '../vendor/doublearray/doublearray'
+import * as doublearray from '../vendor/doublearray/doublearray'
 import TokenInfoDictionary from './TokenInfoDictionary'
 import ConnectionCosts from './ConnectionCosts'
 import UnknownDictionary from './UnknownDictionary'
 
-type DoubleArray = any // @types/doublearray not loading correctly
-
 class DynamicDictionaries {
 	trie: DoubleArray
-	token_info_dictionary?: TokenInfoDictionary
-	connection_costs?: ConnectionCosts
+	token_info_dictionary: TokenInfoDictionary
+	connection_costs: ConnectionCosts
 	unknown_dictionary: UnknownDictionary
 
 	constructor(
@@ -57,30 +56,34 @@ class DynamicDictionaries {
 		}
 	}
 
-	loadTrie(base_buffer, check_buffer) {
+	loadTrie(base_buffer: Int32Array, check_buffer: Int32Array) {
 		this.trie = doublearray.load(base_buffer, check_buffer)
 		return this
 	}
 
-	loadTokenInfoDictionaries(token_info_buffer, pos_buffer, target_map_buffer) {
+	loadTokenInfoDictionaries(
+		token_info_buffer: Uint8Array,
+		pos_buffer: Uint8Array,
+		target_map_buffer: Uint8Array,
+	) {
 		this.token_info_dictionary.loadDictionary(token_info_buffer)
 		this.token_info_dictionary.loadPosVector(pos_buffer)
 		this.token_info_dictionary.loadTargetMap(target_map_buffer)
 		return this
 	}
 
-	loadConnectionCosts(cc_buffer) {
+	loadConnectionCosts(cc_buffer: Int16Array) {
 		this.connection_costs.loadConnectionCosts(cc_buffer)
 		return this
 	}
 
 	loadUnknownDictionaries(
-		unk_buffer,
-		unk_pos_buffer,
-		unk_map_buffer,
-		cat_map_buffer,
-		compat_cat_map_buffer,
-		invoke_def_buffer,
+		unk_buffer: Uint8Array,
+		unk_pos_buffer: Uint8Array,
+		unk_map_buffer: Uint8Array,
+		cat_map_buffer: Uint8Array,
+		compat_cat_map_buffer: Uint32Array,
+		invoke_def_buffer: Uint8Array,
 	) {
 		this.unknown_dictionary.loadUnknownDictionaries(
 			unk_buffer,

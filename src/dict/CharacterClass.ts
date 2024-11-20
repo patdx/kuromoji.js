@@ -1,15 +1,15 @@
 class CharacterClass {
 	class_id: number
 	class_name: string
-	is_always_invoke: boolean
-	is_grouping: boolean
+	is_always_invoke: boolean | number
+	is_grouping: boolean | number
 	max_length: number
 
 	constructor(
 		class_id: number,
 		class_name: string,
-		is_always_invoke: boolean,
-		is_grouping: boolean,
+		is_always_invoke: boolean | number,
+		is_grouping: boolean | number,
 		max_length: number,
 	) {
 		this.class_id = class_id

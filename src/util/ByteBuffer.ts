@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -19,9 +20,9 @@
  * Convert String (UTF-16) to UTF-8 ArrayBuffer
  *
  * @param {String} str UTF-16 string to convert
- * @return {Uint8Array} Byte sequence encoded by UTF-8
+ * @return {Uint8Array} Byte sequence encoded by UTF-8. May  return null if malformed surrogate pair found.
  */
-const stringToUtf8Bytes = function (str: string) {
+const stringToUtf8Bytes = function (str: string): Uint8Array | null {
 	// Max size of 1 character is 4 bytes
 	const bytes = new Uint8Array(str.length * 4)
 
@@ -29,7 +30,7 @@ const stringToUtf8Bytes = function (str: string) {
 		j = 0
 
 	while (i < str.length) {
-		var unicode_code
+		let unicode_code: number
 
 		const utf16_code = str.charCodeAt(i++)
 		if (utf16_code >= 0xd800 && utf16_code <= 0xdbff) {
@@ -81,7 +82,7 @@ const stringToUtf8Bytes = function (str: string) {
  * @param {Array} bytes UTF-8 byte sequence to convert
  * @return {String} String encoded by UTF-16
  */
-const utf8BytesToString = function (bytes: any[]) {
+const utf8BytesToString = function (bytes: number[]): string {
 	let str = ''
 	let code, b1, b2, b3, b4, upper, lower
 	let i = 0
@@ -172,7 +173,7 @@ class ByteBuffer {
 		this.buffer[this.position++] = b
 	}
 
-	get(index) {
+	get(index?: number | null) {
 		if (index == null) {
 			index = this.position
 			this.position += 1
@@ -224,7 +225,7 @@ class ByteBuffer {
 		this.put(b3)
 	}
 
-	getInt(index) {
+	getInt(index?: number | null) {
 		if (index == null) {
 			index = this.position
 			this.position += 4
@@ -248,16 +249,16 @@ class ByteBuffer {
 
 	putString(str) {
 		const bytes = stringToUtf8Bytes(str)
-		for (let i = 0; i < bytes.length; i++) {
-			this.put(bytes[i])
+		for (let i = 0; i < bytes!.length; i++) {
+			this.put(bytes![i])
 		}
 		// put null character as terminal character
 		this.put(0)
 	}
 
-	getString(index) {
-		let buf = [],
-			ch
+	getString(index?: number | null) {
+		const buf: number[] = []
+		let ch: number
 		if (index == null) {
 			index = this.position
 		}

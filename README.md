@@ -63,18 +63,14 @@ import NodeDictionaryLoader from '@patdx/kuromoji/node'
 import BrowserDictionaryLoader from '@patdx/kuromoji/browser'
 
 // For Node.js:
-const tokenizer = await kuromoji
-	.builder({
-		loader: new NodeDictionaryLoader({ dicPath: 'path/to/dictionary/dir/' }),
-	})
-	.build()
+const tokenizer = await new kuromoji.TokenizerBuilder({
+	loader: new NodeDictionaryLoader({ dicPath: 'path/to/dictionary/dir/' }),
+}).build()
 
 // For Browser:
-const tokenizer = await kuromoji
-	.builder({
-		loader: new BrowserDictionaryLoader({ dicPath: 'path/to/dictionary/dir/' }),
-	})
-	.build()
+const tokenizer = await new kuromoji.TokenizerBuilder({
+	loader: new BrowserDictionaryLoader({ dicPath: 'path/to/dictionary/dir/' }),
+}).build()
 
 // tokenizer is ready
 var path = tokenizer.tokenize('すもももももももものうち')

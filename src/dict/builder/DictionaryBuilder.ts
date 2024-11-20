@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-import doublearray from 'doublearray'
+import * as doublearray from '../../vendor/doublearray/doublearray'
+import type { DoubleArray } from '../../vendor/doublearray/doublearray'
 import DynamicDictionaries from '../DynamicDictionaries'
 import TokenInfoDictionary from '../TokenInfoDictionary'
 import ConnectionCostsBuilder from './ConnectionCostsBuilder'
@@ -48,7 +49,7 @@ class DictionaryBuilder {
 		return this
 	}
 
-	putCharDefLine(line) {
+	putCharDefLine(line: string) {
 		this.cd_builder.putLine(line)
 		return this
 	}
@@ -65,7 +66,7 @@ class DictionaryBuilder {
 		return new DynamicDictionaries(
 			dictionaries.trie,
 			dictionaries.token_info_dictionary,
-			this.cc_builder.build(),
+			this.cc_builder.build() ?? undefined,
 			unknown_dictionary,
 		)
 	}
@@ -89,7 +90,11 @@ class DictionaryBuilder {
 			//     console.log("Not Found:" + surface_form);
 			// }
 
-			token_info_dictionary.addMapping(trie_id, token_info_id)
+			token_info_dictionary.addMapping(
+				trie_id,
+				// @ts-expect-error Argument of type 'string' is not assignable to parameter of type 'number'
+				token_info_id,
+			)
 		}
 
 		return {
@@ -110,20 +115,26 @@ class DictionaryBuilder {
 
 		for (const token_info_id in dictionary_entries) {
 			const class_name = dictionary_entries[token_info_id]
-			const class_id = char_def.invoke_definition_map.lookup(class_name)
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			const class_id = char_def.invoke_definition_map!.lookup(class_name)
 
 			// Assertion
 			// if (trie_id < 0) {
 			//     console.log("Not Found:" + surface_form);
 			// }
 
-			unk_dictionary.addMapping(class_id, token_info_id)
+			unk_dictionary.addMapping(
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				class_id!,
+				// @ts-expect-error Argument of type 'string' is not assignable to parameter of type 'number'.ts(2345)
+				token_info_id,
+			)
 		}
 
 		return unk_dictionary
 	}
 
-	buildDoubleArray() {
+	buildDoubleArray(): DoubleArray {
 		let trie_id = 0
 		const words = this.tid_entries.map(function (entry) {
 			const surface_form = entry[0]

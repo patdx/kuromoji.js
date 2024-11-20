@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -26,11 +27,11 @@ class ConnectionCostsBuilder {
 		this.connection_cost = null
 	}
 
-	putLine(line) {
+	putLine(line: string) {
 		if (this.lines === 0) {
 			const dimensions = line.split(' ')
-			const forward_dimension = dimensions[0]
-			const backward_dimension = dimensions[1]
+			const forward_dimension = Number(dimensions[0])
+			const backward_dimension = Number(dimensions[1])
 
 			if (forward_dimension < 0 || backward_dimension < 0) {
 				throw 'Parse error of matrix.def'
@@ -59,13 +60,13 @@ class ConnectionCostsBuilder {
 			backward_id < 0 ||
 			!isFinite(forward_id) ||
 			!isFinite(backward_id) ||
-			this.connection_cost.forward_dimension <= forward_id ||
-			this.connection_cost.backward_dimension <= backward_id
+			this.connection_cost!.forward_dimension <= forward_id ||
+			this.connection_cost!.backward_dimension <= backward_id
 		) {
 			throw 'Parse error of matrix.def'
 		}
 
-		this.connection_cost.put(forward_id, backward_id, cost)
+		this.connection_cost!.put(forward_id, backward_id, cost)
 		this.lines++
 		return this
 	}

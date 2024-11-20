@@ -19,7 +19,7 @@ import ByteBuffer from '../util/ByteBuffer'
 import CharacterClass from './CharacterClass'
 
 class InvokeDefinitionMap {
-	map: any[]
+	map: CharacterClass[]
 	lookup_table: Record<string, number>
 
 	constructor() {
@@ -65,7 +65,7 @@ class InvokeDefinitionMap {
 
 	static load(invoke_def_buffer: Uint8Array) {
 		const invoke_def = new InvokeDefinitionMap()
-		const character_category_definition = []
+		const character_category_definition: CharacterClass[] = []
 
 		const buffer = new ByteBuffer(invoke_def_buffer)
 		while (buffer.position + 1 < buffer.size()) {

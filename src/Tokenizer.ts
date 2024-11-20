@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -17,29 +18,31 @@
 
 import ViterbiBuilder from './viterbi/ViterbiBuilder'
 import ViterbiSearcher from './viterbi/ViterbiSearcher'
-import IpadicFormatter from './util/IpadicFormatter'
+import IpadicFormatter, { type IpadicFeatures } from './util/IpadicFormatter'
 import type DynamicDictionaries from './dict/DynamicDictionaries'
+import type TokenInfoDictionary from './dict/TokenInfoDictionary'
+import type UnknownDictionary from './dict/UnknownDictionary'
 
 const PUNCTUATION = /、|。/
 
 class Tokenizer {
-	token_info_dictionary: any
-	unknown_dictionary: any
+	token_info_dictionary: TokenInfoDictionary
+	unknown_dictionary: UnknownDictionary
 	viterbi_builder: ViterbiBuilder
 	viterbi_searcher: ViterbiSearcher
 	formatter: IpadicFormatter
 
 	constructor(dic: DynamicDictionaries) {
-		this.token_info_dictionary = dic.token_info_dictionary
-		this.unknown_dictionary = dic.unknown_dictionary
+		this.token_info_dictionary = dic.token_info_dictionary!
+		this.unknown_dictionary = dic.unknown_dictionary!
 		this.viterbi_builder = new ViterbiBuilder(dic)
-		this.viterbi_searcher = new ViterbiSearcher(dic.connection_costs)
+		this.viterbi_searcher = new ViterbiSearcher(dic.connection_costs!)
 		this.formatter = new IpadicFormatter() // TODO Other dictionaries
 	}
 
-	tokenize(text: string) {
+	tokenize(text: string): IpadicFeatures[] {
 		const sentences = Tokenizer.splitByPunctuation(text)
-		const tokens = []
+		const tokens: IpadicFeatures[] = []
 		for (let i = 0; i < sentences.length; i++) {
 			const sentence = sentences[i]
 			this.tokenizeForSentence(sentence, tokens)
@@ -47,7 +50,10 @@ class Tokenizer {
 		return tokens
 	}
 
-	tokenizeForSentence(sentence, tokens) {
+	tokenizeForSentence(
+		sentence: string,
+		tokens: IpadicFeatures[],
+	): IpadicFeatures[] {
 		if (tokens == null) {
 			tokens = []
 		}
@@ -61,9 +67,15 @@ class Tokenizer {
 		for (let j = 0; j < best_path.length; j++) {
 			const node = best_path[j]
 
-			var token, features, features_line
+			// var token, features: string[], features_line
+			let token: IpadicFeatures
+			let features: string[]
+			let features_line: string | null
 			if (node.type === 'KNOWN') {
-				features_line = this.token_info_dictionary.getFeatures(node.name)
+				features_line = this.token_info_dictionary.getFeatures(
+					// @ts-expect-error Argument of type 'number' is not assignable to parameter of type 'string'.ts(2345)
+					node.name,
+				)
 				if (features_line == null) {
 					features = []
 				} else {
@@ -77,7 +89,10 @@ class Tokenizer {
 				)
 			} else if (node.type === 'UNKNOWN') {
 				// Unknown word
-				features_line = this.unknown_dictionary.getFeatures(node.name)
+				features_line = this.unknown_dictionary.getFeatures(
+					// @ts-expect-error Argument of type 'number' is not assignable to parameter of type 'string'.ts(2345)
+					node.name,
+				)
 				if (features_line == null) {
 					features = []
 				} else {
@@ -111,7 +126,7 @@ class Tokenizer {
 	}
 
 	static splitByPunctuation(input: string) {
-		const sentences = []
+		const sentences: string[] = []
 		let tail = input
 		while (true) {
 			if (tail === '') {

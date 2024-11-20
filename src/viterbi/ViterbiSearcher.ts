@@ -9,7 +9,7 @@ class ViterbiSearcher {
 		this.connection_costs = connection_costs
 	}
 
-	search(lattice: ViterbiLattice) {
+	search(lattice: ViterbiLattice): ViterbiNode[] {
 		lattice = this.forward(lattice)
 		return this.backward(lattice)
 	}
@@ -60,8 +60,8 @@ class ViterbiSearcher {
 		return lattice
 	}
 
-	backward(lattice: ViterbiLattice) {
-		const shortest_path = []
+	backward(lattice: ViterbiLattice): ViterbiNode[] {
+		const shortest_path: ViterbiNode[] = []
 		const eos = lattice.nodes_end_at[lattice.nodes_end_at.length - 1][0]
 
 		let node_back = eos.prev

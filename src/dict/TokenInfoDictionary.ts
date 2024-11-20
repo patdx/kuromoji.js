@@ -28,8 +28,8 @@ class TokenInfoDictionary {
 		this.pos_buffer = new ByteBuffer(10 * 1024 * 1024)
 	}
 
-	buildDictionary(entries) {
-		const dictionary_entries = {} // using as hashmap, string -> string (word_id -> surface_form) to build dictionary
+	buildDictionary(entries: any[][]) {
+		const dictionary_entries: { [word_id: number]: string } = {} // using as hashmap, string -> string (word_id -> surface_form) to build dictionary
 
 		for (let i = 0; i < entries.length; i++) {
 			const entry = entries[i]
@@ -66,7 +66,13 @@ class TokenInfoDictionary {
 		return dictionary_entries
 	}
 
-	put(left_id, right_id, word_cost, surface_form, feature) {
+	put(
+		left_id: number,
+		right_id: number,
+		word_cost: number,
+		surface_form: string,
+		feature: string,
+	): number {
 		const token_info_id = this.dictionary.position
 		const pos_id = this.pos_buffer.position
 
@@ -79,7 +85,7 @@ class TokenInfoDictionary {
 		return token_info_id
 	}
 
-	addMapping(source, target) {
+	addMapping(source: number, target: number) {
 		let mapping = this.target_map[source]
 		if (mapping == null) {
 			mapping = []
@@ -105,17 +111,17 @@ class TokenInfoDictionary {
 		return buffer.shrink() // Shrink-ed Typed Array
 	}
 
-	loadDictionary(array_buffer) {
+	loadDictionary(array_buffer: Uint8Array) {
 		this.dictionary = new ByteBuffer(array_buffer)
 		return this
 	}
 
-	loadPosVector(array_buffer) {
+	loadPosVector(array_buffer: Uint8Array) {
 		this.pos_buffer = new ByteBuffer(array_buffer)
 		return this
 	}
 
-	loadTargetMap(array_buffer) {
+	loadTargetMap(array_buffer: Uint8Array) {
 		const buffer = new ByteBuffer(array_buffer)
 		buffer.position = 0
 		this.target_map = {}

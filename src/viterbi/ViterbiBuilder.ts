@@ -21,9 +21,10 @@ import SurrogateAwareString from '../util/SurrogateAwareString'
 import type DynamicDictionaries from '../dict/DynamicDictionaries'
 import type TokenInfoDictionary from '../dict/TokenInfoDictionary'
 import type UnknownDictionary from '../dict/UnknownDictionary'
+import type { DoubleArray } from '../vendor/doublearray/doublearray'
 
 class ViterbiBuilder {
-	trie: any
+	trie: DoubleArray
 	token_info_dictionary: TokenInfoDictionary
 	unknown_dictionary: UnknownDictionary
 
@@ -48,7 +49,10 @@ class ViterbiBuilder {
 
 				const token_info_ids = this.token_info_dictionary.target_map[trie_id]
 				for (let i = 0; i < token_info_ids.length; i++) {
-					const token_info_id = parseInt(token_info_ids[i])
+					const token_info_id = parseInt(
+						// @ts-expect-error Argument of type 'number' is not assignable to parameter of type 'string'.ts(2345)
+						token_info_ids[i],
+					)
 
 					left_id =
 						this.token_info_dictionary.dictionary.getShort(token_info_id)
@@ -105,7 +109,10 @@ class ViterbiBuilder {
 				const unk_ids =
 					this.unknown_dictionary.target_map[head_char_class.class_id]
 				for (let j = 0; j < unk_ids.length; j++) {
-					const unk_id = parseInt(unk_ids[j])
+					const unk_id = parseInt(
+						// @ts-expect-error Argument of type 'number' is not assignable to parameter of type 'string'.ts(2345)
+						unk_ids[j],
+					)
 
 					left_id = this.unknown_dictionary.dictionary.getShort(unk_id)
 					right_id = this.unknown_dictionary.dictionary.getShort(unk_id + 2)

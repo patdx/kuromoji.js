@@ -1,16 +1,15 @@
-import fs from 'fs'
-import gulp from 'gulp'
 import { deleteAsync } from 'del'
 import eventStream from 'event-stream'
-import gzip from 'gulp-gzip'
-import webserver from 'gulp-webserver'
-import jsdoc from 'gulp-jsdoc3'
+import fs from 'fs'
+import gulp from 'gulp'
 import bower from 'gulp-bower'
-import ghPages from 'gulp-gh-pages-will'
 import bump from 'gulp-bump'
-import minimist from 'minimist'
+import ghPages from 'gulp-gh-pages-will'
 import git from 'gulp-git'
-import * as esbuild from 'esbuild'
+import gzip from 'gulp-gzip'
+import jsdoc from 'gulp-jsdoc3'
+import webserver from 'gulp-webserver'
+import minimist from 'minimist'
 import { $ } from 'zx'
 
 $.verbose = true
@@ -26,18 +25,7 @@ gulp.task('clean', async () => {
 gulp.task(
 	'build',
 	gulp.series('clean', async () => {
-		await esbuild.build({
-			entryPoints: [
-				'src/kuromoji.ts',
-				'src/loader/BrowserDictionaryLoader.ts',
-				'src/loader/NodeDictionaryLoader.ts',
-			],
-			bundle: true,
-			outdir: 'build',
-			platform: 'node',
-			target: 'esnext',
-			format: 'esm',
-		})
+		await $`tsup`
 	}),
 )
 

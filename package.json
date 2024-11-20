@@ -7,12 +7,9 @@
 	"bugs": {
 		"url": "https://github.com/patdx/kuromoji.js/issues"
 	},
-	"dependencies": {
-		"doublearray": "0.0.2"
-	},
 	"devDependencies": {
 		"@eslint/js": "^9.15.0",
-		"@types/doublearray": "^0.0.32",
+		"@microsoft/api-extractor": "^7.47.11",
 		"@types/gulp": "^4.0.17",
 		"@types/node": "^22.9.1",
 		"@vitest/coverage-v8": "^2.1.5",
@@ -35,6 +32,7 @@
 		"minimist": "^1.2.0",
 		"prettier": "^3.3.3",
 		"ts-migrate": "^0.1.35",
+		"tsup": "^8.3.5",
 		"typescript": "5.6.3",
 		"typescript-eslint": "^8.15.0",
 		"vitest": "^2.1.5",

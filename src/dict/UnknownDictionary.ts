@@ -44,12 +44,12 @@ class UnknownDictionary extends TokenInfoDictionary {
 	}
 
 	loadUnknownDictionaries(
-		unk_buffer,
-		unk_pos_buffer,
-		unk_map_buffer,
-		cat_map_buffer,
-		compat_cat_map_buffer,
-		invoke_def_buffer,
+		unk_buffer: Uint8Array,
+		unk_pos_buffer: Uint8Array,
+		unk_map_buffer: Uint8Array,
+		cat_map_buffer: Uint8Array,
+		compat_cat_map_buffer: Uint32Array,
+		invoke_def_buffer: Uint8Array,
 	) {
 		this.loadDictionary(unk_buffer)
 		this.loadPosVector(unk_pos_buffer)

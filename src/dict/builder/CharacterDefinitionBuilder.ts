@@ -38,7 +38,7 @@ class CharacterDefinitionBuilder {
 		this.category_mapping = []
 	}
 
-	putLine(line) {
+	putLine(line: string) {
 		const parsed_category_def = CATEGORY_DEF_PATTERN.exec(line)
 		if (parsed_category_def != null) {
 			const class_id = this.character_category_definition.length
