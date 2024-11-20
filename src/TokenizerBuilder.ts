@@ -29,7 +29,7 @@ class TokenizerBuilder {
 		}
 	}
 
-	build(callback) {
+	build(callback: (err: Error | null, tokenizer: Tokenizer | null) => void) {
 		const loader = new DictionaryLoader(this.dic_path)
 		loader.load(function (err, dic) {
 			callback(err, new Tokenizer(dic))

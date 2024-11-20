@@ -8,9 +8,10 @@ Other forks worth looking at:
 - https://github.com/sglkc/kuromoji.js/
 - https://github.com/aiktb/kuromoji.js
 
-Note on using DecompressionStream:
+Other notes:
 
-- https://zenn.dev/inaniwaudon/scraps/dffdc876ccaf6d
+- [Note on using DecompressionStream](https://zenn.dev/inaniwaudon/scraps/dffdc876ccaf6d)
+- [About Dictionary Sources](https://www.dampfkraft.com/nlp/japanese-tokenizer-dictionaries.html)
 
 My goal is to provide a nice web version of kuromoji.js.
 

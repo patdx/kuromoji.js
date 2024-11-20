@@ -18,7 +18,10 @@
 import DictionaryLoader from './DictionaryLoader'
 
 export default class BrowserDictionaryLoader extends DictionaryLoader {
-	loadArrayBuffer(url: string, callback) {
+	loadArrayBuffer(
+		url: string,
+		callback: (err: Error | null, buffer: ArrayBufferLike | null) => void,
+	) {
 		fetch(url).then(async (res) => {
 			if (!res.ok) {
 				const err = new Error(res.statusText)

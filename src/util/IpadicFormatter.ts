@@ -1,6 +1,27 @@
+export interface IpadicFeatures {
+	word_id: number
+	word_type: string
+	word_position: number
+	surface_form: string
+	pos: string
+	pos_detail_1: string
+	pos_detail_2: string
+	pos_detail_3: string
+	conjugated_type: string
+	conjugated_form: string
+	basic_form: string
+	reading?: string | undefined
+	pronunciation?: string | undefined
+}
+
 class IpadicFormatter {
-	formatEntry(word_id, position, type, features) {
-		const token = {}
+	formatEntry(
+		word_id: number,
+		position: number,
+		type: string,
+		features: string[],
+	): IpadicFeatures {
+		const token = {} as IpadicFeatures
 		token.word_id = word_id
 		token.word_type = type
 		token.word_position = position
@@ -19,8 +40,14 @@ class IpadicFormatter {
 		return token
 	}
 
-	formatUnknownEntry(word_id, position, type, features, surface_form) {
-		const token = {}
+	formatUnknownEntry(
+		word_id: number,
+		position: number,
+		type: string,
+		features: string[],
+		surface_form: string,
+	) {
+		const token = {} as IpadicFeatures
 		token.word_id = word_id
 		token.word_type = type
 		token.word_position = position

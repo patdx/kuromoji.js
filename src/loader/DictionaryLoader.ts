@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -18,6 +19,7 @@
 import path from 'path'
 import async from 'async'
 import DynamicDictionaries from '../dict/DynamicDictionaries'
+import type { A } from 'vitest/dist/chunks/reporters.D7Jzd9GS.js'
 
 class DictionaryLoader {
 	dic: DynamicDictionaries
@@ -28,11 +30,16 @@ class DictionaryLoader {
 		this.dic_path = dic_path
 	}
 
-	loadArrayBuffer(file, callback) {
+	loadArrayBuffer(
+		file: string,
+		callback: (err: Error | null, buffer: ArrayBufferLike | null) => void,
+	) {
 		throw new Error('DictionaryLoader#loadArrayBuffer should be overwrite')
 	}
 
-	load(load_callback) {
+	load(
+		load_callback: (err: Error | null, dic: DynamicDictionaries | null) => void,
+	) {
 		const dic = this.dic
 		const dic_path = this.dic_path
 		const loadArrayBuffer = this.loadArrayBuffer
@@ -54,7 +61,7 @@ class DictionaryLoader {
 								},
 							)
 						},
-						function (err, buffers) {
+						function (err, buffers: ArrayBufferLike[]) {
 							if (err) {
 								return callback(err)
 							}
@@ -81,7 +88,7 @@ class DictionaryLoader {
 								},
 							)
 						},
-						function (err, buffers) {
+						function (err, buffers: ArrayBufferLike[]) {
 							if (err) {
 								return callback(err)
 							}
@@ -106,7 +113,7 @@ class DictionaryLoader {
 							if (err) {
 								return callback(err)
 							}
-							const cc_buffer = new Int16Array(buffer)
+							const cc_buffer = new Int16Array(buffer!)
 							dic.loadConnectionCosts(cc_buffer)
 							callback(null)
 						},
@@ -134,7 +141,7 @@ class DictionaryLoader {
 								},
 							)
 						},
-						function (err, buffers) {
+						function (err, buffers: ArrayBufferLike[]) {
 							if (err) {
 								return callback(err)
 							}

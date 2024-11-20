@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -28,12 +29,15 @@ describe(
 		timeout: 5 * 60 * 1000, // 5 min
 	},
 	function () {
-		let viterbi_builder = null // target object
+		let viterbi_builder: ViterbiBuilder | null = null // target object
 
-		beforeAll(async function (done) {
-			await new Promise((resolve) => {
+		beforeAll(async function () {
+			await new Promise<void>((resolve, reject) => {
 				const loader = new DictionaryLoader(DIC_DIR)
 				loader.load(function (err, dic) {
+					if (err || !dic) {
+						return reject(err ?? new Error('Failed to load dictionary'))
+					}
 					viterbi_builder = new ViterbiBuilder(dic)
 					resolve()
 				})
@@ -42,7 +46,7 @@ describe(
 
 		it('Unknown word', function () {
 			// lattice to have "ト", "トト", "トトロ"
-			const lattice = viterbi_builder.build('トトロ')
+			const lattice = viterbi_builder!.build('トトロ')
 			for (let i = 1; i < lattice.eos_pos; i++) {
 				const nodes = lattice.nodes_end_at[i]
 				if (nodes == null) {

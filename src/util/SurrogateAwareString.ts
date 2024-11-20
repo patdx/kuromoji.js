@@ -1,7 +1,7 @@
 class SurrogateAwareString {
 	length: number
 	str: string
-	index_mapping: never[]
+	index_mapping: number[]
 
 	constructor(str: string) {
 		this.str = str
@@ -18,7 +18,7 @@ class SurrogateAwareString {
 		this.length = this.index_mapping.length
 	}
 
-	slice(index) {
+	slice(index: number) {
 		if (this.index_mapping.length <= index) {
 			return ''
 		}
@@ -26,7 +26,7 @@ class SurrogateAwareString {
 		return this.str.slice(surrogate_aware_index)
 	}
 
-	charAt(index) {
+	charAt(index: number) {
 		if (this.str.length <= index) {
 			return ''
 		}
@@ -42,7 +42,7 @@ class SurrogateAwareString {
 		)
 	}
 
-	charCodeAt(index) {
+	charCodeAt(index: number) {
 		if (this.index_mapping.length <= index) {
 			return NaN
 		}

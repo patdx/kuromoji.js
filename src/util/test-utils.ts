@@ -1,6 +1,6 @@
-export function promisify(fn) {
+export function promisify(fn: (done: () => void) => unknown) {
 	return () =>
-		new Promise((resolve) => {
+		new Promise<void>((resolve) => {
 			fn(resolve)
 		})
 }

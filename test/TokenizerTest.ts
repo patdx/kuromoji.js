@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -54,14 +55,14 @@ describe(
 		timeout: 5 * 60 * 1000, // 5 min
 	},
 	function () {
-		let tokenizer = null // target object
+		let tokenizer: Tokenizer // target object
 
-		beforeAll(async function (done) {
-			await new Promise((resolve) => {
+		beforeAll(async function () {
+			await new Promise<void>((resolve) => {
 				kuromoji
 					.builder({ dicPath: DIC_DIR })
 					.build(function (error, _tokenizer) {
-						tokenizer = _tokenizer
+						tokenizer = _tokenizer!
 						expect(tokenizer).to.be.a('object')
 						resolve()
 					})

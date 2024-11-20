@@ -1,11 +1,11 @@
 class ViterbiNode {
-	start_pos: any
-	length: any
+	start_pos: number
+	length: number
 	name: number
 	cost: number
 	left_id: number
 	right_id: number
-	prev: null
+	prev: ViterbiNode | null
 	surface_form: string
 	shortest_cost: number
 	type: string

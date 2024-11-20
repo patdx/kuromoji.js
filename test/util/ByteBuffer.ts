@@ -20,7 +20,7 @@ import { expect } from 'chai'
 import ByteBuffer from '../../src/util/ByteBuffer'
 
 describe('ByteBuffer static methods', function () {
-	let byteBuffer
+	let byteBuffer: ByteBuffer
 
 	beforeEach(
 		// 'Build',

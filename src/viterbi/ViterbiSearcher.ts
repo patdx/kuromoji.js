@@ -1,5 +1,6 @@
 import type ConnectionCosts from '../dict/ConnectionCosts'
 import type ViterbiLattice from './ViterbiLattice'
+import type ViterbiNode from './ViterbiNode'
 
 class ViterbiSearcher {
 	connection_costs: ConnectionCosts
@@ -13,7 +14,7 @@ class ViterbiSearcher {
 		return this.backward(lattice)
 	}
 
-	forward(lattice) {
+	forward(lattice: ViterbiLattice) {
 		let i, j, k
 		for (i = 1; i <= lattice.eos_pos; i++) {
 			const nodes = lattice.nodes_end_at[i]
@@ -23,7 +24,7 @@ class ViterbiSearcher {
 			for (j = 0; j < nodes.length; j++) {
 				const node = nodes[j]
 				let cost = Number.MAX_VALUE
-				var shortest_prev_node
+				let shortest_prev_node: ViterbiNode | null = null
 
 				const prev_nodes = lattice.nodes_end_at[node.start_pos - 1]
 				if (prev_nodes == null) {
@@ -33,7 +34,7 @@ class ViterbiSearcher {
 				for (k = 0; k < prev_nodes.length; k++) {
 					const prev_node = prev_nodes[k]
 
-					var edge_cost
+					let edge_cost: number
 					if (node.left_id == null || prev_node.right_id == null) {
 						// TODO assert
 						console.log('Left or right is null')
@@ -59,7 +60,7 @@ class ViterbiSearcher {
 		return lattice
 	}
 
-	backward(lattice) {
+	backward(lattice: ViterbiLattice) {
 		const shortest_path = []
 		const eos = lattice.nodes_end_at[lattice.nodes_end_at.length - 1][0]
 

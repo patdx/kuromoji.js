@@ -23,6 +23,11 @@ import CharacterDefinitionBuilder from './CharacterDefinitionBuilder'
 import UnknownDictionary from '../UnknownDictionary'
 
 class DictionaryBuilder {
+	tid_entries: string[][]
+	unk_entries: string[][]
+	cc_builder: ConnectionCostsBuilder
+	cd_builder: CharacterDefinitionBuilder
+
 	constructor() {
 		// Array of entries, each entry in Mecab form
 		// (0: surface form, 1: left id, 2: right id, 3: word cost, 4: part of speech id, 5-: other features)
@@ -32,7 +37,7 @@ class DictionaryBuilder {
 		this.cd_builder = new CharacterDefinitionBuilder()
 	}
 
-	addTokenInfoDictionary(line) {
+	addTokenInfoDictionary(line: string) {
 		const new_entry = line.split(',')
 		this.tid_entries.push(new_entry)
 		return this

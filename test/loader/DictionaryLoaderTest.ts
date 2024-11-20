@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -19,6 +20,7 @@ import { expect } from 'chai'
 
 import DictionaryLoader from '../../src/loader/NodeDictionaryLoader'
 import { promisify } from '../../src/util/test-utils'
+import type DynamicDictionaries from '../../src/dict/DynamicDictionaries'
 
 const DIC_DIR = 'dict/'
 
@@ -28,13 +30,13 @@ describe(
 		timeout: 5 * 60 * 1000, // 5 min
 	},
 	function () {
-		let dictionaries = null // target object
+		let dictionaries: DynamicDictionaries // target object
 
 		beforeAll(
 			promisify(function (done) {
 				const loader = new DictionaryLoader(DIC_DIR)
 				loader.load(function (err, dic) {
-					dictionaries = dic
+					dictionaries = dic!
 					done()
 				})
 			}),
@@ -63,17 +65,19 @@ describe('DictionaryLoader about loading', function () {
 		{
 			timeout: 5 * 60 * 1000, // 5 min
 		},
-		function (done) {
+		async function () {
 			const loader = new DictionaryLoader('dict') // not have suffix /
-			loader.load(function (err, dic) {
-				expect(err).to.be.null
-				expect(dic).to.not.be.undefined
-				done()
+			await new Promise<void>((resolve) => {
+				loader.load(function (err, dic) {
+					expect(err).to.be.null
+					expect(dic).to.not.be.undefined
+					resolve()
+				})
 			})
 		},
 	)
 	it("couldn't load dictionary, then call with error", async function () {
-		await new Promise((resolve) => {
+		await new Promise<void>((resolve) => {
 			const loader = new DictionaryLoader('non-exist/dictionaries')
 			loader.load(function (err, dic) {
 				expect(err).to.be.an.instanceof(Error)

@@ -20,14 +20,17 @@ import node_zlib from 'zlib'
 import DictionaryLoader from './DictionaryLoader'
 
 class NodeDictionaryLoader extends DictionaryLoader {
-	loadArrayBuffer(file: string, callback) {
+	loadArrayBuffer(
+		file: string,
+		callback: (err: Error | null, buffer: ArrayBufferLike | null) => void,
+	) {
 		fs.readFile(file, function (err, buffer) {
 			if (err) {
-				return callback(err)
+				return callback(err, null)
 			}
 			node_zlib.gunzip(buffer, function (err2, decompressed) {
 				if (err2) {
-					return callback(err2)
+					return callback(err2, null)
 				}
 				const typed_array = new Uint8Array(decompressed)
 				callback(null, typed_array.buffer)

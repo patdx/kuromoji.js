@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -21,11 +23,12 @@ import InvokeDefinitionMap from '../../src/dict/InvokeDefinitionMap'
 import CharacterDefinitionBuilder from '../../src/dict/builder/CharacterDefinitionBuilder'
 import fs from 'fs'
 import { expect } from 'chai'
+import type CharacterDefinition from '../../src/dict/CharacterDefinition'
 
 const DIC_DIR = 'test/resource/minimum-dic/'
 
 describe('CharacterDefinition from char.def', function () {
-	let char_def // target object
+	let char_def: CharacterDefinition // target object
 
 	beforeAll(
 		// 'Create CharacterDefinition',
@@ -121,7 +124,7 @@ describe('CharacterDefinition from char.def', function () {
 		expect(char_def.lookup('一').max_length).to.be.equal(0)
 	})
 	it('Save and load', function () {
-		const buffer = char_def.invoke_definition_map.toBuffer()
+		const buffer = char_def.invoke_definition_map!.toBuffer()
 		const invoke_def = InvokeDefinitionMap.load(buffer)
 		expect(invoke_def.getCharacterClass(0)).to.deep.eql({
 			class_id: 0,

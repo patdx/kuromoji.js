@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -22,6 +23,7 @@ import { expect } from 'chai'
 import kuromoji from '../../../src/kuromoji'
 import Tokenizer from '../../../src/Tokenizer'
 import { promisify } from '../../../src/util/test-utils'
+import type DynamicDictionaries from '../../../src/dict/DynamicDictionaries'
 
 const DIC_DIR = 'test/resource/minimum-dic/'
 const connection_costs_file = DIC_DIR + 'matrix.def'
@@ -35,7 +37,7 @@ describe(
 		timeout: 30000,
 	},
 	function () {
-		let kuromoji_dic = null // target object of DynamicDictionaries to build
+		let kuromoji_dic: DynamicDictionaries | null = null // target object of DynamicDictionaries to build
 
 		beforeAll(
 			// 'Build',
@@ -76,19 +78,19 @@ describe(
 			expect(kuromoji_dic).not.to.be.null
 		})
 		it('TokenInfoDictionary not to be null', function () {
-			expect(kuromoji_dic.token_info_dictionary).not.to.be.null
+			expect(kuromoji_dic?.token_info_dictionary).not.to.be.null
 		})
 		it('TokenInfoDictionary', function () {
 			// expect(kuromoji_dic.token_info_dictionary.getFeatures("1467000")).to.have.length.above(1);
 			expect(
-				kuromoji_dic.token_info_dictionary.dictionary.buffer,
+				kuromoji_dic?.token_info_dictionary?.dictionary.buffer,
 			).to.have.length.above(1)
 		})
 		it('DoubleArray not to be null', function () {
-			expect(kuromoji_dic.trie).not.to.be.null
+			expect(kuromoji_dic?.trie).not.to.be.null
 		})
 		it('ConnectionCosts not to be null', function () {
-			expect(kuromoji_dic.connection_costs).not.to.be.null
+			expect(kuromoji_dic?.connection_costs).not.to.be.null
 		})
 		it('Tokenize simple test', function () {
 			const tokenizer = new Tokenizer(kuromoji_dic)
@@ -201,7 +203,10 @@ describe(
 				const expected_token = expected_tokens[i]
 				const target_token = path[i]
 				for (const key in expected_token) {
-					expect(target_token).to.have.property(key, expected_token[key])
+					expect(target_token).to.have.property(
+						key,
+						(expected_token as any)[key],
+					)
 				}
 			}
 		})

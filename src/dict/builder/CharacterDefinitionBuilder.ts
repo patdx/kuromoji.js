@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -15,6 +16,7 @@
  * limitations under the License.
  */
 
+import type CharacterClass from '../CharacterClass'
 import CharacterDefinition from '../CharacterDefinition'
 import InvokeDefinitionMap from '../InvokeDefinitionMap'
 
@@ -25,6 +27,10 @@ const RANGE_CATEGORY_MAPPING_PATTERN =
 	/^(0x[0-9A-F]{4})\.\.(0x[0-9A-F]{4})(?:\s+([^#\s]+))(?:\s+([^#\s]+))*/
 
 class CharacterDefinitionBuilder {
+	char_def: CharacterDefinition
+	character_category_definition: CharacterClass[]
+	category_mapping: unknown[]
+
 	constructor() {
 		this.char_def = new CharacterDefinition()
 		this.char_def.invoke_definition_map = new InvokeDefinitionMap()
@@ -65,7 +71,9 @@ class CharacterDefinitionBuilder {
 
 	build() {
 		// TODO If DEFAULT category does not exist, throw error
-		this.char_def.invoke_definition_map.init(this.character_category_definition)
+		this.char_def.invoke_definition_map!.init(
+			this.character_category_definition,
+		)
 		this.char_def.initCategoryMappings(this.category_mapping)
 		return this.char_def
 	}
