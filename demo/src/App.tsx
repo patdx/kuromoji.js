@@ -1,4 +1,4 @@
-import { Suspense, use, useState } from 'react'
+import { Suspense, use, useState, useTransition } from 'react'
 import * as Comlink from 'comlink'
 import type { KuromojiWorker } from './kuromoji-worker'
 import type { IpadicFeatures } from '../../build/index.mjs'
@@ -12,6 +12,7 @@ const kuromojiWorker = new Worker(
 const kuromoji = Comlink.wrap<KuromojiWorker>(kuromojiWorker)
 
 function App() {
+	const [isPending, startTransition] = useTransition()
 	const [promise, setPromise] = useState<Promise<IpadicFeatures[]> | null>(null)
 
 	return (
@@ -51,7 +52,9 @@ function App() {
 							}
 						}
 
-						setPromise(action())
+						startTransition(() => {
+							setPromise(action())
+						})
 					}}
 				>
 					<label>
