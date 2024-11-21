@@ -81,7 +81,7 @@ class CharacterDefinition {
 	}
 
 	lookupCompatibleCategory(ch: string) {
-		const classes: string[] = []
+		const classes: CharacterClass[] = []
 
 		/*
          if (SurrogateAwareString.isSurrogatePair(ch)) {

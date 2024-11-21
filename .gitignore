@@ -36,3 +36,5 @@ publish
 
 # Others
 .DS_Store
+
+/temp

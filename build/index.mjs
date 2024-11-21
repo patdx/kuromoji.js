@@ -179,6 +179,9 @@ var ViterbiBuilder = class {
       const head_char_class = this.unknown_dictionary.lookup(
         head_char.toString()
       );
+      if (!head_char_class) {
+        throw new Error("Unknown character: " + head_char);
+      }
       if (vocabulary == null || vocabulary.length === 0 || head_char_class.is_always_invoke === 1) {
         key = head_char;
         if (head_char_class.is_grouping === 1 && 1 < surrogate_aware_tail.length) {
@@ -1345,8 +1348,8 @@ var InvokeDefinitionMap = class _InvokeDefinitionMap {
         new CharacterClass_default(
           class_id,
           class_name,
-          Boolean(is_always_invoke),
-          Boolean(is_grouping),
+          is_always_invoke,
+          is_grouping,
           max_length
         )
       );

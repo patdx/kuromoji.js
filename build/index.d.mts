@@ -113,18 +113,18 @@ declare class ConnectionCosts {
 declare class CharacterClass {
     class_id: number;
     class_name: string;
-    is_always_invoke: boolean;
-    is_grouping: boolean;
+    is_always_invoke: boolean | number;
+    is_grouping: boolean | number;
     max_length: number;
-    constructor(class_id: number, class_name: string, is_always_invoke: boolean, is_grouping: boolean, max_length: number);
+    constructor(class_id: number, class_name: string, is_always_invoke: boolean | number, is_grouping: boolean | number, max_length: number);
 }
 
 declare class InvokeDefinitionMap {
-    map: any[];
+    map: CharacterClass[];
     lookup_table: Record<string, number>;
     constructor();
     init(character_category_definition: CharacterClass[]): void;
-    getCharacterClass(class_id: number): any;
+    getCharacterClass(class_id: number): CharacterClass;
     lookup(class_name: string): number | null;
     toBuffer(): Uint8Array;
     static load(invoke_def_buffer: Uint8Array): InvokeDefinitionMap;
@@ -136,8 +136,8 @@ declare class CharacterDefinition {
     invoke_definition_map: null | InvokeDefinitionMap;
     constructor();
     initCategoryMappings(category_mapping: any[]): void;
-    lookupCompatibleCategory(ch: string): string[];
-    lookup(ch: string): any;
+    lookupCompatibleCategory(ch: string): CharacterClass[];
+    lookup(ch: string): CharacterClass;
     static load(cat_map_buffer: Uint8Array, compat_cat_map_buffer: Uint32Array, invoke_def_buffer: Uint8Array): CharacterDefinition;
     static parseCharCategory(class_id: any, parsed_category_def: any): CharacterClass | null;
     static parseCategoryMapping(parsed_category_mapping: any): {
@@ -157,8 +157,8 @@ declare class UnknownDictionary extends TokenInfoDictionary {
     character_definition: null | CharacterDefinition;
     constructor();
     characterDefinition(character_definition: CharacterDefinition): this;
-    lookup(ch: string): any;
-    lookupCompatibleCategory(ch: string): string[] | undefined;
+    lookup(ch: string): CharacterClass | undefined;
+    lookupCompatibleCategory(ch: string): CharacterClass[] | undefined;
     loadUnknownDictionaries(unk_buffer: Uint8Array, unk_pos_buffer: Uint8Array, unk_map_buffer: Uint8Array, cat_map_buffer: Uint8Array, compat_cat_map_buffer: Uint32Array, invoke_def_buffer: Uint8Array): void;
 }
 

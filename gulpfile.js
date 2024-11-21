@@ -19,13 +19,23 @@ const { merge } = eventStream
 const argv = minimist(process.argv.slice(2))
 
 gulp.task('clean', async () => {
-	await deleteAsync(['.publish/', 'coverage/', 'build/', 'publish/'])
+	await deleteAsync(['.publish/', 'coverage/', 'build/', 'publish/', 'temp/'])
 })
 
 gulp.task(
 	'build',
 	gulp.series('clean', async () => {
 		await $`tsup`
+	}),
+)
+
+gulp.task(
+	'release2',
+	gulp.series('build', async () => {
+		await fs.promises.mkdir('temp/', { recursive: true })
+		const result = (await $`npm pack --pack-destination temp --json`).stdout
+		const [{ filename }] = JSON.parse(result)
+		await $`attw temp/${filename}`
 	}),
 )
 

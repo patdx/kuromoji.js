@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright 2014 Takuya Asano
  * Copyright 2010-2014 Atilika Inc. and contributors
@@ -85,6 +86,9 @@ class ViterbiBuilder {
 			const head_char_class = this.unknown_dictionary.lookup(
 				head_char.toString(),
 			)
+			if (!head_char_class) {
+				throw new Error('Unknown character: ' + head_char)
+			}
 			if (
 				vocabulary == null ||
 				vocabulary.length === 0 ||
@@ -99,7 +103,8 @@ class ViterbiBuilder {
 					for (let k = 1; k < surrogate_aware_tail.length; k++) {
 						const next_char = surrogate_aware_tail.charAt(k)
 						const next_char_class = this.unknown_dictionary.lookup(next_char)
-						if (head_char_class.class_name !== next_char_class.class_name) {
+
+						if (head_char_class.class_name !== next_char_class!.class_name) {
 							break
 						}
 						key += next_char

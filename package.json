@@ -1,13 +1,26 @@
 {
-	"name": "kuromoji",
+	"name": "@patdx/kuromoji",
 	"module": "true",
 	"description": "JavaScript implementation of Japanese morphological analyzer",
-	"version": "0.1.2",
+	"version": "1.0.1",
 	"author": "Takuya Asano <takuya.a@gmail.com>",
 	"bugs": {
 		"url": "https://github.com/patdx/kuromoji.js/issues"
 	},
+	"files": [
+		"build/**/*",
+		"dict/**/*",
+		"package.json",
+		"README.md",
+		"LICENSE-2.0.txt"
+	],
+	"exports": {
+		".": "./build/index.mjs",
+		"./node": "./build/node.mjs",
+		"./browser": "./build/browser.mjs"
+	},
 	"devDependencies": {
+		"@arethetypeswrong/cli": "^0.17.0",
 		"@eslint/js": "^9.15.0",
 		"@microsoft/api-extractor": "^7.47.11",
 		"@types/gulp": "^4.0.17",
