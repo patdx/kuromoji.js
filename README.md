@@ -9,9 +9,11 @@ You can see how kuromoji.js works in [demo site](https://takuyaa.github.io/kurom
 
 My goal is to provide a nice web version of kuromoji.js.
 
-# [Demo Here](https://patdx-kuromoji-demo.pages.dev/)
+[Available on NPM](https://www.npmjs.com/package/@patdx/kuromoji)
 
-## Changss over the original version
+[Web Demo](https://patdx-kuromoji-demo.pages.dev/)
+
+## Changes over the original version
 
 - ESM import only
 - Converted to TypeScript and includes TypeScript definitions
@@ -78,8 +80,6 @@ console.log(path)
 Other versions of kuromoji.js don't work so well in the browser because the browser already has its [own mechanism for decompressing files](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding).
 
 To keep things lightweight, we recommend loading the dictionary files from a server that supports returning compressed responses with the `Content-Encoding` header. This way, the app does not need to do any special processing itself.
-
-The default browser loader does not include any
 
 ```ts
 import * as kuromoji from '@patdx/kuromoji'

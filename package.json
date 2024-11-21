@@ -2,7 +2,7 @@
 	"name": "@patdx/kuromoji",
 	"module": "true",
 	"description": "JavaScript implementation of Japanese morphological analyzer",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"author": "Takuya Asano <takuya.a@gmail.com>",
 	"bugs": {
 		"url": "https://github.com/patdx/kuromoji.js/issues"
