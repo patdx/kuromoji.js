@@ -5,9 +5,10 @@
 
 		"noImplicitAny": false,
 		"noEmit": true,
+		"module": "ESNext",
 		"moduleResolution": "bundler",
 		"target": "ESNext",
-		"types": ["node", "vitest/globals"],
+		"types": ["node", "vite/client", "vitest/globals"],
 		"skipLibCheck": true,
 		"verbatimModuleSyntax": true,
 		"jsx": "react-jsx",

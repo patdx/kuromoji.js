@@ -1,14 +1,31 @@
 import { Suspense, use, useState } from 'react'
-import { tokenizerPromise } from './kuromoji'
+import * as Comlink from 'comlink'
+import type { KuromojiWorker } from './kuromoji-worker'
+import type { IpadicFeatures } from '../../build/index.mjs'
+
+const kuromojiWorker = new Worker(
+	new URL('./kuromoji-worker.ts', import.meta.url),
+	{
+		type: 'module',
+	},
+)
+const kuromoji = Comlink.wrap<KuromojiWorker>(kuromojiWorker)
 
 function App() {
-	const [promise, setPromise] = useState<Promise<any[]> | null>(null)
+	const [promise, setPromise] = useState<Promise<IpadicFeatures[]> | null>(null)
 
 	return (
 		<>
 			<div id="demo" className="row">
 				<h1>@patdx/kuromoji demo</h1>
-				<a href="https://github.com/patdx/kuromoji.js">GitHub</a>
+				<ul>
+					<li>
+						<a href="https://github.com/patdx/kuromoji.js">GitHub</a>
+					</li>
+					<li>
+						<a href="https://www.npmjs.com/package/@patdx/kuromoji">npm</a>
+					</li>
+				</ul>
 
 				<form
 					v-show="!isLoading"
@@ -23,26 +40,26 @@ function App() {
 							return alert('Missing input')
 						}
 
-						setPromise(
-							tokenizerPromise.then((tokenizer) => {
-								try {
-									const tokens = tokenizer.tokenize(inputText)
-									console.log(tokens)
-									return tokens
-								} catch (e) {
-									console.log(e)
-									return undefined as never
-								}
-							}),
-						)
+						async function action() {
+							try {
+								const tokens = await kuromoji.tokenize(inputText as string)
+								console.log(tokens)
+								return tokens
+							} catch (e) {
+								console.log(e)
+								return undefined as never
+							}
+						}
+
+						setPromise(action())
 					}}
 				>
 					<label>
-						解析対象
+						<div>解析対象 Enter a Japanese sentence or word</div>
 						<input
 							type="text"
 							name="inputText"
-							placeholder="解析したい文字列を入力してください"
+							placeholder="これはぺんです。"
 						/>
 						<input type="text" name="dummy" style={{ display: 'none' }} />
 					</label>
@@ -74,16 +91,16 @@ function TokenTable({ promise }) {
 		<table width="100%">
 			<thead>
 				<tr>
-					<th>表層形</th>
-					<th>品詞</th>
-					<th>品詞細分類1</th>
-					<th>品詞細分類2</th>
-					<th>品詞細分類3</th>
-					<th>活用型</th>
-					<th>活用形</th>
-					<th>基本形</th>
-					<th>読み</th>
-					<th>発音</th>
+					<th>表層形 Surface Form</th>
+					<th>品詞 Part of Speech</th>
+					<th>品詞細分類1 Part of Speech Detail 1</th>
+					<th>品詞細分類2 Part of Speech Detail 2</th>
+					<th>品詞細分類3 Part of Speech Detail 3</th>
+					<th>活用型 Conjugated Type</th>
+					<th>活用形 Conjugated Form</th>
+					<th>基本形 Basic Form</th>
+					<th>読み Reading</th>
+					<th>発音 Pronunciation</th>
 				</tr>
 			</thead>
 			<tbody>

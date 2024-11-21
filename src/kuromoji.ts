@@ -22,6 +22,7 @@ import DictionaryBuilder from './dict/builder/DictionaryBuilder'
 
 export { TokenizerBuilder, DictionaryBuilder }
 export type { LoaderConfig } from './loader/types'
+export type { IpadicFeatures } from './util/IpadicFormatter'
 
 /** @deprecated use new TokenizerBuilder instead */
 export function builder(options: TokenizerBuilderOptions) {
