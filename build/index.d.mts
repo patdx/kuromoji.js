@@ -273,4 +273,4 @@ declare function builder(options: TokenizerBuilderOptions): TokenizerBuilder;
 /** @deprecated use new DictionaryBuilder instead */
 declare function dictionaryBuilder(): DictionaryBuilder;
 
-export { DictionaryBuilder, TokenizerBuilder, builder, dictionaryBuilder };
+export { DictionaryBuilder, LoaderConfig, TokenizerBuilder, builder, dictionaryBuilder };

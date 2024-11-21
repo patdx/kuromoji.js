@@ -21,6 +21,7 @@ import TokenizerBuilder, {
 import DictionaryBuilder from './dict/builder/DictionaryBuilder'
 
 export { TokenizerBuilder, DictionaryBuilder }
+export type { LoaderConfig } from './loader/types'
 
 /** @deprecated use new TokenizerBuilder instead */
 export function builder(options: TokenizerBuilderOptions) {

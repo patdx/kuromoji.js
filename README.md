@@ -9,6 +9,8 @@ You can see how kuromoji.js works in [demo site](https://takuyaa.github.io/kurom
 
 My goal is to provide a nice web version of kuromoji.js.
 
+# [Demo Here](https://patdx-kuromoji-demo.pages.dev/)
+
 ## Changss over the original version
 
 - ESM import only
@@ -26,7 +28,6 @@ Directory tree is as follows:
       kuromoji.js -- JavaScript file for browser (Browserified)
     demo/         -- Demo
     dict/         -- Dictionaries for tokenizer (gzipped)
-    example/      -- Examples to use in Node.js
     src/          -- JavaScript source
     test/         -- Unit test
 

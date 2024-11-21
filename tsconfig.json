@@ -1,14 +1,22 @@
 {
-	"include": ["./src/**/*.js", "./test/**/*"],
+	"include": ["./src/**/*.js", "./test/**/*", "./demo/**/*"],
 	"compilerOptions": {
 		"allowJs": true,
-		"strict": true,
+
 		"noImplicitAny": false,
 		"noEmit": true,
 		"moduleResolution": "bundler",
 		"target": "ESNext",
 		"types": ["node", "vitest/globals"],
 		"skipLibCheck": true,
-		"verbatimModuleSyntax": true
+		"verbatimModuleSyntax": true,
+		"jsx": "react-jsx",
+
+		/* Linting */
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedSideEffectImports": true
 	}
 }
