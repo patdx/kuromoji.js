@@ -1,7 +1,6 @@
 import * as kuromoji from '@patdx/kuromoji'
-import type { LoaderConfig } from '../../src/loader/types'
 
-const myLoader: LoaderConfig = {
+const myLoader: kuromoji.LoaderConfig = {
 	async loadArrayBuffer(url: string): Promise<ArrayBufferLike> {
 		// strip off .gz
 		url = url.replace('.gz', '')

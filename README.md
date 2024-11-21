@@ -81,6 +81,42 @@ Other versions of kuromoji.js don't work so well in the browser because the brow
 
 To keep things lightweight, we recommend loading the dictionary files from a server that supports returning compressed responses with the `Content-Encoding` header. This way, the app does not need to do any special processing itself.
 
+#### Custom Loader (Recommended)
+
+At the moment, the recommended way to use kuromoji.js in the browser is to use a custom loader as I have not decided how to handle gz vs non-gz. The `loadArrayBuffer` will receive as path name ending in `.dat.gz`, but you'll need to strip it and fetch files that have already been decompressed. The fork `@aiktb/kuromoji` already have uncompressed dict files so we can just load those from jsdelivr CDN.
+
+This beahvior may change in future versions so watch your version number carefully.
+
+Referring to the demo:
+
+https://github.com/patdx/kuromoji.js/blob/main/demo/src/kuromoji.ts
+
+```ts
+import * as kuromoji from '@patdx/kuromoji'
+
+const myLoader: kuromoji.LoaderConfig = {
+	async loadArrayBuffer(url: string): Promise<ArrayBufferLike> {
+		// strip off .gz
+		url = url.replace('.gz', '')
+		const res = await fetch(
+			'https://cdn.jsdelivr.net/npm/@aiktb/kuromoji@1.0.2/dict/' + url,
+		)
+		if (!res.ok) {
+			throw new Error(`Failed to fetch ${url}, status: ${res.status}`)
+		}
+		return res.arrayBuffer()
+	},
+}
+
+export const tokenizerPromise = new kuromoji.TokenizerBuilder({
+	loader: myLoader,
+}).build()
+```
+
+#### Built in BrowserDictionaryLoader (Not recommended, experimental)
+
+I can't recommend using this way yet because it is not actually working yet (just a mismatch in compression and file names), but in theory you should be able to do something like this:
+
 ```ts
 import * as kuromoji from '@patdx/kuromoji'
 import BrowserDictionaryLoader from '@patdx/kuromoji/browser'
@@ -92,7 +128,7 @@ const tokenizer = await new kuromoji.TokenizerBuilder({
 }).build()
 
 // tokenizer is ready
-var path = tokenizer.tokenize('すもももももももものうち')
+const path = tokenizer.tokenize('すもももももももものうち')
 console.log(path)
 ```
 
